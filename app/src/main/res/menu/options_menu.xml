@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:showIn="navigation_view">
+
+    <item android:checkableBehavior="single"
+            android:title="@string/options_title">
+        <menu>
+            <item
+                android:id="@+id/appointment_option"
+                android:icon="@drawable/ic_appointment"
+                android:title="@string/appointment_title" />
+
+            <item
+                android:id="@+id/my_appointment_option"
+                android:icon="@drawable/ic_my_appointment"
+                android:title="@string/my_appointment_title" />
+
+            <item
+                android:id="@+id/history_option"
+                android:icon="@drawable/ic_history"
+                android:title="@string/history_title" />
+        </menu>
+    </item>
+
+    <item android:checkableBehavior="single"
+        android:title = "@string/user_guide_title">
+        <menu>
+            <item android:id = "@+id/faq_option"
+                android:icon = "@drawable/ic_faq"
+                android:title = "@string/faq_title"/>
+
+            <item android:id = "@+id/about_option"
+                android:icon = "@drawable/ic_about"
+                android:title = "@string/about_title"/>
+        </menu>
+    </item>
+</menu>
