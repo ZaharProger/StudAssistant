@@ -55,8 +55,4 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getContext(), R.string.confirm_error_text, Toast.LENGTH_LONG).show();
         }
     }
-
-    public void update(String newItem){
-        appointmentLabel.setText(newItem);
-    }
 }
