@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3C3647">
+
+    <CalendarView
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#3C3647"
+        android:selectedWeekBackgroundColor="#FFFFFF"
+        android:unfocusedMonthDateColor="#FFF47731"
+        android:weekNumberColor="#FFF47731"
+        android:weekSeparatorLineColor="#FFF47731"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/confirmDateButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#3C3647"
+        android:insetTop="0dp"
+        android:text="@string/ok_button_text"
+        android:textAlignment="center"
+        android:textColor="#FFF47731"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/datePicker"
+        app:layout_constraintStart_toStartOf="@+id/datePicker"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

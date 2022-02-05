@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.example.studassistant.fragments.AboutFragment;
+import com.example.studassistant.fragments.AppointmentFragment;
 import com.example.studassistant.fragments.StartFragment;
 import com.example.studassistant.managers.EmailManager;
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout drawerLayout;
     private StartFragment startFragment;
     private AboutFragment aboutFragment;
+    private AppointmentFragment appointmentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         startFragment = new StartFragment();
         aboutFragment = new AboutFragment();
+        appointmentFragment = new AppointmentFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, startFragment).commit();
     }
@@ -79,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (item.getItemId() == R.id.about_option)
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, aboutFragment).commit();
+        else if (item.getItemId() == R.id.appointment_option)
+            getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, appointmentFragment).commit();
 
         return true;
     }
