@@ -13,12 +13,18 @@
     <string name="about_hint">Пишите здесь:</string>
     <string name="about_text">Студ Ассистент - ваш мобильный помощник в студенческой жизни\nНиже вы можете связаться с разработчиком, поделиться своим мнением или предложить идеи для будущих обновлений</string>
     <string name="send_button_text">Отправить</string>
-    <string name="appointment_header">Заполните информацию</string>
     <string name="name_field">Ваше имя</string>
     <string name="surname_field">Ваша фамилия</string>
+    <string name="group_field">Учебная группа</string>
     <string name="tutor_field">Преподаватель</string>
     <string name="date_field">Дата консультации</string>
     <string name="time_field">Время консультации</string>
     <string name="confirm_button_text">Оформить</string>
-    <string name="ok_button_text">Ok</string>
+    <string name="personal_button_text">Персональные данные</string>
+    <string name="tutor_button_text">Преподаватель</string>
+    <string name="datetime_button_text">Дата и время</string>
+    <string name="ok_button_text">OK</string>
+    <string name="section_error_text">Сначала заполните предыдущие разделы!</string>
+    <string name="confirm_error_text">Заполните все разделы!</string>
+    <string name="ok_error_text">Заполните все поля!</string>
 </resources>

@@ -38,7 +38,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/message_field_border"
+        android:background="@drawable/field_border"
         android:gravity="start"
         android:hint="@string/about_hint"
         android:padding="10dp"
