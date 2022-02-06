@@ -43,11 +43,15 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         else if (view.getId() == R.id.tutorButton){
             if (appointment.getName() == null || appointment.getSurname() == null || appointment.getGroup() == null)
                 Toast.makeText(getContext(), R.string.section_error_text, Toast.LENGTH_LONG).show();
+            //else
+                new TutorFragment(appointment, appointmentLabel).show(getParentFragmentManager(), "Tutor");
         }
         else if (view.getId() == R.id.dateTimeButton){
             if (appointment.getName() == null || appointment.getSurname() == null ||
                     appointment.getGroup() == null || appointment.getTutor() == null)
                 Toast.makeText(getContext(), R.string.section_error_text, Toast.LENGTH_LONG).show();
+            //else
+                new DateTimeFragment(appointment, appointmentLabel).show(getParentFragmentManager(), "DateTime");
         }
         else if (view.getId() == R.id.confirmButton){
             if (appointment.getName() == null || appointment.getSurname() == null || appointment.getGroup() == null ||

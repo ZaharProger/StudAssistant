@@ -34,8 +34,6 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_personal, container, false);
 
-
-
         nameField = view.findViewById(R.id.nameField);
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
@@ -49,8 +47,8 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        appointment.setName(nameField.getText().toString());
-        appointment.setSurname(surnameField.getText().toString());
+        appointment.setName(nameField.getText().toString().trim());
+        appointment.setSurname(surnameField.getText().toString().trim());
 
         if (!(appointment.getName().equals("") || appointment.getSurname().equals(""))){
             String currentAppointment = appointmentLabel.getText().toString();
