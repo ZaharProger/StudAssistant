@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.studassistant.R;
-import com.example.studassistant.managers.Appointment;
+import com.example.studassistant.entities.Appointment;
 
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
@@ -38,19 +38,19 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.personalButton){
-            new PersonalFragment(appointment, appointmentLabel).show(getParentFragmentManager(), "Personal");
+            new PersonalFragment(appointment, appointmentLabel, getContext()).show(getParentFragmentManager(), "Personal");
         }
         else if (view.getId() == R.id.tutorButton){
             if (appointment.getName() == null || appointment.getSurname() == null || appointment.getGroup() == null)
                 Toast.makeText(getContext(), R.string.section_error_text, Toast.LENGTH_LONG).show();
-            //else
+            else
                 new TutorFragment(appointment, appointmentLabel).show(getParentFragmentManager(), "Tutor");
         }
         else if (view.getId() == R.id.dateTimeButton){
             if (appointment.getName() == null || appointment.getSurname() == null ||
                     appointment.getGroup() == null || appointment.getTutor() == null)
                 Toast.makeText(getContext(), R.string.section_error_text, Toast.LENGTH_LONG).show();
-            //else
+            else
                 new DateTimeFragment(appointment, appointmentLabel).show(getParentFragmentManager(), "DateTime");
         }
         else if (view.getId() == R.id.confirmButton){

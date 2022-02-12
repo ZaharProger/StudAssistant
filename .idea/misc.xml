@@ -37,8 +37,12 @@
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_tutor.xml" value="0.33" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/date_window.xml" value="0.22" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/options_header.xml" value="0.3941747572815534" />
+        <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/spinner_dropdown_layout.xml" value="0.15625" />
+        <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/spinner_layout.xml" value="0.5" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/time_window.xml" value="0.22" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/menu/options_menu.xml" value="0.67" />
+        <entry key="..\:/Users/advok_000/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_dropdown_item.xml" value="0.15625" />
+        <entry key="..\:/Users/advok_000/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.5" />
       </map>
     </option>
   </component>

@@ -1,12 +1,21 @@
-package com.example.studassistant.managers;
+package com.example.studassistant.entities;
 
 public class Appointment {
+    private int id;
     private String name;
     private String surname;
     private String group;
     private String tutor;
     private String date;
     private String time;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public void setName(String name) {
         this.name = name;

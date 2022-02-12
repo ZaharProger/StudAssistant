@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,18 +16,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
-import com.example.studassistant.managers.Appointment;
+import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.enums.ArrayType;
+import com.example.studassistant.managers.NetworkManager;
 
-public class PersonalFragment extends DialogFragment implements View.OnClickListener {
+
+public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private EditText nameField;
     private EditText surnameField;
     private Spinner groupList;
     private Appointment appointment;
     private TextView appointmentLabel;
+    private Context context;
+    private NetworkManager networkManager;
 
-    public PersonalFragment(Appointment appointment, TextView appointmentLabel){
+    public PersonalFragment(Appointment appointment, TextView appointmentLabel, Context context){
         this.appointment = appointment;
         this.appointmentLabel = appointmentLabel;
+        this.context = context;
+
     }
 
     @Nullable
@@ -38,9 +46,15 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
 
+        networkManager = new NetworkManager(context, ArrayType.GROUPS, groupList);
+
         view.findViewById(R.id.personalOkButton).setOnClickListener(this);
         nameField.setOnClickListener(this);
         surnameField.setOnClickListener(this);
+
+        networkManager.getData();
+
+        groupList.setOnItemSelectedListener(this);
 
         return view;
     }
@@ -49,16 +63,21 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     public void onClick(View view) {
         appointment.setName(nameField.getText().toString().trim());
         appointment.setSurname(surnameField.getText().toString().trim());
+        appointment.setGroup(groupList.getSelectedItem().toString());
 
-        if (!(appointment.getName().equals("") || appointment.getSurname().equals(""))){
+        if (!(appointment.getName().equals("") || appointment.getSurname().equals("") || appointment.getGroup().equals(""))){
             String currentAppointment = appointmentLabel.getText().toString();
             StringBuilder preparedAppointment = new StringBuilder();
+
             if (currentAppointment.length() == 0)
-                preparedAppointment.append(appointment.getName()).append(" ").append(appointment.getSurname()).append(" ");
+                preparedAppointment.append(appointment.getName()).append(" ").append(appointment.getSurname())
+                        .append(" ").append(appointment.getGroup());
             else{
                 String[] splittedAppointment = currentAppointment.trim().split("[\\s]+");
                 splittedAppointment[0] = appointment.getName();
                 splittedAppointment[1] = appointment.getSurname();
+                splittedAppointment[2] = appointment.getGroup();
+
                 for (int i = 0; i < splittedAppointment.length; ++i)
                     preparedAppointment.append(splittedAppointment[i]).append((i == splittedAppointment.length - 1)? "" : " ");
 
@@ -70,5 +89,18 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         }
         else
             Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
     }
 }

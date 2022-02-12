@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
-import com.example.studassistant.managers.Appointment;
+import com.example.studassistant.entities.Appointment;
 
 public class DateTimeFragment extends DialogFragment implements View.OnClickListener {
 
