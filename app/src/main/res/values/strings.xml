@@ -27,4 +27,5 @@
     <string name="section_error_text">Сначала заполните предыдущие разделы!</string>
     <string name="confirm_error_text">Заполните все разделы!</string>
     <string name="ok_error_text">Заполните все поля!</string>
+    <string name="connection_error_text">Подключитесь к интернету!</string>
 </resources>

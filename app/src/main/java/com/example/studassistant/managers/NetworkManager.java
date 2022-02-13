@@ -3,6 +3,7 @@ package com.example.studassistant.managers;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -43,8 +44,11 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
     }
 
     public void getData(){
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
-        Volley.newRequestQueue(context).add(request);
+        Runnable getResponseRunner = () -> {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
+            Volley.newRequestQueue(context).add(request);
+        };
+        getResponseRunner.run();
     }
 
     @Override
@@ -104,6 +108,6 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
 
     @Override
     public void onErrorResponse(VolleyError error) {
-
+        Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
     }
 }

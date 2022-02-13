@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.NetworkManager;
 
 
-public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     private EditText nameField;
     private EditText surnameField;
     private Spinner groupList;
@@ -48,13 +49,18 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
         networkManager = new NetworkManager(context, ArrayType.GROUPS, groupList);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[0]);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        adapter.notifyDataSetChanged();
+
+        groupList.setAdapter(adapter);
+        groupList.setOnItemSelectedListener(this);
+
         view.findViewById(R.id.personalOkButton).setOnClickListener(this);
         nameField.setOnClickListener(this);
         surnameField.setOnClickListener(this);
 
         networkManager.getData();
-
-        groupList.setOnItemSelectedListener(this);
 
         return view;
     }
@@ -97,10 +103,5 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
     }
 }
