@@ -47,33 +47,32 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
 
-        String[] currentAppointment = appointmentLabel.getText().toString().split("[\\s]+");
-        if (currentAppointment.length >= 3){
-            nameField.setText(currentAppointment[0]);
-            surnameField.setText(currentAppointment[1]);
-        }
+        restoreData();
 
         networkManager = new NetworkManager(context, ArrayType.GROUPS, groupList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[0]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Нет данных"});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         adapter.notifyDataSetChanged();
-
         groupList.setAdapter(adapter);
+
         groupList.setOnItemSelectedListener(this);
 
-        view.findViewById(R.id.personalOkButton).setOnClickListener(this);
-        nameField.setOnClickListener(this);
-        surnameField.setOnClickListener(this);
+        if (!networkManager.checkConnection()){
+            Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
+            dismiss();
+        }
+        else
+            networkManager.getData();
 
-        networkManager.getData();
+        view.findViewById(R.id.personalOkButton).setOnClickListener(this);
 
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        if (!networkManager.isConnectionFailed()){
+        if (networkManager.checkConnection()){
             appointment.setName(nameField.getText().toString().trim());
             appointment.setSurname(surnameField.getText().toString().trim());
             appointment.setGroup(groupList.getSelectedItem().toString());
@@ -104,7 +103,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
                 Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
         }
         else
-            Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -113,5 +112,20 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    private void restoreData(){
+        String[] currentAppointment = appointmentLabel.getText().toString().split("[\\s]+");
+        if (currentAppointment.length >= 3){
+            nameField.setText(currentAppointment[0]);
+            surnameField.setText(currentAppointment[1]);
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        dismiss();
     }
 }

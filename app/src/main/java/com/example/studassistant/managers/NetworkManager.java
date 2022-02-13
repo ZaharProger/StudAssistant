@@ -1,9 +1,11 @@
 package com.example.studassistant.managers;
 
+import android.app.Service;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -33,32 +35,39 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
         this.context = context;
         this.type = type;
         this.itemsList = itemsList;
+
+        checkConnection();
     }
 
     public NetworkManager(Context context, Spinner itemsList){
         this.context = context;
         this.itemsList = itemsList;
+
+        checkConnection();
     }
 
-    public void setType(String type) {
-        this.type = ArrayType.valueOf(type.toUpperCase(Locale.ROOT));
-    }
+    public boolean checkConnection() {
+        ConnectivityManager connection = (ConnectivityManager) context.getSystemService(Service.CONNECTIVITY_SERVICE);
+        if (connection != null){
+            NetworkInfo connectionInfo = connection.getActiveNetworkInfo();
+            if (connectionInfo != null)
+                isConnectionFailed = connectionInfo.getState() != NetworkInfo.State.CONNECTED;
+            else
+                isConnectionFailed = true;
+        }
+        else
+            isConnectionFailed = true;
 
-    public boolean isConnectionFailed() {
-        return isConnectionFailed;
+        return !isConnectionFailed;
     }
 
     public void getData(){
-        Runnable getResponseRunner = () -> {
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
-            Volley.newRequestQueue(context).add(request);
-        };
-        getResponseRunner.run();
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
+        Volley.newRequestQueue(context).add(request);
     }
 
     @Override
     public void onResponse(JSONArray response) {
-        isConnectionFailed = false;
         try {
             ArrayList<Group> groups = new ArrayList<>();
             ArrayList<Appointment> appointments = new ArrayList<>();
@@ -114,6 +123,5 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        isConnectionFailed = true;
     }
 }

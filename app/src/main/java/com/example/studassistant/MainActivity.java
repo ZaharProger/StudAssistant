@@ -21,6 +21,7 @@ import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
 import com.example.studassistant.fragments.StartFragment;
 import com.example.studassistant.managers.EmailManager;
+import com.example.studassistant.managers.NetworkManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
