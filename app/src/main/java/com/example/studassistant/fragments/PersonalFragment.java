@@ -47,6 +47,12 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
 
+        String[] currentAppointment = appointmentLabel.getText().toString().split("[\\s]+");
+        if (currentAppointment.length >= 3){
+            nameField.setText(currentAppointment[0]);
+            surnameField.setText(currentAppointment[1]);
+        }
+
         networkManager = new NetworkManager(context, ArrayType.GROUPS, groupList);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[0]);
@@ -67,34 +73,38 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        appointment.setName(nameField.getText().toString().trim());
-        appointment.setSurname(surnameField.getText().toString().trim());
-        appointment.setGroup(groupList.getSelectedItem().toString());
+        if (!networkManager.isConnectionFailed()){
+            appointment.setName(nameField.getText().toString().trim());
+            appointment.setSurname(surnameField.getText().toString().trim());
+            appointment.setGroup(groupList.getSelectedItem().toString());
 
-        if (!(appointment.getName().equals("") || appointment.getSurname().equals("") || appointment.getGroup().equals(""))){
-            String currentAppointment = appointmentLabel.getText().toString();
-            StringBuilder preparedAppointment = new StringBuilder();
+            if (!(appointment.getName().equals("") || appointment.getSurname().equals("") || appointment.getGroup().equals(""))){
+                String currentAppointment = appointmentLabel.getText().toString();
+                StringBuilder preparedAppointment = new StringBuilder();
 
-            if (currentAppointment.length() == 0)
-                preparedAppointment.append(appointment.getName()).append(" ").append(appointment.getSurname())
-                        .append(" ").append(appointment.getGroup());
-            else{
-                String[] splittedAppointment = currentAppointment.trim().split("[\\s]+");
-                splittedAppointment[0] = appointment.getName();
-                splittedAppointment[1] = appointment.getSurname();
-                splittedAppointment[2] = appointment.getGroup();
+                if (currentAppointment.length() == 0)
+                    preparedAppointment.append(appointment.getName()).append(" ").append(appointment.getSurname())
+                            .append(" ").append(appointment.getGroup());
+                else{
+                    String[] splittedAppointment = currentAppointment.trim().split("[\\s]+");
+                    splittedAppointment[0] = appointment.getName();
+                    splittedAppointment[1] = appointment.getSurname();
+                    splittedAppointment[2] = appointment.getGroup();
 
-                for (int i = 0; i < splittedAppointment.length; ++i)
-                    preparedAppointment.append(splittedAppointment[i]).append((i == splittedAppointment.length - 1)? "" : " ");
+                    for (int i = 0; i < splittedAppointment.length; ++i)
+                        preparedAppointment.append(splittedAppointment[i]).append((i == splittedAppointment.length - 1)? "" : " ");
 
+                }
+
+                appointmentLabel.setText(preparedAppointment.toString());
+
+                dismiss();
             }
-
-            appointmentLabel.setText(preparedAppointment.toString());
-
-            dismiss();
+            else
+                Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
         }
         else
-            Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -27,6 +27,7 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
     private Context context;
     private Spinner itemsList;
     private ArrayType type;
+    private boolean isConnectionFailed;
 
     public NetworkManager(Context context, ArrayType type, Spinner itemsList){
         this.context = context;
@@ -43,6 +44,10 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
         this.type = ArrayType.valueOf(type.toUpperCase(Locale.ROOT));
     }
 
+    public boolean isConnectionFailed() {
+        return isConnectionFailed;
+    }
+
     public void getData(){
         Runnable getResponseRunner = () -> {
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
@@ -53,6 +58,7 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
 
     @Override
     public void onResponse(JSONArray response) {
+        isConnectionFailed = false;
         try {
             ArrayList<Group> groups = new ArrayList<>();
             ArrayList<Appointment> appointments = new ArrayList<>();
@@ -108,6 +114,6 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
+        isConnectionFailed = true;
     }
 }
