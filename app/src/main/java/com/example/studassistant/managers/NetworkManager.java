@@ -30,6 +30,8 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
     private Spinner itemsList;
     private ArrayType type;
     private boolean isConnectionFailed;
+    private boolean toRestore;
+    private String dataToRestore;
 
     public NetworkManager(Context context, ArrayType type, Spinner itemsList){
         this.context = context;
@@ -62,6 +64,7 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
     }
 
     public void getData(){
+        toRestore = false;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
         Volley.newRequestQueue(context).add(request);
     }
@@ -115,6 +118,16 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
 
             itemsList.setAdapter(adapter);
 
+            if (toRestore){
+                boolean isFound = false;
+                int i;
+                for (i = 0; i < mappedData.length && !isFound; ++i)
+                    isFound = mappedData[i].equals(dataToRestore);
+
+                itemsList.setSelection(--i);
+            }
+            else
+                itemsList.setSelection(0);
         }
         catch (JSONException exception) {
             exception.printStackTrace();
@@ -123,5 +136,12 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
 
     @Override
     public void onErrorResponse(VolleyError error) {
+    }
+
+    public void getDataToRestore(String dataToRestore) {
+        toRestore = true;
+        this.dataToRestore = dataToRestore;
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
+        Volley.newRequestQueue(context).add(request);
     }
 }

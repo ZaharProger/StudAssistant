@@ -2,9 +2,11 @@ package com.example.studassistant.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -47,11 +49,9 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
 
-        restoreData();
-
         networkManager = new NetworkManager(context, ArrayType.GROUPS, groupList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Нет данных"});
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         adapter.notifyDataSetChanged();
         groupList.setAdapter(adapter);
@@ -62,8 +62,10 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             dismiss();
         }
-        else
+        else{
             networkManager.getData();
+            restoreData();
+        }
 
         view.findViewById(R.id.personalOkButton).setOnClickListener(this);
 
@@ -119,6 +121,10 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         if (currentAppointment.length >= 3){
             nameField.setText(currentAppointment[0]);
             surnameField.setText(currentAppointment[1]);
+            if (!networkManager.checkConnection())
+                Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
+            else
+                networkManager.getDataToRestore(currentAppointment[2]);
         }
     }
 
