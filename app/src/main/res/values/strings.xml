@@ -17,8 +17,7 @@
     <string name="surname_field">Ваша фамилия</string>
     <string name="group_field">Учебная группа</string>
     <string name="tutor_field">Преподаватель</string>
-    <string name="date_field">Дата консультации</string>
-    <string name="time_field">Время консультации</string>
+    <string name="datetime_field">Дата и время консультации</string>
     <string name="confirm_button_text">Оформить</string>
     <string name="personal_button_text">Персональные данные</string>
     <string name="tutor_button_text">Преподаватель</string>

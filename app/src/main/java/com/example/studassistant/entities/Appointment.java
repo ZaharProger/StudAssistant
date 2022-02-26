@@ -6,8 +6,7 @@ public class Appointment {
     private String surname;
     private String group;
     private String tutor;
-    private String date;
-    private String time;
+    private String datetime;
 
     public void setId(int id) {
         this.id = id;
@@ -49,19 +48,11 @@ public class Appointment {
         return tutor;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getTime() {
-        return time;
+    public String getDatetime() {
+        return datetime;
     }
 }

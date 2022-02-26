@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/date_field"
+            android:text="@string/datetime_field"
             android:textAlignment="textStart"
             android:textColor="#FFF47731"
             android:textColorHighlight="#FFFFFF"
@@ -29,23 +29,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/time_field"
-            android:textAlignment="textStart"
-            android:textColor="#FFF47731"
-            android:textColorHighlight="#FFFFFF"
-            android:textColorLink="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/datesList" />
-
         <Spinner
-            android:id="@+id/datesList"
+            android:id="@+id/datetimeList"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
@@ -55,17 +40,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <Spinner
-            android:id="@+id/timeList"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/field_border"
-            android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <Button
             android:id="@+id/dateTimeOkButton"
@@ -81,7 +55,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeList" />
+            app:layout_constraintTop_toBottomOf="@+id/datetimeList" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

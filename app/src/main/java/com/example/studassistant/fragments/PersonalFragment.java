@@ -37,7 +37,6 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         this.appointment = appointment;
         this.appointmentLabel = appointmentLabel;
         this.context = context;
-
     }
 
     @Nullable
@@ -84,16 +83,18 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
                 StringBuilder preparedAppointment = new StringBuilder();
 
                 if (currentAppointment.length() == 0)
-                    preparedAppointment.append(appointment.getName()).append(" ").append(appointment.getSurname())
-                            .append(" ").append(appointment.getGroup());
+                    preparedAppointment.append(appointment.getName()).append("\n").append(appointment.getSurname())
+                            .append("\n").append(appointment.getGroup());
                 else{
-                    String[] splittedAppointment = currentAppointment.trim().split("[\\s]+");
+                    String[] splittedAppointment = currentAppointment.trim().split("[\n]+");
                     splittedAppointment[0] = appointment.getName();
                     splittedAppointment[1] = appointment.getSurname();
                     splittedAppointment[2] = appointment.getGroup();
+                    appointment.setTutor(null);
+                    appointment.setDatetime(null);
 
-                    for (int i = 0; i < splittedAppointment.length; ++i)
-                        preparedAppointment.append(splittedAppointment[i]).append((i == splittedAppointment.length - 1)? "" : " ");
+                    for (int i = 0; i < 3; ++i)
+                        preparedAppointment.append(splittedAppointment[i]).append((i == 2)? "" : "\n");
 
                 }
 
@@ -117,7 +118,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     }
 
     private void restoreData(){
-        String[] currentAppointment = appointmentLabel.getText().toString().split("[\\s]+");
+        String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
         if (currentAppointment.length >= 3){
             nameField.setText(currentAppointment[0]);
             surnameField.setText(currentAppointment[1]);
