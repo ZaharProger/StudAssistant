@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.StudAssistant" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="android:textColorPrimary">#F47731</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

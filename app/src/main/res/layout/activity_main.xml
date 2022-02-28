@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="#3C3647"
+            android:background="#336C9A"
             android:elevation="4dp"
             android:padding="10dp"></androidx.appcompat.widget.Toolbar>
 
@@ -34,11 +34,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#3C3647"
+        android:background="#FFFFFF"
         android:theme="@style/title_color"
         app:headerLayout="@layout/options_header"
-        app:itemIconTint="#F47731"
-        app:itemTextColor="#F47731"
+        app:itemIconTint="#336C9A"
+        app:itemTextColor="#336C9A"
         app:menu="@menu/options_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

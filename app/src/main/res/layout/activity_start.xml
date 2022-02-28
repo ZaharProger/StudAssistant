@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3C3647">
+    android:background="#FFFFFF">
 
     <ImageView
         android:id="@+id/startImage"
@@ -24,9 +24,9 @@
         android:layout_marginEnd="8dp"
         android:text="@string/start_text"
         android:textAlignment="center"
-        android:textColor="#FFF47731"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorLink="#FFFFFF"
+        android:textColor="#336C9A"
+        android:textColorHighlight="#62ACE8"
+        android:textColorLink="#62ACE8"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

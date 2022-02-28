@@ -8,6 +8,6 @@
     android:ellipsize="marquee"
     android:singleLine="true"
     android:textAlignment="center"
-    android:textColor="#FFF47731"
-    android:textColorHighlight="#FFFFFF"
-    android:textColorLink="#FFFFFF" />
+    android:textColor="#336C9A"
+    android:textColorHighlight="#62ACE8"
+    android:textColorLink="#62ACE8" />

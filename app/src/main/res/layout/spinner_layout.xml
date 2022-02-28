@@ -7,4 +7,7 @@
     android:background="#005B497E"
     android:ellipsize="marquee"
     android:singleLine="true"
-    android:textAlignment="center" />
+    android:textAlignment="center"
+    android:textColor="#336C9A"
+    android:textColorHighlight="#62ACE8"
+    android:textColorLink="#62ACE8" />
