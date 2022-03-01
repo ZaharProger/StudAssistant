@@ -68,7 +68,7 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
         if (networkManager.checkConnection()){
             appointment.setTutor(tutorsList.getSelectedItem().toString());
 
-            if (!appointment.getTutor().equals("")){
+            if (appointment.getTutor() != null){
                 String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
                 StringBuilder preparedAppointment = new StringBuilder();
                 appointment.setDatetime(null);
@@ -91,6 +91,8 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
+            appointment.setTutor(null);
     }
 
     @Override
