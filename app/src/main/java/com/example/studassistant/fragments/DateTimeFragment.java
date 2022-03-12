@@ -67,7 +67,10 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (networkManager.checkConnection()){
-            appointment.setDatetime(datetimeList.getSelectedItem().toString());
+            if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
+                appointment.setDatetime(null);
+            else
+                appointment.setDatetime(datetimeList.getSelectedItem().toString());
 
             if (appointment.getDatetime() != null){
                 String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
@@ -91,8 +94,6 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
-            appointment.setDatetime(null);
     }
 
     @Override

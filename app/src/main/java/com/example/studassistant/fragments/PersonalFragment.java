@@ -76,7 +76,10 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         if (networkManager.checkConnection()){
             appointment.setName(nameField.getText().toString().trim());
             appointment.setSurname(surnameField.getText().toString().trim());
-            appointment.setGroup(groupList.getSelectedItem().toString());
+            if (groupList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
+                appointment.setGroup(null);
+            else
+                appointment.setGroup(groupList.getSelectedItem().toString());
 
             if (!(appointment.getName().equals("") || appointment.getSurname().equals("") || appointment.getGroup() == null)){
                 String currentAppointment = appointmentLabel.getText().toString();
@@ -111,8 +114,6 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (groupList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
-            appointment.setGroup(null);
     }
 
     @Override
