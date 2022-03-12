@@ -1,9 +1,6 @@
 package com.example.studassistant.managers;
 
-import android.app.Service;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -28,56 +25,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class NetworkManager implements Response.Listener<JSONArray>, Response.ErrorListener{
-    private static final String URL = "https://stud-assistant-db.herokuapp.com/";
-    private Context context;
+public class GetRequestManager extends RequestManager implements Response.Listener<JSONArray>, Response.ErrorListener {
     private Spinner itemsList;
-    private ArrayType type;
     private boolean toRestore;
     private String dataToRestore;
     private String dataToRemember;
 
-    public NetworkManager(Context context, ArrayType type, Spinner itemsList){
-        this.context = context;
-        this.type = type;
+    public GetRequestManager(Context context, ArrayType type, Spinner itemsList){
+        super(context, type);
         this.itemsList = itemsList;
 
         checkConnection();
     }
 
-    public NetworkManager(Context context, ArrayType type, Spinner itemsList, String dataToRemember){
-        this.context = context;
-        this.type = type;
+    public GetRequestManager(Context context, ArrayType type, Spinner itemsList, String dataToRemember){
+        super(context, type);
         this.itemsList = itemsList;
         this.dataToRemember = dataToRemember;
 
         checkConnection();
     }
 
-    public NetworkManager(Context context, Spinner itemsList){
-        this.context = context;
+    public GetRequestManager(Context context, Spinner itemsList){
+        super(context, null);
         this.itemsList = itemsList;
 
         checkConnection();
     }
 
-    public boolean checkConnection() {
-        ConnectivityManager connection = (ConnectivityManager) context.getSystemService(Service.CONNECTIVITY_SERVICE);
-        boolean isConnectionFailed;
-        if (connection != null){
-            NetworkInfo connectionInfo = connection.getActiveNetworkInfo();
-            if (connectionInfo != null)
-                isConnectionFailed = connectionInfo.getState() != NetworkInfo.State.CONNECTED;
-            else
-                isConnectionFailed = true;
-        }
-        else
-            isConnectionFailed = true;
-
-        return !isConnectionFailed;
-    }
-
-    public void getData(){
+    @Override
+    public void createRequest() {
         toRestore = false;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + ((type != ArrayType.DATETIME)? type.toString().toLowerCase(Locale.ROOT) : "tutors"), null, this, this);
         Volley.newRequestQueue(context).add(request);
@@ -97,7 +74,7 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
                     case GROUPS:
                         Group group = new Group();
 
-                        group.setId(extractedObject.getInt("id"));
+                        group.setId(extractedObject.getLong("id"));
                         group.setName(extractedObject.getString("name"));
 
                         groups.add(group);
@@ -112,7 +89,7 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
                         if (isFound){
                             Tutor tutor = new Tutor();
 
-                            tutor.setId(extractedObject.getInt("id"));
+                            tutor.setId(extractedObject.getLong("id"));
                             tutor.setName(extractedObject.getString("name"));
                             tutor.setSurname(extractedObject.getString("surname"));
                             tutor.setPatronymic(extractedObject.getString("patronymic"));
@@ -140,7 +117,7 @@ public class NetworkManager implements Response.Listener<JSONArray>, Response.Er
                     case APPOINTMENTS:
                         Appointment appointment = new Appointment();
 
-                        appointment.setId(extractedObject.getInt("id"));
+                        appointment.setId(extractedObject.getLong("id"));
                         appointment.setName(extractedObject.getString("name"));
                         appointment.setSurname(extractedObject.getString("surname"));
                         appointment.setGroup(extractedObject.getString("group"));

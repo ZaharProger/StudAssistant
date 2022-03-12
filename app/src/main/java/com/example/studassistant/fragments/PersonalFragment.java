@@ -2,11 +2,9 @@ package com.example.studassistant.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,7 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
-import com.example.studassistant.managers.NetworkManager;
+import com.example.studassistant.managers.GetRequestManager;
 
 
 public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
@@ -31,7 +29,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     private Appointment appointment;
     private TextView appointmentLabel;
     private Context context;
-    private NetworkManager networkManager;
+    private GetRequestManager getRequestManager;
 
     public PersonalFragment(Appointment appointment, TextView appointmentLabel, Context context){
         this.appointment = appointment;
@@ -48,7 +46,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
 
-        networkManager = new NetworkManager(context, ArrayType.GROUPS, groupList);
+        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
@@ -57,12 +55,12 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
         groupList.setOnItemSelectedListener(this);
 
-        if (!networkManager.checkConnection()){
+        if (!getRequestManager.checkConnection()){
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             dismiss();
         }
         else{
-            networkManager.getData();
+            getRequestManager.createRequest();
             restoreData();
         }
 
@@ -73,7 +71,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (networkManager.checkConnection()){
+        if (getRequestManager.checkConnection()){
             appointment.setName(nameField.getText().toString().trim());
             appointment.setSurname(surnameField.getText().toString().trim());
             if (groupList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
@@ -125,10 +123,10 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         if (currentAppointment.length >= 3){
             nameField.setText(currentAppointment[0]);
             surnameField.setText(currentAppointment[1]);
-            if (!networkManager.checkConnection())
+            if (!getRequestManager.checkConnection())
                 Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             else
-                networkManager.getDataToRestore(currentAppointment[2]);
+                getRequestManager.getDataToRestore(currentAppointment[2]);
         }
     }
 

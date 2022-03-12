@@ -23,9 +23,13 @@
     <string name="tutor_button_text">Преподаватель</string>
     <string name="datetime_button_text">Дата и время</string>
     <string name="ok_button_text">OK</string>
+    <string name="cancel_button_text">Отмена</string>
     <string name="section_error_text">Сначала заполните предыдущие разделы!</string>
     <string name="confirm_error_text">Заполните все разделы!</string>
     <string name="ok_error_text">Заполните все поля!</string>
     <string name="connection_error_text">Подключитесь к интернету!</string>
     <string name="current_appointment_text">ВАША ЗАПИСЬ\n(отобразится ниже по мере заполнения полей)</string>
+    <string name="confirmation_text">Вы действительно хотите оформить запись?</string>
+    <string name="confirmation_info_text">Если Вы оформите запись, вашему устройству будет присвоен уникальный идентификатор.\n\nСохраните его, чтобы иметь доступ к вашим записям!</string>
+    <string name="post_success_text">Запись успешно оформлена!</string>
 </resources>

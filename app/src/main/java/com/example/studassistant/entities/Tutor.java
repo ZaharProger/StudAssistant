@@ -3,25 +3,25 @@ package com.example.studassistant.entities;
 import androidx.annotation.NonNull;
 
 public class Tutor {
-    private int id;
+    private long id;
     private String name;
     private String surname;
     private String patronymic;
 
     public Tutor(){ }
 
-    public Tutor(int id, String name, String surname, String patronymic){
+    public Tutor(long id, String name, String surname, String patronymic){
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -13,10 +13,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.enums.ArrayType;
+import com.example.studassistant.managers.CodeGenerator;
+import com.example.studassistant.managers.RequestManager;
 
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
     private TextView appointmentLabel;
+    private RequestManager RequestManager;
 
     @Nullable
     @Override
@@ -31,6 +35,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.confirmButton).setOnClickListener(this);
 
         appointment = new Appointment();
+        RequestManager = new RequestManager(getContext(), ArrayType.APPOINTMENTS);
 
         return view;
     }
@@ -57,6 +62,14 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             if (appointment.getName() == null || appointment.getSurname() == null || appointment.getGroup() == null ||
                     appointment.getTutor() == null || appointment.getDatetime() == null)
                 Toast.makeText(getContext(), R.string.confirm_error_text, Toast.LENGTH_LONG).show();
+            else{
+                appointment.setId(Math.abs(CodeGenerator.NUM_GENERATOR.nextLong()));
+
+                if (RequestManager.checkConnection())
+                    new ConfirmationFragment(appointment, getContext()).show(getParentFragmentManager(), "Confirmation");
+                else
+                    Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

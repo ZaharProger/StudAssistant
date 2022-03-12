@@ -1,18 +1,19 @@
 package com.example.studassistant.entities;
 
 public class Appointment {
-    private int id;
+    private long id;
     private String name;
     private String surname;
     private String group;
     private String tutor;
     private String datetime;
+    private String userCode;
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -54,5 +55,13 @@ public class Appointment {
 
     public String getDatetime() {
         return datetime;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public String getUserCode() {
+        return userCode;
     }
 }

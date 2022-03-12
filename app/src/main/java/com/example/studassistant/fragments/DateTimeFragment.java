@@ -18,14 +18,14 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
-import com.example.studassistant.managers.NetworkManager;
+import com.example.studassistant.managers.GetRequestManager;
 
 public class DateTimeFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private TextView appointmentLabel;
     private Appointment appointment;
     private Spinner datetimeList;
-    private NetworkManager networkManager;
+    private GetRequestManager getRequestManager;
     private Context context;
 
     public DateTimeFragment(Appointment appointment, TextView appointmentLabel, Context context){
@@ -41,7 +41,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
         datetimeList = view.findViewById(R.id.datetimeList);
 
-        networkManager = new NetworkManager(context, ArrayType.DATETIME, datetimeList, getDataToRemember());
+        getRequestManager = new GetRequestManager(context, ArrayType.DATETIME, datetimeList, getDataToRemember());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
@@ -52,12 +52,12 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
         view.findViewById(R.id.dateTimeOkButton).setOnClickListener(this);
 
-        if (!networkManager.checkConnection()){
+        if (!getRequestManager.checkConnection()){
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             dismiss();
         }
         else{
-            networkManager.getData();
+            getRequestManager.createRequest();
             restoreData();
         }
 
@@ -66,7 +66,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (networkManager.checkConnection()){
+        if (getRequestManager.checkConnection()){
             if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
                 appointment.setDatetime(null);
             else
@@ -103,10 +103,10 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
     private void restoreData(){
         String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
         if (currentAppointment.length >= 5){
-            if (!networkManager.checkConnection())
+            if (!getRequestManager.checkConnection())
                 Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             else
-                networkManager.getDataToRestore(currentAppointment[4]);
+                getRequestManager.getDataToRestore(currentAppointment[4]);
         }
     }
 

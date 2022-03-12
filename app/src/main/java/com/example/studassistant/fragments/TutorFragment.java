@@ -18,13 +18,13 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
-import com.example.studassistant.managers.NetworkManager;
+import com.example.studassistant.managers.GetRequestManager;
 
 public class TutorFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private TextView appointmentLabel;
     private Appointment appointment;
     private Spinner tutorsList;
-    private NetworkManager networkManager;
+    private GetRequestManager getRequestManager;
     private Context context;
 
     public TutorFragment(Appointment appointment, TextView appointmentLabel, Context context){
@@ -40,7 +40,7 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
         tutorsList = view.findViewById(R.id.tutorsList);
 
-        networkManager = new NetworkManager(context, ArrayType.TUTORS, tutorsList, getDataToRemember());
+        getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, getDataToRemember());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
@@ -51,12 +51,12 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
         view.findViewById(R.id.tutorOkButton).setOnClickListener(this);
 
-        if (!networkManager.checkConnection()){
+        if (!getRequestManager.checkConnection()){
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             dismiss();
         }
         else{
-            networkManager.getData();
+            getRequestManager.createRequest();
             restoreData();
         }
 
@@ -65,7 +65,7 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if (networkManager.checkConnection()){
+        if (getRequestManager.checkConnection()){
             if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
                 appointment.setTutor(null);
             else
@@ -104,10 +104,10 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
         String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
 
         if (currentAppointment.length >= 4){
-            if (!networkManager.checkConnection())
+            if (!getRequestManager.checkConnection())
                 Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
             else
-                networkManager.getDataToRestore(currentAppointment[3]);
+                getRequestManager.getDataToRestore(currentAppointment[3]);
         }
     }
 
