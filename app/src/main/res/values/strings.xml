@@ -2,6 +2,8 @@
     <string name="app_name">StudAssistant</string>
     <string name="options_title">Запись</string>
     <string name="appointment_title">Оформить запись</string>
+    <string name="edit_button_text">Изменить</string>
+    <string name="remove_button_text">Удалить</string>
     <string name="my_appointment_title">Мои записи</string>
     <string name="history_title">История записей</string>
     <string name="user_guide_title">Пользователю</string>

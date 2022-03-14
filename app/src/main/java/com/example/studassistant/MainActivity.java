@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 
 import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
+import com.example.studassistant.fragments.MyAppointmentFragment;
 import com.example.studassistant.fragments.StartFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private StartFragment startFragment;
     private AboutFragment aboutFragment;
     private AppointmentFragment appointmentFragment;
+    private MyAppointmentFragment myAppointmentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startFragment = new StartFragment();
         aboutFragment = new AboutFragment();
         appointmentFragment = new AppointmentFragment();
+        myAppointmentFragment = new MyAppointmentFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, startFragment).commit();
     }
@@ -78,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, aboutFragment).commit();
         else if (item.getItemId() == R.id.appointment_option)
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, appointmentFragment).commit();
+        else if (item.getItemId() == R.id.my_appointment_option)
+            getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, myAppointmentFragment).commit();
 
         return true;
     }
