@@ -40,7 +40,7 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
         tutorsList = view.findViewById(R.id.tutorsList);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, getDataToRemember());
+        getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, null, getDataToRemember());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);

@@ -1,8 +1,12 @@
 package com.example.studassistant.managers;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -10,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.studassistant.R;
+import com.example.studassistant.adapters.AppointmentsListAdapter;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.Group;
 import com.example.studassistant.entities.Tutor;
@@ -26,29 +31,33 @@ import java.util.Date;
 import java.util.Locale;
 
 public class GetRequestManager extends RequestManager implements Response.Listener<JSONArray>, Response.ErrorListener {
-    private Spinner itemsList;
+    private Spinner itemsListSpinner;
+    private RecyclerView itemsListRecyclerView;
     private boolean toRestore;
     private String dataToRestore;
     private String dataToRemember;
 
-    public GetRequestManager(Context context, ArrayType type, Spinner itemsList){
+    public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
         super(context, type);
-        this.itemsList = itemsList;
+        this.itemsListSpinner = itemsListSpinner;
+        this.itemsListRecyclerView = itemsListRecyclerView;
 
         checkConnection();
     }
 
-    public GetRequestManager(Context context, ArrayType type, Spinner itemsList, String dataToRemember){
+    public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView, String dataToRemember){
         super(context, type);
-        this.itemsList = itemsList;
+        this.itemsListSpinner = itemsListSpinner;
+        this.itemsListRecyclerView = itemsListRecyclerView;
         this.dataToRemember = dataToRemember;
 
         checkConnection();
     }
 
-    public GetRequestManager(Context context, Spinner itemsList){
+    public GetRequestManager(Context context, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
         super(context, null);
-        this.itemsList = itemsList;
+        this.itemsListSpinner = itemsListSpinner;
+        this.itemsListRecyclerView = itemsListRecyclerView;
 
         checkConnection();
     }
@@ -63,10 +72,25 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     @Override
     public void onResponse(JSONArray response) {
         try {
-            ArrayList<Group> groups = new ArrayList<>();
-            ArrayList<Tutor> tutors = new ArrayList<>();
-            ArrayList<String> dates = new ArrayList<>();
-            ArrayList<Appointment> appointments = new ArrayList<>();
+            ArrayList<Group> groups = null;
+            ArrayList<Tutor> tutors = null;
+            ArrayList<String> dates = null;
+            ArrayList<Appointment> appointments = null;
+
+            switch(type){
+                case GROUPS:
+                    groups = new ArrayList<>();
+                    break;
+                case TUTORS:
+                    tutors = new ArrayList<>();
+                    break;
+                case DATETIME:
+                    dates = new ArrayList<>();
+                    break;
+                case APPOINTMENTS:
+                    appointments = new ArrayList<>();
+                    break;
+            }
 
             for (int i = 0; i < response.length(); ++i){
                 JSONObject extractedObject = response.getJSONObject(i);
@@ -165,22 +189,31 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                     break;
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedData);
-            adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-            adapter.notifyDataSetChanged();
+            if (itemsListSpinner != null){
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedData);
+                adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                adapter.notifyDataSetChanged();
 
-            itemsList.setAdapter(adapter);
+                itemsListSpinner.setAdapter(adapter);
 
-            if (toRestore){
-                boolean isFound = false;
-                int i;
-                for (i = 0; i < mappedData.length && !isFound; ++i)
-                    isFound = mappedData[i].equals(dataToRestore);
+                if (toRestore){
+                    boolean isFound = false;
+                    int i;
+                    for (i = 0; i < mappedData.length && !isFound; ++i)
+                        isFound = mappedData[i].equals(dataToRestore);
 
-                itemsList.setSelection(--i);
+                    itemsListSpinner.setSelection(--i);
+                }
+                else
+                    itemsListSpinner.setSelection(0);
             }
-            else
-                itemsList.setSelection(0);
+
+            if (itemsListRecyclerView != null){
+                AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments, context);
+                itemsListRecyclerView.setAdapter(appointmentsListAdapter);
+                itemsListRecyclerView.setVisibility(View.VISIBLE);
+                new ItemTouchHelper(appointmentsListAdapter.getItemTouchHelper()).attachToRecyclerView(itemsListRecyclerView);
+            }
         }
         catch (JSONException exception) {
             exception.printStackTrace();

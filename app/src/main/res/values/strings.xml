@@ -34,4 +34,5 @@
     <string name="confirmation_text">Вы действительно хотите оформить запись?</string>
     <string name="confirmation_info_text">Если Вы оформите запись, вашему устройству будет присвоен уникальный идентификатор.\n\nСохраните его, чтобы иметь доступ к вашим записям!</string>
     <string name="post_success_text">Запись успешно оформлена!</string>
+    <string name="remove_warning_text">Для удаления проведите по записи влево</string>
 </resources>

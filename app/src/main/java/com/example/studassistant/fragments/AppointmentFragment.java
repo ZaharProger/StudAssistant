@@ -20,7 +20,7 @@ import com.example.studassistant.managers.RequestManager;
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
     private TextView appointmentLabel;
-    private RequestManager RequestManager;
+    private RequestManager requestManager;
 
     @Nullable
     @Override
@@ -35,7 +35,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.confirmButton).setOnClickListener(this);
 
         appointment = new Appointment();
-        RequestManager = new RequestManager(getContext(), ArrayType.APPOINTMENTS);
+        requestManager = new RequestManager(getContext(), ArrayType.APPOINTMENTS);
 
         return view;
     }
@@ -65,7 +65,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             else{
                 appointment.setId(Math.abs(CodeGenerator.NUM_GENERATOR.nextLong()));
 
-                if (RequestManager.checkConnection())
+                if (requestManager.checkConnection())
                     new ConfirmationFragment(appointment, getContext()).show(getParentFragmentManager(), "Confirmation");
                 else
                     Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();

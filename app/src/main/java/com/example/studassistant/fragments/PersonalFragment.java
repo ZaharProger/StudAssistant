@@ -46,7 +46,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         surnameField = view.findViewById(R.id.surnameField);
         groupList = view.findViewById(R.id.groupList);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList);
+        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList, null);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);

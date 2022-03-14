@@ -12,11 +12,14 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
+import com.example.studassistant.fragments.ConfirmationFragment;
 import com.example.studassistant.fragments.MyAppointmentFragment;
 import com.example.studassistant.fragments.StartFragment;
+import com.example.studassistant.managers.RequestManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AboutFragment aboutFragment;
     private AppointmentFragment appointmentFragment;
     private MyAppointmentFragment myAppointmentFragment;
+    private RequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aboutFragment = new AboutFragment();
         appointmentFragment = new AppointmentFragment();
         myAppointmentFragment = new MyAppointmentFragment();
+
+        requestManager = new RequestManager(getApplicationContext(), null);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, startFragment).commit();
     }
@@ -82,8 +88,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, aboutFragment).commit();
         else if (item.getItemId() == R.id.appointment_option)
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, appointmentFragment).commit();
-        else if (item.getItemId() == R.id.my_appointment_option)
-            getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, myAppointmentFragment).commit();
+        else if (item.getItemId() == R.id.my_appointment_option){
+            if (requestManager.checkConnection())
+                getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, myAppointmentFragment).commit();
+            else
+                Toast.makeText(getApplicationContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+        }
 
         return true;
     }

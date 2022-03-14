@@ -41,7 +41,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
         datetimeList = view.findViewById(R.id.datetimeList);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.DATETIME, datetimeList, getDataToRemember());
+        getRequestManager = new GetRequestManager(context, ArrayType.DATETIME, datetimeList, null, getDataToRemember());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
