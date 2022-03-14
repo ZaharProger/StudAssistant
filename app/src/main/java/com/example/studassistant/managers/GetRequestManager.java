@@ -109,7 +109,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                             for (int j = 0; j < tutor_dates.length(); ++j){
                                 JSONObject datetimeObject = tutor_dates.getJSONObject(j);
 
-                                String datetime = datetimeObject.getInt("day") + " " + datetimeObject.getString("time");
+                                String datetime = datetimeObject.getInt("day") + " " + datetimeObject.getString("time") + " " + datetimeObject.getString("room");
                                 dates.add(datetime);
                             }
                         }
@@ -160,7 +160,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         Date date = now.getTime();
                         String formattedDate = dateFormatter.format(date);
 
-                        mappedData[i] = formattedDate + " " + splittedDate[1];
+                        mappedData[i] = formattedDate + " " + splittedDate[1] + " " + splittedDate[2];
                     }
                     break;
             }
