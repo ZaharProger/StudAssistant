@@ -17,6 +17,7 @@ import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.Group;
+import com.example.studassistant.entities.RecyclerViewElement;
 import com.example.studassistant.entities.Tutor;
 import com.example.studassistant.enums.ArrayType;
 
@@ -75,7 +76,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
             ArrayList<Group> groups = null;
             ArrayList<Tutor> tutors = null;
             ArrayList<String> dates = null;
-            ArrayList<Appointment> appointments = null;
+            ArrayList<RecyclerViewElement> appointments = null;
 
             switch(type){
                 case GROUPS:
@@ -148,7 +149,9 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         appointment.setTutor(extractedObject.getString("tutor"));
                         appointment.setDatetime(extractedObject.getString("datetime"));
 
-                        appointments.add(appointment);
+                        RecyclerViewElement recyclerViewElement = new RecyclerViewElement(appointment, null);
+
+                        appointments.add(recyclerViewElement);
                         break;
                 }
             }

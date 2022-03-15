@@ -3,12 +3,12 @@ package com.example.studassistant.adapters;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,18 +19,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.entities.RecyclerViewElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.DeleteRequestManager;
 
 import java.util.ArrayList;
 
 public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsListAdapter.AppointmentsListViewHolder> {
-    private ArrayList<Appointment> itemsList;
     private ItemTouchHelper.SimpleCallback itemTouchHelper;
     private DeleteRequestManager deleteRequestManager;
+    private ArrayList<RecyclerViewElement> recyclerViewItems;
 
-    public AppointmentsListAdapter(ArrayList<Appointment> itemsList, Context context){
-        this.itemsList = itemsList;
+    public AppointmentsListAdapter(ArrayList<RecyclerViewElement> itemsList, Context context){
+        recyclerViewItems = itemsList;
+
         deleteRequestManager = new DeleteRequestManager(context, ArrayType.APPOINTMENTS, 0);
 
         itemTouchHelper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -42,19 +44,19 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int indexToRemove = viewHolder.getAdapterPosition();
-                Appointment itemToRemove = itemsList.get(indexToRemove);
+                RecyclerViewElement itemToRemove = recyclerViewItems.get(indexToRemove);
 
-                itemsList.remove(indexToRemove);
+                recyclerViewItems.remove(indexToRemove);
                 notifyDataSetChanged();
 
                 if (deleteRequestManager.checkConnection()){
-                    deleteRequestManager.setIdToDelete(itemToRemove.getId());
+                    deleteRequestManager.setIdToDelete(itemToRemove.getAppointment().getId());
                     deleteRequestManager.createRequest();
 
                     Toast.makeText(context, R.string.remove_success_text, Toast.LENGTH_LONG).show();
                 }
                 else {
-                    itemsList.add(indexToRemove, itemToRemove);
+                    recyclerViewItems.add(indexToRemove, itemToRemove);
                     notifyItemInserted(indexToRemove);
 
                     Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
@@ -106,26 +108,55 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentsListViewHolder holder, int position) {
-        Appointment currentItem = itemsList.get(position);
+        Appointment currentItem = recyclerViewItems.get(position).getAppointment();
 
         holder.personalData.setText(String.format("%s %s %s", currentItem.getName(), currentItem.getSurname(), currentItem.getGroup()));
         holder.appointmentData.setText(String.format("%s %s", currentItem.getTutor(), currentItem.getDatetime()));
+
+        recyclerViewItems.get(position).setCheckToRemoveButton(holder.checkToRemoveButton);
     }
 
     @Override
     public int getItemCount() {
-        return itemsList.size();
+        return recyclerViewItems.size();
+    }
+
+    public ArrayList<Long> getAppointmentsToRemove(){
+        ArrayList<Long> appointmentsToRemove = new ArrayList<>();
+
+        for (RecyclerViewElement element : recyclerViewItems){
+            if (element.getCheckToRemoveButton().isChecked())
+                appointmentsToRemove.add(element.getAppointment().getId());
+        }
+
+        return appointmentsToRemove;
+    }
+
+    public void removeItemById(long appointmentId) {
+        int i;
+        boolean isFound = false;
+        for (i = 0; i < getItemCount() && !isFound; ++i){
+            if (recyclerViewItems.get(i).getCheckToRemoveButton().isChecked() && recyclerViewItems.get(i).getAppointment().getId() == appointmentId)
+                isFound = true;
+
+            recyclerViewItems.get(i).getCheckToRemoveButton().setChecked(false);
+        }
+
+        recyclerViewItems.remove(--i);
+        notifyDataSetChanged();
     }
 
     static class AppointmentsListViewHolder extends RecyclerView.ViewHolder{
         TextView personalData;
         TextView appointmentData;
+        CheckBox checkToRemoveButton;
 
         AppointmentsListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             personalData = itemView.findViewById(R.id.personalData);
             appointmentData = itemView.findViewById(R.id.appointmentData);
+            checkToRemoveButton = itemView.findViewById(R.id.checkToRemoveButton);
         }
     }
 }

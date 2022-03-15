@@ -2,7 +2,6 @@
     <string name="app_name">StudAssistant</string>
     <string name="options_title">Запись</string>
     <string name="appointment_title">Оформить запись</string>
-    <string name="edit_button_text">Изменить</string>
     <string name="remove_button_text">Удалить</string>
     <string name="my_appointment_title">Мои записи</string>
     <string name="history_title">История записей</string>
@@ -35,4 +34,5 @@
     <string name="confirmation_info_text">Если Вы оформите запись, вашему устройству будет присвоен уникальный идентификатор.\n\nСохраните его, чтобы иметь доступ к вашим записям!</string>
     <string name="post_success_text">Запись успешно оформлена!</string>
     <string name="remove_success_text">Запись успешно удалена!</string>
+    <string name="remove_failure_text">Нет записей для удаления!</string>
 </resources>
