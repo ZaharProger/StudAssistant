@@ -6,13 +6,12 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     app:cardBackgroundColor="#00FFFFFF"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="0dp"
     app:cardElevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"
         android:background="@drawable/field_border">
 
 

@@ -1,6 +1,11 @@
 package com.example.studassistant.adapters;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +50,8 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
                 if (deleteRequestManager.checkConnection()){
                     deleteRequestManager.setIdToDelete(itemToRemove.getId());
                     deleteRequestManager.createRequest();
+
+                    Toast.makeText(context, R.string.remove_success_text, Toast.LENGTH_LONG).show();
                 }
                 else {
                     itemsList.add(indexToRemove, itemToRemove);
@@ -51,6 +59,35 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
 
                     Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
                 }
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                View itemToSwipe = viewHolder.itemView;
+
+                ColorDrawable backgroundOfItem = new ColorDrawable(Color.parseColor("#336C9A"));
+                Drawable removeIcon = ContextCompat.getDrawable(context, R.drawable.ic_remove);
+
+                if (dX < 0){
+                    backgroundOfItem.setBounds(itemToSwipe.getRight() + (int)dX, itemToSwipe.getTop(),
+                            itemToSwipe.getRight(), itemToSwipe.getBottom());
+                    backgroundOfItem.draw(c);
+
+                    int removeIconMargin = (itemToSwipe.getHeight() - removeIcon.getIntrinsicHeight()) / 2;
+
+                    int removeIconTop = itemToSwipe.getTop() + removeIconMargin;
+                    int removeIconLeft = itemToSwipe.getRight() - removeIconMargin - removeIcon.getIntrinsicWidth();
+                    int removeIconRight = itemToSwipe.getRight() - removeIconMargin;
+                    int removeIconBottom = removeIconTop + removeIcon.getIntrinsicHeight();
+
+                    removeIcon.setBounds(removeIconLeft, removeIconTop,
+                            removeIconRight, removeIconBottom);
+
+                    removeIcon.draw(c);
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
     }
@@ -84,7 +121,7 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
         TextView personalData;
         TextView appointmentData;
 
-        public AppointmentsListViewHolder(@NonNull View itemView) {
+        AppointmentsListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             personalData = itemView.findViewById(R.id.personalData);
