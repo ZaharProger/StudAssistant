@@ -131,30 +131,22 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         groups.add(group);
                         break;
                     case TUTORS:
-                        JSONArray tutor_groups = (JSONArray) extractedObject.get("groups");
-
-                        boolean isFound = false;
-                        for (int j = 0; j < tutor_groups.length() && !isFound; ++j)
-                            isFound = tutor_groups.getString(j).equalsIgnoreCase(dataToRemember);
-
-                        if (isFound){
-                            Tutor tutor = new Tutor();
-
-                            tutor.setId(extractedObject.getLong("id"));
-                            tutor.setName(extractedObject.getString("name"));
-                            tutor.setSurname(extractedObject.getString("surname"));
-                            tutor.setPatronymic(extractedObject.getString("patronymic"));
-
-                            tutors.add(tutor);
-                        }
-                        break;
-                    case DATETIME:
                         Tutor tutor = new Tutor();
+
+                        tutor.setId(extractedObject.getLong("id"));
                         tutor.setName(extractedObject.getString("name"));
                         tutor.setSurname(extractedObject.getString("surname"));
                         tutor.setPatronymic(extractedObject.getString("patronymic"));
 
-                        if (dataToRemember.equalsIgnoreCase(tutor.toString())){
+                        tutors.add(tutor);
+                        break;
+                    case DATETIME:
+                        Tutor tutorToTakeDatetime = new Tutor();
+                        tutorToTakeDatetime.setName(extractedObject.getString("name"));
+                        tutorToTakeDatetime.setSurname(extractedObject.getString("surname"));
+                        tutorToTakeDatetime.setPatronymic(extractedObject.getString("patronymic"));
+
+                        if (dataToRemember.equalsIgnoreCase(tutorToTakeDatetime.toString())){
                             JSONArray tutor_dates = (JSONArray) extractedObject.get("dates");
 
                             for (int j = 0; j < tutor_dates.length(); ++j){
