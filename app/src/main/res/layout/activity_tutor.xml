@@ -12,21 +12,6 @@
         android:background="@drawable/dialog_border"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/tutor_field"
-            android:textAlignment="textStart"
-            android:textColor="#336C9A"
-            android:textColorHighlight="#62ACE8"
-            android:textColorLink="#62ACE8"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <Spinner
             android:id="@+id/tutorsList"
             android:layout_width="0dp"
@@ -35,8 +20,9 @@
             android:background="@drawable/field_border"
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.526"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/tutorFilter" />
 
         <Button
             android:id="@+id/tutorOkButton"
@@ -50,9 +36,28 @@
             android:textColorHighlight="#62ACE8"
             android:textColorLink="#62ACE8"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tutorsList" />
+
+        <EditText
+            android:id="@+id/tutorFilter"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/field_border"
+            android:hint="@string/tutor_hint"
+            android:padding="8dp"
+            android:textAlignment="textStart"
+            android:textColor="#336C9A"
+            android:textColorHighlight="#62ACE8"
+            android:textColorHint="#B0336C9A"
+            android:textColorLink="#62ACE8"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

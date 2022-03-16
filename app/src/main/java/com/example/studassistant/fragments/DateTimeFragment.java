@@ -46,20 +46,18 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         adapter.notifyDataSetChanged();
-        datetimeList.setAdapter(adapter);
 
+        datetimeList.setAdapter(adapter);
         datetimeList.setOnItemSelectedListener(this);
 
         view.findViewById(R.id.dateTimeOkButton).setOnClickListener(this);
 
         if (!getRequestManager.checkConnection()){
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
-            dismiss();
+            onDestroy();
         }
-        else{
+        else
             getRequestManager.createRequest();
-            restoreData();
-        }
 
         return view;
     }
@@ -67,7 +65,8 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (getRequestManager.checkConnection()){
-            if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
+            if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка...") ||
+                    datetimeList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
                 appointment.setDatetime(null);
             else
                 appointment.setDatetime(datetimeList.getSelectedItem().toString());
@@ -77,13 +76,13 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
                 StringBuilder preparedAppointment = new StringBuilder();
 
                 for (int i = 0; i < 4; ++i)
-                    preparedAppointment.append(currentAppointment[i]).append("\n");
+                    preparedAppointment.append(currentAppointment[i].trim()).append("\n");
 
-                preparedAppointment.append(appointment.getDatetime());
+                preparedAppointment.append(appointment.getDatetime().trim());
 
                 appointmentLabel.setText(preparedAppointment.toString());
 
-                dismiss();
+                onDestroy();
             }
             else
                 Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
@@ -98,16 +97,6 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-    }
-
-    private void restoreData(){
-        String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
-        if (currentAppointment.length >= 5){
-            if (!getRequestManager.checkConnection())
-                Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
-            else
-                getRequestManager.getDataToRestore(currentAppointment[4]);
-        }
     }
 
     private String getDataToRemember() {

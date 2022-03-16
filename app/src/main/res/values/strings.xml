@@ -16,8 +16,8 @@
     <string name="send_button_text">Отправить</string>
     <string name="name_field">Ваше имя</string>
     <string name="surname_field">Ваша фамилия</string>
-    <string name="group_field">Учебная группа</string>
-    <string name="tutor_field">Преподаватель</string>
+    <string name="group_hint">Учебная группа</string>
+    <string name="tutor_hint">Фамилия преподавателя</string>
     <string name="datetime_field">Дата и время консультации</string>
     <string name="confirm_button_text">Оформить</string>
     <string name="personal_button_text">Персональные данные</string>

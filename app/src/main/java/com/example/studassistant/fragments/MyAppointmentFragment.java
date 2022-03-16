@@ -152,7 +152,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
             appointmentsList.setVisibility(View.INVISIBLE);
             notFoundImage.setVisibility(View.INVISIBLE);
 
-            getRequestManager.setRequestExtra(new String[]{codeFilter.getText().toString()});
+            getRequestManager.setRequestExtra(codeFilter.getText().toString());
             getRequestManager.createRequest();
         }
         else

@@ -2,6 +2,8 @@ package com.example.studassistant.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +21,11 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
+import com.example.studassistant.enums.ExtraType;
 import com.example.studassistant.managers.GetRequestManager;
 
 
-public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
     private EditText nameField;
     private EditText surnameField;
     private Spinner groupList;
@@ -30,6 +33,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     private TextView appointmentLabel;
     private Context context;
     private GetRequestManager getRequestManager;
+    private EditText groupFilter;
 
     public PersonalFragment(Appointment appointment, TextView appointmentLabel, Context context){
         this.appointment = appointment;
@@ -42,27 +46,24 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_personal, container, false);
 
+        groupFilter = view.findViewById(R.id.groupFilter);
+        groupFilter.addTextChangedListener(this);
+
         nameField = view.findViewById(R.id.nameField);
         surnameField = view.findViewById(R.id.surnameField);
+
         groupList = view.findViewById(R.id.groupList);
-
-        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList, null);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        adapter.notifyDataSetChanged();
-        groupList.setAdapter(adapter);
-
         groupList.setOnItemSelectedListener(this);
+
+        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList, null, null, ExtraType.NAME);
+        groupFilter.setText("");
 
         if (!getRequestManager.checkConnection()){
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
-            dismiss();
+            onDestroy();
         }
-        else{
+        else
             getRequestManager.createRequest();
-            restoreData();
-        }
 
         view.findViewById(R.id.personalOkButton).setOnClickListener(this);
 
@@ -74,7 +75,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         if (getRequestManager.checkConnection()){
             appointment.setName(nameField.getText().toString().trim());
             appointment.setSurname(surnameField.getText().toString().trim());
-            if (groupList.getSelectedItem().toString().equalsIgnoreCase("Загрузка..."))
+            if (groupList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
                 appointment.setGroup(null);
             else
                 appointment.setGroup(groupList.getSelectedItem().toString());
@@ -84,24 +85,24 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
                 StringBuilder preparedAppointment = new StringBuilder();
 
                 if (currentAppointment.length() == 0)
-                    preparedAppointment.append(appointment.getName()).append("\n").append(appointment.getSurname())
-                            .append("\n").append(appointment.getGroup());
+                    preparedAppointment.append(appointment.getName().trim()).append("\n").append(appointment.getSurname().trim())
+                            .append("\n").append(appointment.getGroup().trim());
                 else{
                     String[] splittedAppointment = currentAppointment.trim().split("[\n]+");
-                    splittedAppointment[0] = appointment.getName();
-                    splittedAppointment[1] = appointment.getSurname();
-                    splittedAppointment[2] = appointment.getGroup();
+                    splittedAppointment[0] = appointment.getName().trim();
+                    splittedAppointment[1] = appointment.getSurname().trim();
+                    splittedAppointment[2] = appointment.getGroup().trim();
                     appointment.setTutor(null);
                     appointment.setDatetime(null);
 
                     for (int i = 0; i < 3; ++i)
-                        preparedAppointment.append(splittedAppointment[i]).append((i == 2)? "" : "\n");
+                        preparedAppointment.append(splittedAppointment[i].trim()).append((i == 2)? "" : "\n");
 
                 }
 
                 appointmentLabel.setText(preparedAppointment.toString());
 
-                dismiss();
+                onDestroy();
             }
             else
                 Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
@@ -118,16 +119,24 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
-    private void restoreData(){
-        String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
-        if (currentAppointment.length >= 3){
-            nameField.setText(currentAppointment[0]);
-            surnameField.setText(currentAppointment[1]);
-            if (!getRequestManager.checkConnection())
-                Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
-            else
-                getRequestManager.getDataToRestore(currentAppointment[2]);
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (getRequestManager.checkConnection()){
+            getRequestManager.setRequestExtra(groupFilter.getText().toString());
+            getRequestManager.createRequest();
         }
+        else
+            Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 
     @Override

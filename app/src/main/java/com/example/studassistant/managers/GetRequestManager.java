@@ -33,10 +33,8 @@ import java.util.Locale;
 public class GetRequestManager extends RequestManager implements Response.Listener<JSONArray>, Response.ErrorListener {
     private Spinner itemsListSpinner;
     private RecyclerView itemsListRecyclerView;
-    private boolean toRestore;
-    private String dataToRestore;
     private String dataToRemember;
-    private String[] requestExtra;
+    private String requestExtra;
     private ExtraType extraType;
 
     public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
@@ -47,7 +45,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
         checkConnection();
     }
 
-    public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView, String[] requestExtra, ExtraType extraType){
+    public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView, String requestExtra, ExtraType extraType){
         super(context, type);
         this.itemsListSpinner = itemsListSpinner;
         this.itemsListRecyclerView = itemsListRecyclerView;
@@ -76,20 +74,11 @@ public class GetRequestManager extends RequestManager implements Response.Listen
 
     @Override
     public void createRequest() {
-        toRestore = false;
-
         String preparedURL = URL + ((type != ArrayType.DATETIME)? type.toString().toLowerCase(Locale.ROOT) : "tutors");
 
         if (requestExtra != null){
-            StringBuilder extras = new StringBuilder();
-            extras.append(String.format("?%s=", extraType.toString().toLowerCase(Locale.ROOT)));
-
-            for (int i = 0; i < requestExtra.length; ++i){
-                extras.append(requestExtra[i]);
-                extras.append((i != requestExtra.length - 1)? "&" : "");
-            }
-
-            preparedURL += extras.toString();
+            String extras = String.format("?%s=%s", extraType.toString().toLowerCase(Locale.ROOT), requestExtra);
+            preparedURL += extras;
         }
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, preparedURL, null, this, this);
@@ -211,22 +200,16 @@ public class GetRequestManager extends RequestManager implements Response.Listen
             }
 
             if (itemsListSpinner != null){
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedData);
+                ArrayAdapter<String> adapter;
+                if (mappedData.length != 0)
+                    adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedData);
+                else
+                    adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Информация не найдена!"});
+
                 adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                 adapter.notifyDataSetChanged();
 
                 itemsListSpinner.setAdapter(adapter);
-
-                if (toRestore){
-                    boolean isFound = false;
-                    int i;
-                    for (i = 0; i < mappedData.length && !isFound; ++i)
-                        isFound = mappedData[i].equals(dataToRestore);
-
-                    itemsListSpinner.setSelection(--i);
-                }
-                else
-                    itemsListSpinner.setSelection(0);
             }
 
             if (itemsListRecyclerView != null){
@@ -243,14 +226,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     public void onErrorResponse(VolleyError error) {
     }
 
-    public void getDataToRestore(String dataToRestore) {
-        toRestore = true;
-        this.dataToRestore = dataToRestore;
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
-        Volley.newRequestQueue(context).add(request);
-    }
-
-    public void setRequestExtra(String[] requestExtra) {
+    public void setRequestExtra(String requestExtra) {
         this.requestExtra = requestExtra;
     }
 }
