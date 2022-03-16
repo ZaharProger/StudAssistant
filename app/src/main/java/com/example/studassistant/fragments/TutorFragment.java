@@ -20,7 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
-import com.example.studassistant.enums.ExtraType;
 import com.example.studassistant.managers.GetRequestManager;
 
 public class TutorFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
@@ -48,8 +47,8 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
         tutorsList = view.findViewById(R.id.tutorsList);
         tutorsList.setOnItemSelectedListener(this);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, null, null, ExtraType.SURNAME);
-        getRequestManager.setRequestExtra("");
+        getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, null, null);
+        tutorFilter.setText("");
 
         view.findViewById(R.id.tutorOkButton).setOnClickListener(this);
 
@@ -108,7 +107,10 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (getRequestManager.checkConnection()){
-            getRequestManager.setRequestExtra(tutorFilter.getText().toString());
+            String userData = tutorFilter.getText().toString();
+            if (userData.equalsIgnoreCase(""))
+                userData = "~";
+            getRequestManager.setDataToRemember(userData);
             getRequestManager.createRequest();
         }
         else

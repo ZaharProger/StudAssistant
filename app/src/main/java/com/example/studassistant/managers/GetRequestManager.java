@@ -117,7 +117,10 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         group.setId(extractedObject.getLong("id"));
                         group.setName(extractedObject.getString("name"));
 
-                        groups.add(group);
+                        String groupName = group.getName().toLowerCase(Locale.ROOT);
+
+                        if (groupName.contains(dataToRemember.toLowerCase(Locale.ROOT)))
+                            groups.add(group);
                         break;
                     case TUTORS:
                         Tutor tutor = new Tutor();
@@ -127,7 +130,10 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         tutor.setSurname(extractedObject.getString("surname"));
                         tutor.setPatronymic(extractedObject.getString("patronymic"));
 
-                        tutors.add(tutor);
+                        String tutorPersonal = tutor.toString().toLowerCase(Locale.ROOT);
+
+                        if (tutorPersonal.contains(dataToRemember.toLowerCase(Locale.ROOT)))
+                            tutors.add(tutor);
                         break;
                     case DATETIME:
                         Tutor tutorToTakeDatetime = new Tutor();
@@ -228,5 +234,9 @@ public class GetRequestManager extends RequestManager implements Response.Listen
 
     public void setRequestExtra(String requestExtra) {
         this.requestExtra = requestExtra;
+    }
+
+    public void setDataToRemember(String dataToRemember) {
+        this.dataToRemember = dataToRemember;
     }
 }

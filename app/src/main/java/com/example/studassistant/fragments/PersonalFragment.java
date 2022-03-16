@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
-import com.example.studassistant.enums.ExtraType;
 import com.example.studassistant.managers.GetRequestManager;
 
 
@@ -55,7 +53,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         groupList = view.findViewById(R.id.groupList);
         groupList.setOnItemSelectedListener(this);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList, null, null, ExtraType.NAME);
+        getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList, null, null);
         groupFilter.setText("");
 
         if (!getRequestManager.checkConnection()){
@@ -127,7 +125,10 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (getRequestManager.checkConnection()){
-            getRequestManager.setRequestExtra(groupFilter.getText().toString());
+            String userData = groupFilter.getText().toString();
+            if (userData.equalsIgnoreCase(""))
+                userData = "~";
+            getRequestManager.setDataToRemember(userData);
             getRequestManager.createRequest();
         }
         else
