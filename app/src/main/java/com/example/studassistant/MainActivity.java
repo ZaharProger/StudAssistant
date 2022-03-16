@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
-import com.example.studassistant.fragments.ConfirmationFragment;
 import com.example.studassistant.fragments.MyAppointmentFragment;
 import com.example.studassistant.fragments.StartFragment;
 import com.example.studassistant.managers.RequestManager;

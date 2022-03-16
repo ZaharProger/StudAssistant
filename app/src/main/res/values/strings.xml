@@ -30,9 +30,10 @@
     <string name="ok_error_text">Заполните все поля!</string>
     <string name="connection_error_text">Подключитесь к интернету!</string>
     <string name="current_appointment_text">ВАША ЗАПИСЬ\n(отобразится ниже по мере заполнения полей)</string>
-    <string name="confirmation_text">Вы действительно хотите оформить запись?</string>
+    <string name="post_confirmation_text">Вы действительно хотите оформить запись?</string>
+    <string name="delete_confirmation_text">Вы действительно хотите удалить выбранные записи?</string>
     <string name="confirmation_info_text">Если Вы оформите запись, вашему устройству будет присвоен уникальный идентификатор.\n\nСохраните его, чтобы иметь доступ к вашим записям!</string>
     <string name="post_success_text">Запись успешно оформлена!</string>
-    <string name="remove_success_text">Запись успешно удалена!</string>
+    <string name="remove_success_text">Удаление завершено!</string>
     <string name="remove_failure_text">Нет записей для удаления!</string>
 </resources>

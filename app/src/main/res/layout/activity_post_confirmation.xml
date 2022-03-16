@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/confirmation_text"
+            android:text="@string/post_confirmation_text"
             android:textAlignment="center"
             android:textColor="#336C9A"
             android:textColorHighlight="#62ACE8"
@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/yes_button"
+            android:id="@+id/post_yes_button"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@+id/codeField" />
 
         <Button
-            android:id="@+id/no_button"
+            android:id="@+id/post_no_button"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

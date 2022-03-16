@@ -212,10 +212,9 @@ public class GetRequestManager extends RequestManager implements Response.Listen
             }
 
             if (itemsListRecyclerView != null){
-                AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments, context);
+                AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
                 itemsListRecyclerView.setAdapter(appointmentsListAdapter);
                 itemsListRecyclerView.setVisibility(View.VISIBLE);
-                new ItemTouchHelper(appointmentsListAdapter.getItemTouchHelper()).attachToRecyclerView(itemsListRecyclerView);
             }
         }
         catch (JSONException exception) {

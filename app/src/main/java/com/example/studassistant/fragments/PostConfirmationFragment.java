@@ -25,13 +25,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-public class ConfirmationFragment extends DialogFragment implements View.OnClickListener{
+public class PostConfirmationFragment extends DialogFragment implements View.OnClickListener{
     private Appointment appointment;
     private PostRequestManager postRequestManager;
     private Context context;
     private TextView codeField;
 
-    public ConfirmationFragment(Appointment appointment, Context context){
+    public PostConfirmationFragment(Appointment appointment, Context context){
         this.appointment = appointment;
         this.context = context;
     }
@@ -39,7 +39,7 @@ public class ConfirmationFragment extends DialogFragment implements View.OnClick
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_confirmation, container, false);
+        View view = inflater.inflate(R.layout.activity_post_confirmation, container, false);
 
         codeField = view.findViewById(R.id.codeField);
 
@@ -52,8 +52,8 @@ public class ConfirmationFragment extends DialogFragment implements View.OnClick
 
         appointment.setUserCode(codeField.getText().toString());
 
-        view.findViewById(R.id.yes_button).setOnClickListener(this);
-        view.findViewById(R.id.no_button).setOnClickListener(this);
+        view.findViewById(R.id.post_yes_button).setOnClickListener(this);
+        view.findViewById(R.id.post_no_button).setOnClickListener(this);
 
         postRequestManager = new PostRequestManager(context, ArrayType.APPOINTMENTS, appointment);
 
@@ -62,7 +62,7 @@ public class ConfirmationFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.yes_button){
+        if (view.getId() == R.id.post_yes_button){
             if (postRequestManager.checkConnection()){
                 postRequestManager.createRequest();
 
