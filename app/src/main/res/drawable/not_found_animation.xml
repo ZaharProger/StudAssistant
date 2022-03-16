@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/ic_nf17" android:duration="1000"/>
+    <item android:drawable="@drawable/ic_nf2" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf3" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf4" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf5" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf6" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf7" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf8" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf9" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf10" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf11" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf12" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf13" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf14" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf15" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf16" android:duration="30"/>
+    <item android:drawable="@drawable/ic_nf17" android:duration="1000"/>
+</animation-list>

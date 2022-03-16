@@ -1,22 +1,17 @@
 package com.example.studassistant.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.RecyclerViewElement;
-import com.example.studassistant.enums.ArrayType;
-import com.example.studassistant.managers.DeleteRequestManager;
 
 import java.util.ArrayList;
 

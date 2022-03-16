@@ -1,11 +1,9 @@
 package com.example.studassistant.managers;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -20,6 +18,7 @@ import com.example.studassistant.entities.Group;
 import com.example.studassistant.entities.RecyclerViewElement;
 import com.example.studassistant.entities.Tutor;
 import com.example.studassistant.enums.ArrayType;
+import com.example.studassistant.enums.ExtraType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,11 +36,23 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     private boolean toRestore;
     private String dataToRestore;
     private String dataToRemember;
+    private String[] requestExtra;
+    private ExtraType extraType;
 
     public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
         super(context, type);
         this.itemsListSpinner = itemsListSpinner;
         this.itemsListRecyclerView = itemsListRecyclerView;
+
+        checkConnection();
+    }
+
+    public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView, String[] requestExtra, ExtraType extraType){
+        super(context, type);
+        this.itemsListSpinner = itemsListSpinner;
+        this.itemsListRecyclerView = itemsListRecyclerView;
+        this.requestExtra = requestExtra;
+        this.extraType = extraType;
 
         checkConnection();
     }
@@ -66,7 +77,22 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     @Override
     public void createRequest() {
         toRestore = false;
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + ((type != ArrayType.DATETIME)? type.toString().toLowerCase(Locale.ROOT) : "tutors"), null, this, this);
+
+        String preparedURL = URL + ((type != ArrayType.DATETIME)? type.toString().toLowerCase(Locale.ROOT) : "tutors");
+
+        if (requestExtra != null){
+            StringBuilder extras = new StringBuilder();
+            extras.append(String.format("?%s=", extraType.toString().toLowerCase(Locale.ROOT)));
+
+            for (int i = 0; i < requestExtra.length; ++i){
+                extras.append(requestExtra[i]);
+                extras.append((i != requestExtra.length - 1)? "&" : "");
+            }
+
+            preparedURL += extras.toString();
+        }
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, preparedURL, null, this, this);
         Volley.newRequestQueue(context).add(request);
     }
 
@@ -214,7 +240,6 @@ public class GetRequestManager extends RequestManager implements Response.Listen
             if (itemsListRecyclerView != null){
                 AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
                 itemsListRecyclerView.setAdapter(appointmentsListAdapter);
-                itemsListRecyclerView.setVisibility(View.VISIBLE);
             }
         }
         catch (JSONException exception) {
@@ -231,5 +256,9 @@ public class GetRequestManager extends RequestManager implements Response.Listen
         this.dataToRestore = dataToRestore;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, URL + type.toString().toLowerCase(Locale.ROOT), null, this, this);
         Volley.newRequestQueue(context).add(request);
+    }
+
+    public void setRequestExtra(String[] requestExtra) {
+        this.requestExtra = requestExtra;
     }
 }

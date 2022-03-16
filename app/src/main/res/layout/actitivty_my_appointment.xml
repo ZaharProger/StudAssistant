@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@+id/removeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/codeFilter" />
 
     <Button
         android:id="@+id/removeButton"
@@ -45,5 +45,46 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/codeFilter"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/field_border"
+        android:hint="@string/code_filter_hint"
+        android:paddingLeft="4dp"
+        android:textAlignment="textStart"
+        android:textColor="#336C9A"
+        android:textColorHighlight="#62ACE8"
+        android:textColorHint="#B0336C9A"
+        android:textColorLink="#62ACE8"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/autoFillButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/autoFillButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/auto_fill_button_text"
+        android:textAlignment="center"
+        android:textColor="#336C9A"
+        android:textColorHighlight="#62ACE8"
+        android:textColorLink="#62ACE8"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notFoundImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

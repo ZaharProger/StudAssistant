@@ -36,4 +36,6 @@
     <string name="post_success_text">Запись успешно оформлена!</string>
     <string name="remove_success_text">Удаление завершено!</string>
     <string name="remove_failure_text">Нет записей для удаления!</string>
+    <string name="code_filter_hint">ваш идентификатор</string>
+    <string name="auto_fill_button_text">Код</string>
 </resources>

@@ -21,13 +21,15 @@ import java.util.ArrayList;
 
 public class DeleteConfirmationFragment extends DialogFragment implements View.OnClickListener{
     private RecyclerViewElement itemToRemove;
+    private MyAppointmentFragment fragment;
     private AppointmentsListAdapter adapter;
     private DeleteRequestManager deleteRequestManager;
     private Context context;
     private  boolean bySwipe;
     private int indexToRemove;
 
-    public DeleteConfirmationFragment(AppointmentsListAdapter adapter, Context context, boolean bySwipe, int indexToRemove, RecyclerViewElement itemToRemove){
+    public DeleteConfirmationFragment(MyAppointmentFragment fragment, AppointmentsListAdapter adapter, Context context, boolean bySwipe, int indexToRemove, RecyclerViewElement itemToRemove){
+        this.fragment = fragment;
         this.adapter = adapter;
         this.context = context;
         this.bySwipe = bySwipe;
@@ -80,6 +82,8 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
             if (bySwipe)
                 adapter.addItem(indexToRemove, itemToRemove);
         }
+
+        fragment.setVisibilities();
 
         onDestroy();
     }
