@@ -130,9 +130,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         tutor.setSurname(extractedObject.getString("surname"));
                         tutor.setPatronymic(extractedObject.getString("patronymic"));
 
-                        String tutorPersonal = tutor.toString().toLowerCase(Locale.ROOT);
-
-                        if (tutorPersonal.contains(dataToRemember.toLowerCase(Locale.ROOT)))
+                        if (tutor.toString().toLowerCase(Locale.ROOT).contains(dataToRemember.toLowerCase(Locale.ROOT)))
                             tutors.add(tutor);
                         break;
                     case DATETIME:

@@ -49,12 +49,12 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
         return recyclerViewItems.size();
     }
 
-    public ArrayList<Long> getAppointmentsToRemove(){
-        ArrayList<Long> appointmentsToRemove = new ArrayList<>();
+    public ArrayList<Appointment> getAppointmentsToRemove(){
+        ArrayList<Appointment> appointmentsToRemove = new ArrayList<>();
 
         for (RecyclerViewElement element : recyclerViewItems){
             if (element.getCheckToRemoveButton().isChecked())
-                appointmentsToRemove.add(element.getAppointment().getId());
+                appointmentsToRemove.add(element.getAppointment());
         }
 
         return appointmentsToRemove;

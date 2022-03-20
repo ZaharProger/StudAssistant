@@ -9,6 +9,18 @@ public class Appointment {
     private String datetime;
     private String userCode;
 
+    public Appointment(){}
+
+    public Appointment(Appointment appointment){
+        this.id = appointment.id;
+        this.name = appointment.name;
+        this.surname = appointment.surname;
+        this.group = appointment.group;
+        this.tutor = appointment.tutor;
+        this.datetime = appointment.datetime;
+        this.userCode = appointment.userCode;
+    }
+
     public void setId(long id) {
         this.id = id;
     }

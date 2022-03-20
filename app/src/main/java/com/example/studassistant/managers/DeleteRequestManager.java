@@ -24,10 +24,8 @@ public class DeleteRequestManager extends RequestManager implements Response.Lis
 
     @Override
     public void createRequest() {
-        JSONObject preparedDataToPost = new JSONObject();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, URL + type.toString().toLowerCase(Locale.ROOT) + "/" + idToDelete,
-                preparedDataToPost, this, this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, URL + type.toString().toLowerCase(Locale.ROOT) + "/" + idToDelete, null, this, this);
         Volley.newRequestQueue(context).add(request);
     }
 

@@ -66,7 +66,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
                 appointment.setId(Math.abs(CodeGenerator.NUM_GENERATOR.nextLong()));
 
                 if (requestManager.checkConnection())
-                    new PostConfirmationFragment(appointment, getContext()).show(getParentFragmentManager(), "PostConfirmation");
+                    new PostConfirmationFragment(appointment,  getContext()).show(getParentFragmentManager(), "PostConfirmation");
                 else
                     Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
             }

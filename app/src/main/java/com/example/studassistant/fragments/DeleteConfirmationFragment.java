@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
+import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.RecyclerViewElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.DeleteRequestManager;
@@ -55,11 +56,11 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
         if (view.getId() == R.id.delete_yes_button){
             if (deleteRequestManager.checkConnection()){
                 if (!bySwipe){
-                    ArrayList<Long> appointmentsToRemove = adapter.getAppointmentsToRemove();
+                    ArrayList<Appointment> appointmentsToRemove = adapter.getAppointmentsToRemove();
                     for (int i = 0; i < appointmentsToRemove.size(); ++i){
-                        adapter.removeCheckedItem(appointmentsToRemove.get(i));
+                        adapter.removeCheckedItem(appointmentsToRemove.get(i).getId());
 
-                        deleteRequestManager.setIdToDelete(appointmentsToRemove.get(i));
+                        deleteRequestManager.setIdToDelete(appointmentsToRemove.get(i).getId());
                         deleteRequestManager.createRequest();
                     }
                     adapter.updateCheckStatus();

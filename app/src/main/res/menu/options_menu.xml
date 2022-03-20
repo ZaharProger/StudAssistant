@@ -17,9 +17,9 @@
                 android:title="@string/my_appointment_title" />
 
             <item
-                android:id="@+id/history_option"
-                android:icon="@drawable/ic_history"
-                android:title="@string/history_title" />
+                android:id="@+id/liked_option"
+                android:icon="@drawable/ic_liked"
+                android:title="@string/liked_title" />
         </menu>
     </item>
 

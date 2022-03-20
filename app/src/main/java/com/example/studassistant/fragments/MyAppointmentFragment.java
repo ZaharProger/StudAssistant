@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -44,6 +45,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
     private EditText codeFilter;
     private ImageView notFoundImage;
     private ProgressBar progressBar;
+    private Button removeAppointmentButton;
 
     @Nullable
     @Override
@@ -55,7 +57,10 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
         notFoundImage = view.findViewById(R.id.notFoundImage);
         notFoundImage.setVisibility(View.INVISIBLE);
 
-        view.findViewById(R.id.removeButton).setOnClickListener(this);
+        removeAppointmentButton = view.findViewById(R.id.removeAppointmentButton);
+        removeAppointmentButton.setOnClickListener(this);
+        removeAppointmentButton.setVisibility(View.INVISIBLE);
+
         view.findViewById(R.id.autoFillButton).setOnClickListener(this);
 
         codeFilter = view.findViewById(R.id.codeFilter);
@@ -128,7 +133,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.removeButton){
+        if (view.getId() == R.id.removeAppointmentButton){
             AppointmentsListAdapter adapter = (AppointmentsListAdapter) appointmentsList.getAdapter();
 
             if (!adapter.getAppointmentsToRemove().isEmpty())
@@ -194,17 +199,20 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
             if (appointmentsList.getAdapter().getItemCount() == 0){
                 notFoundImage.setVisibility(View.VISIBLE);
                 appointmentsList.setVisibility(View.INVISIBLE);
+                removeAppointmentButton.setVisibility(View.INVISIBLE);
 
                 updateAnimation();
             }
             else{
                 notFoundImage.setVisibility(View.INVISIBLE);
                 appointmentsList.setVisibility(View.VISIBLE);
+                removeAppointmentButton.setVisibility(View.VISIBLE);
             }
         }
         catch (NullPointerException exception){
             notFoundImage.setVisibility(View.VISIBLE);
             appointmentsList.setVisibility(View.INVISIBLE);
+            removeAppointmentButton.setVisibility(View.INVISIBLE);
 
             updateAnimation();
         }

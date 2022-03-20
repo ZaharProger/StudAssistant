@@ -4,13 +4,12 @@
     <string name="appointment_title">Оформить запись</string>
     <string name="remove_button_text">Удалить</string>
     <string name="my_appointment_title">Мои записи</string>
-    <string name="history_title">История записей</string>
+    <string name="liked_title">Избранное</string>
     <string name="user_guide_title">Пользователю</string>
     <string name="faq_title">Руководство</string>
     <string name="about_title">О приложении</string>
     <string name="options_opened">Открыть меню</string>
     <string name="options_closed">Закрыть меню</string>
-    <string name="start_text">Нажмите на следующий значок в левом верхнем углу для перехода в меню</string>
     <string name="about_hint">Пишите здесь:</string>
     <string name="about_text">Студ Ассистент - ваш мобильный помощник в студенческой жизни\nНиже вы можете связаться с разработчиком, поделиться своим мнением или предложить идеи для будущих обновлений</string>
     <string name="send_button_text">Отправить</string>

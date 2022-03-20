@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
+import com.example.studassistant.fragments.LikedFragment;
 import com.example.studassistant.fragments.MyAppointmentFragment;
 import com.example.studassistant.fragments.StartFragment;
 import com.example.studassistant.managers.RequestManager;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AboutFragment aboutFragment;
     private AppointmentFragment appointmentFragment;
     private MyAppointmentFragment myAppointmentFragment;
+    private LikedFragment likedFragment;
     private RequestManager requestManager;
 
     @Override
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aboutFragment = new AboutFragment();
         appointmentFragment = new AppointmentFragment();
         myAppointmentFragment = new MyAppointmentFragment();
+        likedFragment = new LikedFragment();
 
         requestManager = new RequestManager(getApplicationContext(), null);
 
@@ -89,6 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (item.getItemId() == R.id.my_appointment_option){
             if (requestManager.checkConnection())
                 getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, myAppointmentFragment).commit();
+            else
+                Toast.makeText(getApplicationContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+        }
+        else if (item.getItemId() == R.id.liked_option){
+            if (requestManager.checkConnection())
+                getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, likedFragment).commit();
             else
                 Toast.makeText(getApplicationContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
