@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
-import com.example.studassistant.entities.RecyclerViewElement;
+import com.example.studassistant.entities.AppointmentsListElement;
 
 import java.util.ArrayList;
 
 public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsListAdapter.AppointmentsListViewHolder> {
-    private ArrayList<RecyclerViewElement> recyclerViewItems;
+    private ArrayList<AppointmentsListElement> recyclerViewItems;
 
-    public AppointmentsListAdapter(ArrayList<RecyclerViewElement> itemsList){
+    public AppointmentsListAdapter(ArrayList<AppointmentsListElement> itemsList){
         recyclerViewItems = itemsList;
     }
 
@@ -32,7 +32,7 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentsListViewHolder holder, int position) {
-        RecyclerViewElement item = recyclerViewItems.get(position);
+        AppointmentsListElement item = recyclerViewItems.get(position);
         Appointment currentItem = item.getAppointment();
 
         holder.personalData.setText(String.format("%s %s %s", currentItem.getName(), currentItem.getSurname(), currentItem.getGroup()));
@@ -52,7 +52,7 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
     public ArrayList<Appointment> getAppointmentsToRemove(){
         ArrayList<Appointment> appointmentsToRemove = new ArrayList<>();
 
-        for (RecyclerViewElement element : recyclerViewItems){
+        for (AppointmentsListElement element : recyclerViewItems){
             if (element.getCheckToRemoveButton().isChecked())
                 appointmentsToRemove.add(element.getAppointment());
         }
@@ -65,11 +65,11 @@ public class AppointmentsListAdapter extends RecyclerView.Adapter<AppointmentsLi
         notifyDataSetChanged();
     }
 
-    public RecyclerViewElement getItemByIndex(int index){
+    public AppointmentsListElement getItemByIndex(int index){
         return recyclerViewItems.get(index);
     }
 
-    public void addItem(int index, RecyclerViewElement item){
+    public void addItem(int index, AppointmentsListElement item){
         recyclerViewItems.add(index, item);
         notifyItemInserted(index);
     }

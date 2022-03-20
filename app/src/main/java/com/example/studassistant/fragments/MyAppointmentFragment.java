@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
-import com.example.studassistant.entities.RecyclerViewElement;
+import com.example.studassistant.entities.AppointmentsListElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.enums.ExtraType;
 import com.example.studassistant.managers.DeleteRequestManager;
@@ -83,7 +83,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
                 AppointmentsListAdapter adapter = (AppointmentsListAdapter) appointmentsList.getAdapter();
 
                 int indexToRemove = viewHolder.getAdapterPosition();
-                RecyclerViewElement itemToRemove = adapter.getItemByIndex(indexToRemove);
+                AppointmentsListElement itemToRemove = adapter.getItemByIndex(indexToRemove);
 
                 adapter.removeSwipedItem(indexToRemove);
                 adapter.updateCheckStatus();

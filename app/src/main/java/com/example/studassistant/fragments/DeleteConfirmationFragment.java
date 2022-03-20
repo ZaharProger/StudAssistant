@@ -14,14 +14,14 @@ import androidx.fragment.app.DialogFragment;
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
 import com.example.studassistant.entities.Appointment;
-import com.example.studassistant.entities.RecyclerViewElement;
+import com.example.studassistant.entities.AppointmentsListElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.DeleteRequestManager;
 
 import java.util.ArrayList;
 
 public class DeleteConfirmationFragment extends DialogFragment implements View.OnClickListener{
-    private RecyclerViewElement itemToRemove;
+    private AppointmentsListElement itemToRemove;
     private MyAppointmentFragment fragment;
     private AppointmentsListAdapter adapter;
     private DeleteRequestManager deleteRequestManager;
@@ -29,7 +29,7 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
     private  boolean bySwipe;
     private int indexToRemove;
 
-    public DeleteConfirmationFragment(MyAppointmentFragment fragment, AppointmentsListAdapter adapter, Context context, boolean bySwipe, int indexToRemove, RecyclerViewElement itemToRemove){
+    public DeleteConfirmationFragment(MyAppointmentFragment fragment, AppointmentsListAdapter adapter, Context context, boolean bySwipe, int indexToRemove, AppointmentsListElement itemToRemove){
         this.fragment = fragment;
         this.adapter = adapter;
         this.context = context;

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,16 +20,20 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.entities.LikedListElement;
 import com.example.studassistant.enums.ArrayType;
+import com.example.studassistant.managers.DataBaseManager;
 import com.example.studassistant.managers.GetRequestManager;
 
 public class TutorFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
     private TextView appointmentLabel;
     private Appointment appointment;
     private Spinner tutorsList;
+    private DataBaseManager dataBaseManager;
     private GetRequestManager getRequestManager;
     private Context context;
     private EditText tutorFilter;
+    private ImageButton addToLikedButton;
 
     public TutorFragment(Appointment appointment, TextView appointmentLabel, Context context){
         this.appointment = appointment;
@@ -47,6 +52,11 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
         tutorsList = view.findViewById(R.id.tutorsList);
         tutorsList.setOnItemSelectedListener(this);
 
+        addToLikedButton = view.findViewById(R.id.addToLikedButton);
+        addToLikedButton.setOnClickListener(this);
+
+        dataBaseManager = DataBaseManager.create(context);
+
         getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, null, null);
         tutorFilter.setText("");
 
@@ -64,35 +74,62 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if (getRequestManager.checkConnection()){
-            if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
-                appointment.setTutor(null);
-            else
-                appointment.setTutor(tutorsList.getSelectedItem().toString());
+        if (view.getId() == R.id.tutorOkButton){
+            if (getRequestManager.checkConnection()){
+                if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
+                    appointment.setTutor(null);
+                else
+                    appointment.setTutor(tutorsList.getSelectedItem().toString());
 
-            if (appointment.getTutor() != null){
-                String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
-                StringBuilder preparedAppointment = new StringBuilder();
-                appointment.setDatetime(null);
+                if (appointment.getTutor() != null){
+                    String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
+                    StringBuilder preparedAppointment = new StringBuilder();
+                    appointment.setDatetime(null);
 
-                for (int i = 0; i < 3; ++i)
-                    preparedAppointment.append(currentAppointment[i].trim()).append("\n");
+                    for (int i = 0; i < 3; ++i)
+                        preparedAppointment.append(currentAppointment[i].trim()).append("\n");
 
-                preparedAppointment.append(appointment.getTutor().trim());
+                    preparedAppointment.append(appointment.getTutor().trim());
 
-                appointmentLabel.setText(preparedAppointment.toString());
+                    appointmentLabel.setText(preparedAppointment.toString());
 
-                onDestroy();
+                    onDestroy();
+                }
+                else
+                    Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
             }
             else
-                Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
-        else
-            Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+        else{
+            if (!tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!")){
+                LikedListElement sameTutor = dataBaseManager.getData(tutorsList.getSelectedItem().toString());
+
+                if (sameTutor != null){
+                    dataBaseManager.remove(sameTutor.getId());
+                    addToLikedButton.setImageResource(R.drawable.ic_liked_roundless);
+
+                    Toast.makeText(context, R.string.exclude_from_liked_text, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    dataBaseManager.add(tutorsList.getSelectedItem().toString());
+                    addToLikedButton.setImageResource(R.drawable.ic_liked_coloured);
+
+                    Toast.makeText(context, R.string.add_to_liked_text, Toast.LENGTH_LONG).show();
+                }
+            }
+            else
+                Toast.makeText(context, R.string.choose_tutor_text, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        LikedListElement sameTutor = dataBaseManager.getData(tutorsList.getSelectedItem().toString());
+        if (sameTutor == null)
+            addToLikedButton.setImageResource(R.drawable.ic_liked_roundless);
+        else
+            addToLikedButton.setImageResource(R.drawable.ic_liked_coloured);
     }
 
     @Override

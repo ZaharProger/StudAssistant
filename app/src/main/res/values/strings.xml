@@ -37,4 +37,7 @@
     <string name="remove_failure_text">Нет записей для удаления!</string>
     <string name="code_filter_hint">ваш идентификатор</string>
     <string name="auto_fill_button_text">Код</string>
+    <string name="add_to_liked_text">Добавлено в избранное!</string>
+    <string name="exclude_from_liked_text">Удалено из избранного!</string>
+    <string name="choose_tutor_text">Выберите преподавателя!</string>
 </resources>

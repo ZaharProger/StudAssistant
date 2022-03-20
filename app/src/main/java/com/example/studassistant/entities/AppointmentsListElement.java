@@ -2,16 +2,16 @@ package com.example.studassistant.entities;
 
 import android.widget.CheckBox;
 
-public class RecyclerViewElement {
+public class AppointmentsListElement {
     private Appointment appointment;
     private CheckBox checkToRemoveButton;
 
-    public RecyclerViewElement(Appointment appointment, CheckBox checkToRemoveButton){
+    public AppointmentsListElement(Appointment appointment, CheckBox checkToRemoveButton){
         this.appointment = appointment;
         this.checkToRemoveButton = checkToRemoveButton;
     }
 
-    public RecyclerViewElement(){
+    public AppointmentsListElement(){
     }
 
     public void setAppointment(Appointment appointment) {
