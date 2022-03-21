@@ -42,4 +42,5 @@
     <string name="choose_tutor_text">Выберите преподавателя!</string>
     <string name="group_field">Группа</string>
     <string name="tutor_field">Преподаватель</string>
+    <string name="start_text">Нажмите на следующий значок в левом верхнем углу для начала работы с приложением!</string>
 </resources>
