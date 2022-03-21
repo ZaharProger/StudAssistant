@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.studassistant.adapters.LikedListAdapter;
 import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
 import com.example.studassistant.fragments.LikedFragment;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         startFragment = new StartFragment();
         aboutFragment = new AboutFragment();
-        appointmentFragment = new AppointmentFragment();
+        appointmentFragment = new AppointmentFragment(null);
         myAppointmentFragment = new MyAppointmentFragment();
         likedFragment = new LikedFragment();
 
@@ -67,8 +68,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed(){
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
-        else if (!startFragment.isAdded())
-            getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, startFragment).commit();
+        else if (!startFragment.isAdded()){
+            if (likedFragment.isHidden()){
+                getSupportFragmentManager().popBackStack();
+                likedFragment.updateList();
+                getSupportFragmentManager().beginTransaction().show(likedFragment).commit();
+            }
+            else
+                getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, startFragment).commit();
+        }
         else
             super.onBackPressed();
     }
@@ -85,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         onBackPressed();
 
+        if (likedFragment.isHidden())
+            getSupportFragmentManager().popBackStack();
+
         if (item.getItemId() == R.id.about_option)
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, aboutFragment).commit();
         else if (item.getItemId() == R.id.appointment_option)
@@ -96,10 +107,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getApplicationContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
         else if (item.getItemId() == R.id.liked_option){
-            if (requestManager.checkConnection())
-                getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, likedFragment).commit();
-            else
-                Toast.makeText(getApplicationContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+            if (likedFragment.isHidden())
+                likedFragment.updateList();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, likedFragment)
+                                                        .show(likedFragment)
+                                                        .commit();
         }
 
         return true;

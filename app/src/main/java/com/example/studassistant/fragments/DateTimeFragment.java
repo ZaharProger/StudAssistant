@@ -22,15 +22,15 @@ import com.example.studassistant.managers.GetRequestManager;
 
 public class DateTimeFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private TextView appointmentLabel;
+    private TextView[] appointmentFields;
     private Appointment appointment;
     private Spinner datetimeList;
     private GetRequestManager getRequestManager;
     private Context context;
 
-    public DateTimeFragment(Appointment appointment, TextView appointmentLabel, Context context){
+    public DateTimeFragment(Appointment appointment, TextView[] appointmentFields, Context context){
         this.appointment = appointment;
-        this.appointmentLabel = appointmentLabel;
+        this.appointmentFields = appointmentFields;
         this.context = context;
     }
 
@@ -41,7 +41,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
         datetimeList = view.findViewById(R.id.datetimeList);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.DATETIME, datetimeList, null, getDataToRemember());
+        getRequestManager = new GetRequestManager(context, ArrayType.DATETIME, datetimeList, null, appointmentFields[3].getText().toString());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
@@ -72,15 +72,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
                 appointment.setDatetime(datetimeList.getSelectedItem().toString());
 
             if (appointment.getDatetime() != null){
-                String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
-                StringBuilder preparedAppointment = new StringBuilder();
-
-                for (int i = 0; i < 4; ++i)
-                    preparedAppointment.append(currentAppointment[i].trim()).append("\n");
-
-                preparedAppointment.append(appointment.getDatetime().trim());
-
-                appointmentLabel.setText(preparedAppointment.toString());
+                appointmentFields[4].setText(appointment.getDatetime());
 
                 onDestroy();
             }
@@ -97,12 +89,6 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-    }
-
-    private String getDataToRemember() {
-        String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
-
-        return currentAppointment[3];
     }
 
     @Override

@@ -84,7 +84,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
                     int idColumnIndex = cursor.getColumnIndex(DataBaseValues.ID_COLUMN);
                     int personalColumnIndex = cursor.getColumnIndex(DataBaseValues.TUTOR_PERSONAL_COLUMN);
 
-                    foundData = new LikedListElement(cursor.getInt(idColumnIndex), cursor.getString(personalColumnIndex), null);
+                    foundData = new LikedListElement(cursor.getInt(idColumnIndex), cursor.getString(personalColumnIndex), null, null);
                 } while (cursor.moveToNext());
 
             cursor.close();

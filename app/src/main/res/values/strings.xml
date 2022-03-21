@@ -24,7 +24,7 @@
     <string name="datetime_button_text">Дата и время</string>
     <string name="ok_button_text">OK</string>
     <string name="cancel_button_text">Отмена</string>
-    <string name="section_error_text">Сначала заполните предыдущие разделы!</string>
+    <string name="section_error_text">Сначала выберите преподавателя!</string>
     <string name="confirm_error_text">Заполните все разделы!</string>
     <string name="ok_error_text">Заполните все поля!</string>
     <string name="connection_error_text">Подключитесь к интернету!</string>
@@ -40,4 +40,6 @@
     <string name="add_to_liked_text">Добавлено в избранное!</string>
     <string name="exclude_from_liked_text">Удалено из избранного!</string>
     <string name="choose_tutor_text">Выберите преподавателя!</string>
+    <string name="group_field">Группа</string>
+    <string name="tutor_field">Преподаватель</string>
 </resources>

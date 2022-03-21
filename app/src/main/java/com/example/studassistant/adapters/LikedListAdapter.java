@@ -1,24 +1,30 @@
 package com.example.studassistant.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.LikedListElement;
+import com.example.studassistant.fragments.AppointmentFragment;
 
 import java.util.ArrayList;
 
 public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.LikedListViewHolder> {
     private ArrayList<LikedListElement> recyclerViewItems;
+    private FragmentManager fragmentManager;
 
-    public LikedListAdapter(ArrayList<LikedListElement> itemsList){
+    public LikedListAdapter(FragmentManager fragmentManager, ArrayList<LikedListElement> itemsList){
         recyclerViewItems = itemsList;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -39,6 +45,13 @@ public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.Like
 
         item.setCheckToExcludeButton(holder.checkToExcludeButton);
         holder.checkToExcludeButton.setChecked(item.getCheckToExcludeButton().isChecked());
+
+        holder.makeAppointmentButton.setOnClickListener((view) ->
+            fragmentManager.beginTransaction().hide(fragmentManager.getFragments().get(0))
+                                            .add(R.id.windowContainer, new AppointmentFragment(item.getPersonal()))
+                                            .addToBackStack("stack")
+                                            .commit());
+        item.setMakeAppointmentButton(holder.makeAppointmentButton);
     }
 
     @Override
@@ -85,12 +98,14 @@ public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.Like
     static class LikedListViewHolder extends RecyclerView.ViewHolder{
         private TextView tutorData;
         private CheckBox checkToExcludeButton;
+        private ImageButton makeAppointmentButton;
 
         LikedListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             this.checkToExcludeButton = itemView.findViewById(R.id.checkToExcludeButton);
             this.tutorData = itemView.findViewById(R.id.tutorData);
+            this.makeAppointmentButton = itemView.findViewById(R.id.makeAppointmentButton);
         }
     }
 }

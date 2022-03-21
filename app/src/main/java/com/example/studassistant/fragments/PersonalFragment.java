@@ -28,14 +28,14 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     private EditText surnameField;
     private Spinner groupList;
     private Appointment appointment;
-    private TextView appointmentLabel;
+    private TextView[] appointmentFields;
     private Context context;
     private GetRequestManager getRequestManager;
     private EditText groupFilter;
 
-    public PersonalFragment(Appointment appointment, TextView appointmentLabel, Context context){
+    public PersonalFragment(Appointment appointment, TextView[] appointmentFields, Context context){
         this.appointment = appointment;
-        this.appointmentLabel = appointmentLabel;
+        this.appointmentFields = appointmentFields;
         this.context = context;
     }
 
@@ -50,11 +50,19 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
         nameField = view.findViewById(R.id.nameField);
         surnameField = view.findViewById(R.id.surnameField);
 
+        if (appointment.getName() != null)
+            nameField.setText(appointment.getName());
+        if (appointment.getSurname() != null)
+            surnameField.setText(appointment.getSurname());
+
         groupList = view.findViewById(R.id.groupList);
         groupList.setOnItemSelectedListener(this);
 
         getRequestManager = new GetRequestManager(context, ArrayType.GROUPS, groupList, null, null);
-        groupFilter.setText("");
+        if (appointment.getGroup() != null)
+            groupFilter.setText(appointment.getGroup());
+        else
+            groupFilter.setText("");
 
         if (!getRequestManager.checkConnection()){
             Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
@@ -79,26 +87,9 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
                 appointment.setGroup(groupList.getSelectedItem().toString());
 
             if (!(appointment.getName().equals("") || appointment.getSurname().equals("") || appointment.getGroup() == null)){
-                String currentAppointment = appointmentLabel.getText().toString();
-                StringBuilder preparedAppointment = new StringBuilder();
-
-                if (currentAppointment.length() == 0)
-                    preparedAppointment.append(appointment.getName().trim()).append("\n").append(appointment.getSurname().trim())
-                            .append("\n").append(appointment.getGroup().trim());
-                else{
-                    String[] splittedAppointment = currentAppointment.trim().split("[\n]+");
-                    splittedAppointment[0] = appointment.getName().trim();
-                    splittedAppointment[1] = appointment.getSurname().trim();
-                    splittedAppointment[2] = appointment.getGroup().trim();
-                    appointment.setTutor(null);
-                    appointment.setDatetime(null);
-
-                    for (int i = 0; i < 3; ++i)
-                        preparedAppointment.append(splittedAppointment[i].trim()).append((i == 2)? "" : "\n");
-
-                }
-
-                appointmentLabel.setText(preparedAppointment.toString());
+                appointmentFields[0].setText(appointment.getName());
+                appointmentFields[1].setText(appointment.getSurname());
+                appointmentFields[2].setText(appointment.getGroup());
 
                 onDestroy();
             }

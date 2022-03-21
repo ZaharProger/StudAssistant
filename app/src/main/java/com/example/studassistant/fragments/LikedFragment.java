@@ -107,8 +107,7 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
 
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(likedList);
 
-        LikedListAdapter likedListAdapter = new LikedListAdapter(dataBaseManager.getAllData());
-        likedList.setAdapter(likedListAdapter);
+        updateList();
 
         return view;
     }
@@ -127,6 +126,11 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
         notFoundImageDuplicated.setBackgroundResource(R.drawable.not_found_animation);
         AnimationDrawable animationDrawable = (AnimationDrawable) notFoundImageDuplicated.getBackground();
         animationDrawable.start();
+    }
+
+    public void updateList() {
+        LikedListAdapter likedListAdapter = new LikedListAdapter(getParentFragmentManager(), dataBaseManager.getAllData());
+        likedList.setAdapter(likedListAdapter);
     }
 
     @Override

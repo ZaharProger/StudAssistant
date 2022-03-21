@@ -26,7 +26,7 @@ import com.example.studassistant.managers.DataBaseManager;
 import com.example.studassistant.managers.GetRequestManager;
 
 public class TutorFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
-    private TextView appointmentLabel;
+    private TextView[] appointmentFields;
     private Appointment appointment;
     private Spinner tutorsList;
     private DataBaseManager dataBaseManager;
@@ -35,9 +35,9 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
     private EditText tutorFilter;
     private ImageButton addToLikedButton;
 
-    public TutorFragment(Appointment appointment, TextView appointmentLabel, Context context){
+    public TutorFragment(Appointment appointment, TextView[] appointmentFields, Context context){
         this.appointment = appointment;
-        this.appointmentLabel = appointmentLabel;
+        this.appointmentFields = appointmentFields;
         this.context = context;
     }
 
@@ -58,7 +58,10 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
         dataBaseManager = DataBaseManager.create(context);
 
         getRequestManager = new GetRequestManager(context, ArrayType.TUTORS, tutorsList, null, null);
-        tutorFilter.setText("");
+        if (appointment.getTutor() != null)
+            tutorFilter.setText(appointment.getTutor());
+        else
+            tutorFilter.setText("");
 
         view.findViewById(R.id.tutorOkButton).setOnClickListener(this);
 
@@ -82,17 +85,9 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
                     appointment.setTutor(tutorsList.getSelectedItem().toString());
 
                 if (appointment.getTutor() != null){
-                    String[] currentAppointment = appointmentLabel.getText().toString().split("[\n]+");
-                    StringBuilder preparedAppointment = new StringBuilder();
+                    appointmentFields[3].setText(appointment.getTutor());
                     appointment.setDatetime(null);
-
-                    for (int i = 0; i < 3; ++i)
-                        preparedAppointment.append(currentAppointment[i].trim()).append("\n");
-
-                    preparedAppointment.append(appointment.getTutor().trim());
-
-                    appointmentLabel.setText(preparedAppointment.toString());
-
+                    appointmentFields[4].setText("");
                     onDestroy();
                 }
                 else
