@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.studassistant.R;
 
-public class StartFragment extends Fragment{
+public class StartFragment extends Fragment {
 
     @Nullable
     @Override
@@ -21,5 +21,10 @@ public class StartFragment extends Fragment{
 
 
         return view;
+    }
+
+    public void onResume(){
+        super.onResume();
+        getActivity().setTitle("Студ Ассистент");
     }
 }

@@ -83,4 +83,9 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             }
         }
     }
+
+    public void onResume(){
+        super.onResume();
+        getActivity().setTitle("Оформить запись");
+    }
 }

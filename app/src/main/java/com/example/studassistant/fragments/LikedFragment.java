@@ -27,7 +27,7 @@ import com.example.studassistant.adapters.LikedListAdapter;
 import com.example.studassistant.entities.LikedListElement;
 import com.example.studassistant.managers.DataBaseManager;
 
-public class LikedFragment extends Fragment  implements View.OnClickListener, View.OnLayoutChangeListener{
+public class LikedFragment extends Fragment  implements View.OnClickListener, View.OnLayoutChangeListener {
     private RecyclerView likedList;
     private DataBaseManager dataBaseManager;
     private ImageView notFoundImageDuplicated;
@@ -162,5 +162,10 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
 
             updateAnimation();
         }
+    }
+
+    public void onResume(){
+        super.onResume();
+        getActivity().setTitle("Избранное");
     }
 }

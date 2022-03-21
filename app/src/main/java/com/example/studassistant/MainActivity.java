@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.studassistant.adapters.LikedListAdapter;
 import com.example.studassistant.fragments.AboutFragment;
 import com.example.studassistant.fragments.AppointmentFragment;
 import com.example.studassistant.fragments.LikedFragment;
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setTitle("Студ Ассистент");
 
         Toolbar toolBar = findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (likedFragment.isHidden()){
                 getSupportFragmentManager().popBackStack();
                 likedFragment.updateList();
+                likedFragment.onResume();
+
                 getSupportFragmentManager().beginTransaction().show(likedFragment).commit();
             }
             else
@@ -107,8 +109,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getApplicationContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
         else if (item.getItemId() == R.id.liked_option){
-            if (likedFragment.isHidden())
+            if (likedFragment.isHidden()){
                 likedFragment.updateList();
+                likedFragment.onResume();
+            }
 
             getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, likedFragment)
                                                         .show(likedFragment)

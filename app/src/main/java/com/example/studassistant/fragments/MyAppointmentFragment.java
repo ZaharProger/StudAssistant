@@ -223,4 +223,9 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
 
         codeFilter.setText("");
     }
+
+    public void onResume(){
+        super.onResume();
+        getActivity().setTitle("Мои записи");
+    }
 }

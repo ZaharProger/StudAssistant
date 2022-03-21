@@ -97,21 +97,25 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
                 Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
         else{
-            if (!tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!")){
-                LikedListElement sameTutor = dataBaseManager.getData(tutorsList.getSelectedItem().toString());
+            if (tutorsList.getSelectedItem() != null){
+                if (!tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!")){
+                    LikedListElement sameTutor = dataBaseManager.getData(tutorsList.getSelectedItem().toString());
 
-                if (sameTutor != null){
-                    dataBaseManager.remove(sameTutor.getId());
-                    addToLikedButton.setImageResource(R.drawable.ic_liked_roundless);
+                    if (sameTutor != null){
+                        dataBaseManager.remove(sameTutor.getId());
+                        addToLikedButton.setImageResource(R.drawable.ic_liked_roundless);
 
-                    Toast.makeText(context, R.string.exclude_from_liked_text, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, R.string.exclude_from_liked_text, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        dataBaseManager.add(tutorsList.getSelectedItem().toString());
+                        addToLikedButton.setImageResource(R.drawable.ic_liked_coloured);
+
+                        Toast.makeText(context, R.string.add_to_liked_text, Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
-                    dataBaseManager.add(tutorsList.getSelectedItem().toString());
-                    addToLikedButton.setImageResource(R.drawable.ic_liked_coloured);
-
-                    Toast.makeText(context, R.string.add_to_liked_text, Toast.LENGTH_LONG).show();
-                }
+                else
+                    Toast.makeText(context, R.string.choose_tutor_text, Toast.LENGTH_LONG).show();
             }
             else
                 Toast.makeText(context, R.string.choose_tutor_text, Toast.LENGTH_LONG).show();

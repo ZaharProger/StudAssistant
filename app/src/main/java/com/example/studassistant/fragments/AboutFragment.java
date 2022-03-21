@@ -35,4 +35,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         Intent intent = emailManager.prepareMessage(message.getText().toString());
         startActivity(Intent.createChooser(intent, "Выберите способ отправки"));
     }
+
+    public void onResume(){
+        super.onResume();
+        getActivity().setTitle("О приложении");
+    }
 }
