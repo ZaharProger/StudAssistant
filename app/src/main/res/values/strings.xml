@@ -6,7 +6,7 @@
     <string name="my_appointment_title">Мои записи</string>
     <string name="liked_title">Избранное</string>
     <string name="user_guide_title">Пользователю</string>
-    <string name="faq_title">Руководство</string>
+    <string name="faq_text">Посмотрите руководство пользователя, чтобы работа с ассистентом оказалась ещё удобнее!</string>
     <string name="about_title">О приложении</string>
     <string name="options_opened">Открыть меню</string>
     <string name="options_closed">Закрыть меню</string>

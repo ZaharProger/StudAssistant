@@ -26,10 +26,6 @@
     <item android:checkableBehavior="single"
         android:title = "@string/user_guide_title">
         <menu>
-            <item android:id = "@+id/faq_option"
-                android:icon = "@drawable/ic_faq"
-                android:title = "@string/faq_title"/>
-
             <item android:id = "@+id/about_option"
                 android:icon = "@drawable/ic_about"
                 android:title = "@string/about_title"/>

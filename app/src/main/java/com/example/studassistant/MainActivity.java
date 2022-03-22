@@ -8,9 +8,11 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.studassistant.fragments.AboutFragment;
