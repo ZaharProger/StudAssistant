@@ -34,7 +34,9 @@ public class PostRequestManager extends RequestManager implements Response.Liste
             preparedDataToPost.put("surname", dataToPost.getSurname());
             preparedDataToPost.put("group", dataToPost.getGroup());
             preparedDataToPost.put("tutor", dataToPost.getTutor());
+            preparedDataToPost.put("tutor_id", dataToPost.getTutorId());
             preparedDataToPost.put("datetime", dataToPost.getDatetime());
+            preparedDataToPost.put("consult_id", dataToPost.getConsultId());
             preparedDataToPost.put("usercode", dataToPost.getUserCode());
         }
         catch (

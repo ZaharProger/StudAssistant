@@ -6,7 +6,9 @@ public class Appointment {
     private String surname;
     private String group;
     private String tutor;
+    private long tutorId;
     private String datetime;
+    private long consultId;
     private String userCode;
 
     public Appointment(){}
@@ -17,7 +19,9 @@ public class Appointment {
         this.surname = appointment.surname;
         this.group = appointment.group;
         this.tutor = appointment.tutor;
+        this.tutorId = appointment.tutorId;
         this.datetime = appointment.datetime;
+        this.consultId = appointment.consultId;
         this.userCode = appointment.userCode;
     }
 
@@ -61,12 +65,28 @@ public class Appointment {
         return tutor;
     }
 
+    public void setTutorId(long tutorId) {
+        this.tutorId = tutorId;
+    }
+
+    public long getTutorId() {
+        return tutorId;
+    }
+
     public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 
     public String getDatetime() {
         return datetime;
+    }
+
+    public void setConsultId(long consultId) {
+        this.consultId = consultId;
+    }
+
+    public long getConsultId() {
+        return consultId;
     }
 
     public void setUserCode(String userCode) {

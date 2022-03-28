@@ -12,72 +12,6 @@
         android:background="@drawable/dialog_border"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/name_field"
-            android:textAlignment="textStart"
-            android:textColor="#336C9A"
-            android:textColorHighlight="#62ACE8"
-            android:textColorLink="#62ACE8"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/nameField"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/field_border"
-            android:gravity="center|start"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textAlignment="textStart"
-            android:textColor="#336C9A"
-            android:textColorHighlight="#62ACE8"
-            android:textColorLink="#62ACE8"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/surname_field"
-            android:textAlignment="textStart"
-            android:textColor="#336C9A"
-            android:textColorHighlight="#62ACE8"
-            android:textColorLink="#62ACE8"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameField" />
-
-        <EditText
-            android:id="@+id/surnameField"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/field_border"
-            android:gravity="center|start"
-            android:inputType="text"
-            android:padding="8dp"
-            android:textAlignment="textStart"
-            android:textColor="#336C9A"
-            android:textColorHighlight="#62ACE8"
-            android:textColorLink="#62ACE8"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
         <Button
             android:id="@+id/personalOkButton"
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -109,7 +43,6 @@
             android:id="@+id/groupFilter"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginTop="32dp"
             android:background="@drawable/field_border"
             android:hint="@string/group_hint"
             android:padding="8dp"
@@ -121,6 +54,6 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/surnameField" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

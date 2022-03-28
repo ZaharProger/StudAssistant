@@ -4,5 +4,5 @@ public enum ArrayType {
     GROUPS,
     TUTORS,
     APPOINTMENTS,
-    DATETIME
+    DATES
 }

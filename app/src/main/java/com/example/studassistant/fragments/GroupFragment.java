@@ -23,9 +23,7 @@ import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.GetRequestManager;
 
 
-public class PersonalFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
-    private EditText nameField;
-    private EditText surnameField;
+public class GroupFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher {
     private Spinner groupList;
     private Appointment appointment;
     private TextView[] appointmentFields;
@@ -33,7 +31,7 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     private GetRequestManager getRequestManager;
     private EditText groupFilter;
 
-    public PersonalFragment(Appointment appointment, TextView[] appointmentFields, Context context){
+    public GroupFragment(Appointment appointment, TextView[] appointmentFields, Context context){
         this.appointment = appointment;
         this.appointmentFields = appointmentFields;
         this.context = context;
@@ -46,14 +44,6 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
 
         groupFilter = view.findViewById(R.id.groupFilter);
         groupFilter.addTextChangedListener(this);
-
-        nameField = view.findViewById(R.id.nameField);
-        surnameField = view.findViewById(R.id.surnameField);
-
-        if (appointment.getName() != null)
-            nameField.setText(appointment.getName());
-        if (appointment.getSurname() != null)
-            surnameField.setText(appointment.getSurname());
 
         groupList = view.findViewById(R.id.groupList);
         groupList.setOnItemSelectedListener(this);
@@ -79,16 +69,12 @@ public class PersonalFragment extends DialogFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (getRequestManager.checkConnection()){
-            appointment.setName(nameField.getText().toString().trim());
-            appointment.setSurname(surnameField.getText().toString().trim());
             if (groupList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
                 appointment.setGroup(null);
             else
                 appointment.setGroup(groupList.getSelectedItem().toString());
 
-            if (!(appointment.getName().equals("") || appointment.getSurname().equals("") || appointment.getGroup() == null)){
-                appointmentFields[0].setText(appointment.getName());
-                appointmentFields[1].setText(appointment.getSurname());
+            if (!(appointment.getGroup() == null)){
                 appointmentFields[2].setText(appointment.getGroup());
 
                 onDestroy();

@@ -19,8 +19,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
+import com.example.studassistant.adapters.TutorsListAdapter;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.LikedListElement;
+import com.example.studassistant.entities.Tutor;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.DataBaseManager;
 import com.example.studassistant.managers.GetRequestManager;
@@ -81,9 +83,11 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
             if (getRequestManager.checkConnection()){
                 if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
                     appointment.setTutor(null);
-                else
+                else{
                     appointment.setTutor(tutorsList.getSelectedItem().toString());
-
+                    TutorsListAdapter adapter = (TutorsListAdapter) tutorsList.getAdapter();
+                    appointment.setTutorId(adapter.getItemByIndex(tutorsList.getSelectedItemPosition()).getId());
+                }
                 if (appointment.getTutor() != null){
                     appointmentFields[3].setText(appointment.getTutor());
                     appointment.setDatetime(null);

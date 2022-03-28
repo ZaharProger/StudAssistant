@@ -17,6 +17,11 @@ import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.CodeGenerator;
 import com.example.studassistant.managers.RequestManager;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
     private TextView[] appointmentFields;
@@ -50,6 +55,22 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             appointment.setTutor(dataToRestore);
         }
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(getContext().getFilesDir() + "/personal.txt"))){
+            ArrayList<String> personalData = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null)
+                personalData.add(line);
+
+            appointment.setName(personalData.get(0));
+            appointment.setSurname(personalData.get(1));
+
+            appointmentFields[0].setText(appointment.getName());
+            appointmentFields[1].setText(appointment.getSurname());
+        }
+        catch(IOException exception){
+
+        }
+
         requestManager = new RequestManager(getContext(), ArrayType.APPOINTMENTS);
 
         return view;
@@ -58,7 +79,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.personalButton){
-            new PersonalFragment(appointment, appointmentFields, getContext()).show(getParentFragmentManager(), "Personal");
+            new GroupFragment(appointment, appointmentFields, getContext()).show(getParentFragmentManager(), "Personal");
         }
         else if (view.getId() == R.id.tutorButton){
             new TutorFragment(appointment, appointmentFields, getContext()).show(getParentFragmentManager(), "Tutor");

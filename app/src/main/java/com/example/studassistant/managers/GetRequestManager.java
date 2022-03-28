@@ -13,7 +13,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
+import com.example.studassistant.adapters.DatetimeListAdapter;
+import com.example.studassistant.adapters.TutorsListAdapter;
 import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.entities.Group;
 import com.example.studassistant.entities.AppointmentsListElement;
 import com.example.studassistant.entities.Tutor;
@@ -74,7 +77,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
 
     @Override
     public void createRequest() {
-        String preparedURL = URL + ((type != ArrayType.DATETIME)? type.toString().toLowerCase(Locale.ROOT) : "tutors");
+        String preparedURL = URL + type.toString().toLowerCase(Locale.ROOT);
 
         if (requestExtra != null){
             String extras = String.format("?%s=%s", extraType.toString().toLowerCase(Locale.ROOT), requestExtra);
@@ -90,7 +93,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
         try {
             ArrayList<Group> groups = null;
             ArrayList<Tutor> tutors = null;
-            ArrayList<String> dates = null;
+            ArrayList<ConsultDatetime> dates = null;
             ArrayList<AppointmentsListElement> appointments = null;
 
             switch(type){
@@ -100,7 +103,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                 case TUTORS:
                     tutors = new ArrayList<>();
                     break;
-                case DATETIME:
+                case DATES:
                     dates = new ArrayList<>();
                     break;
                 case APPOINTMENTS:
@@ -133,21 +136,31 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         if (tutor.toString().toLowerCase(Locale.ROOT).contains(dataToRemember.toLowerCase(Locale.ROOT)))
                             tutors.add(tutor);
                         break;
-                    case DATETIME:
-                        Tutor tutorToTakeDatetime = new Tutor();
-                        tutorToTakeDatetime.setName(extractedObject.getString("name"));
-                        tutorToTakeDatetime.setSurname(extractedObject.getString("surname"));
-                        tutorToTakeDatetime.setPatronymic(extractedObject.getString("patronymic"));
+                    case DATES:
+                        if (Long.parseLong(dataToRemember) == extractedObject.getLong("tutor_id")){
+                            ConsultDatetime consultDatetime = new ConsultDatetime();
+                            consultDatetime.setId(extractedObject.getLong("id"));
+                            consultDatetime.setTutorId(extractedObject.getLong("tutor_id"));
+                            consultDatetime.setDate(extractedObject.getString("day"));
+                            consultDatetime.setDate(extractedObject.getString("time"));
+                            consultDatetime.setTime(extractedObject.getString("room"));
 
-                        if (dataToRemember.equalsIgnoreCase(tutorToTakeDatetime.toString())){
-                            JSONArray tutor_dates = (JSONArray) extractedObject.get("dates");
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE dd.MM.yyyy", new Locale("ru"));
+                            String consultDate = consultDatetime.getDate();
 
-                            for (int j = 0; j < tutor_dates.length(); ++j){
-                                JSONObject datetimeObject = tutor_dates.getJSONObject(j);
+                            Calendar now = Calendar.getInstance();
 
-                                String datetime = datetimeObject.getInt("day") + " " + datetimeObject.getString("time") + " " + datetimeObject.getString("room");
-                                dates.add(datetime);
-                            }
+                            int actualDay = now.get(Calendar.DAY_OF_WEEK);
+                            int days = Integer.parseInt(consultDate) - actualDay;
+                            if (days <= 0)
+                                days += 7;
+
+                            now.add(Calendar.DAY_OF_YEAR, days);
+
+                            Date date = now.getTime();
+                            consultDatetime.setDate(dateFormatter.format(date));
+
+                            dates.add(consultDatetime);
                         }
                         break;
                     case APPOINTMENTS:
@@ -167,53 +180,60 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                 }
             }
 
-            String[] mappedData = null;
-
-            switch (type){
-                case GROUPS:
-                    mappedData = new String[groups.size()];
-                    for (int i = 0; i < groups.size(); ++i)
-                        mappedData[i] = groups.get(i).getName();
-                    break;
-                case TUTORS:
-                    mappedData = new String[tutors.size()];
-                    for (int i = 0; i < tutors.size(); ++i)
-                        mappedData[i] = tutors.get(i).toString();
-                    break;
-                case DATETIME:
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE dd.MM.yyyy", new Locale("ru"));
-                    mappedData = new String[dates.size()];
-                    for(int i = 0; i < dates.size(); ++i){
-                        String[] splittedDate = dates.get(i).trim().split("[\\s]+");
-
-                        Calendar now = Calendar.getInstance();
-
-                        int actualDay = now.get(Calendar.DAY_OF_WEEK);
-                        int days = Integer.parseInt(splittedDate[0]) - actualDay;
-                        if (days <= 0)
-                            days += 7;
-
-                        now.add(Calendar.DAY_OF_YEAR, days);
-
-                        Date date = now.getTime();
-                        String formattedDate = dateFormatter.format(date);
-
-                        mappedData[i] = formattedDate + " " + splittedDate[1] + " " + splittedDate[2];
-                    }
-                    break;
-            }
-
             if (itemsListSpinner != null){
-                ArrayAdapter<String> adapter;
-                if (mappedData.length != 0)
-                    adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedData);
-                else
-                    adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Информация не найдена!"});
+                switch(type){
+                    case GROUPS:
+                        if (!groups.isEmpty()){
+                            String[] mappedGroups = groups.stream().map((group) -> group.getName()).toArray(String[]::new);
 
-                adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-                adapter.notifyDataSetChanged();
+                            ArrayAdapter<String> groupsListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedGroups);
+                            groupsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                            groupsListAdapter.notifyDataSetChanged();
 
-                itemsListSpinner.setAdapter(adapter);
+                            itemsListSpinner.setAdapter(groupsListAdapter);
+                        }
+                        else{
+                            ArrayAdapter<String> groupsListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Информация не найдена!"});
+                            groupsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                            groupsListAdapter.notifyDataSetChanged();
+
+                            itemsListSpinner.setAdapter(groupsListAdapter);
+                        }
+                        break;
+                    case TUTORS:
+                        if (!tutors.isEmpty()){
+                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.spinner_layout, (Tutor[]) tutors.toArray());
+                            tutorsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                            tutorsListAdapter.notifyDataSetChanged();
+
+                            itemsListSpinner.setAdapter(tutorsListAdapter);
+                        }
+                        else{
+                            ArrayAdapter<String> tutorsListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Информация не найдена!"});
+                            tutorsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                            tutorsListAdapter.notifyDataSetChanged();
+
+                            itemsListSpinner.setAdapter(tutorsListAdapter);
+                        }
+                        break;
+                    case DATES:
+                        if (!dates.isEmpty()){
+                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.spinner_layout, (ConsultDatetime[]) dates.toArray());
+                            datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                            datetimeListAdapter.notifyDataSetChanged();
+
+                            itemsListSpinner.setAdapter(datetimeListAdapter);
+                        }
+                        else{
+                            ArrayAdapter<String> datetimeListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
+                            datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+                            datetimeListAdapter.notifyDataSetChanged();
+
+                            itemsListSpinner.setAdapter(datetimeListAdapter);
+                        }
+                        break;
+                }
+
             }
 
             if (itemsListRecyclerView != null){
