@@ -8,5 +8,7 @@ public enum ExtraType {
     TUTOR,
     DATETIME,
     ID,
+    TUTOR_ID,
+    CONSULT_ID,
     USERCODE
 }

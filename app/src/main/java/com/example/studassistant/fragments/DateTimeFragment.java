@@ -21,6 +21,7 @@ import com.example.studassistant.adapters.TutorsListAdapter;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
+import com.example.studassistant.enums.ExtraType;
 import com.example.studassistant.managers.GetRequestManager;
 
 public class DateTimeFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -44,7 +45,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
         datetimeList = view.findViewById(R.id.datetimeList);
 
-        getRequestManager = new GetRequestManager(context, ArrayType.DATES, datetimeList, null, appointment.getTutorId() + "");
+        getRequestManager = new GetRequestManager(context, ArrayType.DATES, datetimeList, null, appointment.getTutorId() + "", ExtraType.TUTOR_ID);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
@@ -74,7 +75,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
             else{
                 appointment.setDatetime(datetimeList.getSelectedItem().toString());
                 DatetimeListAdapter adapter = (DatetimeListAdapter) datetimeList.getAdapter();
-                appointment.setTutorId(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()).getId());
+                appointment.setConsultId(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()).getId());
             }
 
             if (appointment.getDatetime() != null){

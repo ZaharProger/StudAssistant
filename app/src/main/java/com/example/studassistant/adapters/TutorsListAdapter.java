@@ -8,17 +8,30 @@ import android.widget.TextView;
 
 import com.example.studassistant.entities.Tutor;
 
+import java.util.ArrayList;
+
 public class TutorsListAdapter extends ArrayAdapter<String> {
     private Context context;
     private int resourceId;
-    private Tutor[] objects;
+    private ArrayList<Tutor> objects;
+    private String[] viewObjects;
 
-    public TutorsListAdapter(Context context, int resourceId, Tutor[] objects) {
-        super(context, resourceId);
+    public TutorsListAdapter(Context context, int resourceId, ArrayList<Tutor> objects) {
+        super(context, resourceId, mapData(objects));
 
         this.context = context;
         this.resourceId = resourceId;
         this.objects = objects;
+        viewObjects = mapData(objects);
+    }
+
+    private static String[] mapData(ArrayList<Tutor> objects) {
+        String[] mappedObjects = new String[objects.size()];
+
+        for (int i = 0; i < mappedObjects.length; ++i)
+            mappedObjects[i] = objects.get(i).toString();
+
+        return mappedObjects;
     }
 
     @Override
@@ -27,14 +40,14 @@ public class TutorsListAdapter extends ArrayAdapter<String> {
             convertView = View.inflate(context, resourceId, null);
 
             TextView startPositionItem = (TextView) convertView;
-            startPositionItem.setText(objects[0].toString());
+            startPositionItem.setText(viewObjects[position]);
         }
 
         return convertView;
     }
 
     public Tutor getItemByIndex(int index){
-        return objects[index];
+        return objects.get(index);
     }
 
 }

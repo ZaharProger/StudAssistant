@@ -137,31 +137,29 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                             tutors.add(tutor);
                         break;
                     case DATES:
-                        if (Long.parseLong(dataToRemember) == extractedObject.getLong("tutor_id")){
-                            ConsultDatetime consultDatetime = new ConsultDatetime();
-                            consultDatetime.setId(extractedObject.getLong("id"));
-                            consultDatetime.setTutorId(extractedObject.getLong("tutor_id"));
-                            consultDatetime.setDate(extractedObject.getString("day"));
-                            consultDatetime.setDate(extractedObject.getString("time"));
-                            consultDatetime.setTime(extractedObject.getString("room"));
+                        ConsultDatetime consultDatetime = new ConsultDatetime();
+                        consultDatetime.setId(extractedObject.getLong("id"));
+                        consultDatetime.setTutorId(extractedObject.getLong("tutor_id"));
+                        consultDatetime.setDate(extractedObject.getString("day"));
+                        consultDatetime.setTime(extractedObject.getString("time"));
+                        consultDatetime.setRoom(extractedObject.getString("room"));
 
-                            SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE dd.MM.yyyy", new Locale("ru"));
-                            String consultDate = consultDatetime.getDate();
+                        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE dd.MM.yyyy", new Locale("ru"));
+                        String consultDate = consultDatetime.getDate();
 
-                            Calendar now = Calendar.getInstance();
+                        Calendar now = Calendar.getInstance();
 
-                            int actualDay = now.get(Calendar.DAY_OF_WEEK);
-                            int days = Integer.parseInt(consultDate) - actualDay;
-                            if (days <= 0)
-                                days += 7;
+                        int actualDay = now.get(Calendar.DAY_OF_WEEK);
+                        int days = Integer.parseInt(consultDate) - actualDay;
+                        if (days <= 0)
+                            days += 7;
 
-                            now.add(Calendar.DAY_OF_YEAR, days);
+                        now.add(Calendar.DAY_OF_YEAR, days);
 
-                            Date date = now.getTime();
-                            consultDatetime.setDate(dateFormatter.format(date));
+                        Date date = now.getTime();
+                        consultDatetime.setDate(dateFormatter.format(date));
 
-                            dates.add(consultDatetime);
-                        }
+                        dates.add(consultDatetime);
                         break;
                     case APPOINTMENTS:
                         Appointment appointment = new Appointment();
@@ -202,11 +200,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case TUTORS:
                         if (!tutors.isEmpty()){
-                            Tutor[] arrayOfTutors = new Tutor[tutors.size()];
-                            for (int i = 0; i < arrayOfTutors.length; ++i)
-                                arrayOfTutors[i] = tutors.get(i);
-
-                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.spinner_layout, arrayOfTutors);
+                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.spinner_layout, tutors);
                             tutorsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             tutorsListAdapter.notifyDataSetChanged();
 
@@ -222,11 +216,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case DATES:
                         if (!dates.isEmpty()){
-                            ConsultDatetime[] arrayOfDates = new ConsultDatetime[tutors.size()];
-                            for (int i = 0; i < arrayOfDates.length; ++i)
-                                arrayOfDates[i] = dates.get(i);
-
-                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.spinner_layout, arrayOfDates);
+                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.spinner_layout, dates);
                             datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             datetimeListAdapter.notifyDataSetChanged();
 

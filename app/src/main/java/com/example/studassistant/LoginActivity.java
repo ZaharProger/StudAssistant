@@ -26,36 +26,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setTitle("Авторизация");
-
-        nameField = findViewById(R.id.nameField);
-        surnameField = findViewById(R.id.surnameField);
-
-        findViewById(R.id.loginButton).setOnClickListener(this);
-
         File personalFile = new File(getApplicationContext().getFilesDir() + "/personal.txt");
         if (personalFile.exists()){
-            try (BufferedReader reader = new BufferedReader(new FileReader(getApplicationContext().getFilesDir() + "/personal.txt"))){
-                ArrayList<String> personalData = new ArrayList<>();
-                String line;
-                while ((line = reader.readLine()) != null)
-                    personalData.add(line);
-
-                nameField.setText(personalData.get(0));
-                surnameField.setText(personalData.get(1));
-
-                onClick(findViewById(R.id.loginButton));
-            }
-            catch(IOException exception){
-
-            }
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         else{
+            setContentView(R.layout.activity_login);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setTitle("Авторизация");
+
+            nameField = findViewById(R.id.nameField);
+            surnameField = findViewById(R.id.surnameField);
+
             nameField.setText("");
             surnameField.setText("");
+
+            findViewById(R.id.loginButton).setOnClickListener(this);
         }
+
     }
     @Override
     public void onClick(View view) {
