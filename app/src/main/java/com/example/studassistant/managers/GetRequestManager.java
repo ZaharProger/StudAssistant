@@ -202,7 +202,11 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case TUTORS:
                         if (!tutors.isEmpty()){
-                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.spinner_layout, (Tutor[]) tutors.toArray());
+                            Tutor[] arrayOfTutors = new Tutor[tutors.size()];
+                            for (int i = 0; i < arrayOfTutors.length; ++i)
+                                arrayOfTutors[i] = tutors.get(i);
+
+                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.spinner_layout, arrayOfTutors);
                             tutorsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             tutorsListAdapter.notifyDataSetChanged();
 
@@ -218,7 +222,11 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case DATES:
                         if (!dates.isEmpty()){
-                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.spinner_layout, (ConsultDatetime[]) dates.toArray());
+                            ConsultDatetime[] arrayOfDates = new ConsultDatetime[tutors.size()];
+                            for (int i = 0; i < arrayOfDates.length; ++i)
+                                arrayOfDates[i] = dates.get(i);
+
+                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.spinner_layout, arrayOfDates);
                             datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             datetimeListAdapter.notifyDataSetChanged();
 

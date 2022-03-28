@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getSupportFragmentManager().beginTransaction().replace(R.id.windowContainer, startFragment).commit();
         }
         else
-            super.onBackPressed();
+            finishAffinity();
     }
 
     @Override
