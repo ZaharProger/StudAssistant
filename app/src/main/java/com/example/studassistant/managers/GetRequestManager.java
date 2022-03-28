@@ -3,6 +3,7 @@ package com.example.studassistant.managers;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,8 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     private String dataToRemember;
     private String requestExtra;
     private ExtraType extraType;
+    private TextView monitorMessage;
+    private boolean toMonitor;
 
     public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
         super(context, type);
@@ -73,6 +76,11 @@ public class GetRequestManager extends RequestManager implements Response.Listen
         this.itemsListRecyclerView = itemsListRecyclerView;
 
         checkConnection();
+    }
+
+    public void setMonitorValue(TextView messageField){
+        monitorMessage = messageField;
+        toMonitor = true;
     }
 
     @Override
@@ -143,23 +151,17 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         consultDatetime.setDate(extractedObject.getString("day"));
                         consultDatetime.setTime(extractedObject.getString("time"));
                         consultDatetime.setRoom(extractedObject.getString("room"));
+                        consultDatetime.setOrderedSpace(extractedObject.getInt("ordered_space"));
+                        consultDatetime.setMaxSpace(extractedObject.getInt("max_space"));
 
-                        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE dd.MM.yyyy", new Locale("ru"));
-                        String consultDate = consultDatetime.getDate();
-
-                        Calendar now = Calendar.getInstance();
-
-                        int actualDay = now.get(Calendar.DAY_OF_WEEK);
-                        int days = Integer.parseInt(consultDate) - actualDay;
-                        if (days <= 0)
-                            days += 7;
-
-                        now.add(Calendar.DAY_OF_YEAR, days);
-
-                        Date date = now.getTime();
-                        consultDatetime.setDate(dateFormatter.format(date));
-
-                        dates.add(consultDatetime);
+                        if (toMonitor){
+                            if (consultDatetime.getOrderedSpace() < consultDatetime.getMaxSpace())
+                                monitorMessage.setText(context.getString(R.string.has_space_text));
+                            else
+                                monitorMessage.setText(context.getString(R.string.no_space_error));
+                        }
+                        else
+                            dates.add(consultDatetime);
                         break;
                     case APPOINTMENTS:
                         Appointment appointment = new Appointment();
@@ -169,7 +171,9 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         appointment.setSurname(extractedObject.getString("surname"));
                         appointment.setGroup(extractedObject.getString("group"));
                         appointment.setTutor(extractedObject.getString("tutor"));
+                        appointment.setTutorId(extractedObject.getLong("tutor_id"));
                         appointment.setDatetime(extractedObject.getString("datetime"));
+                        appointment.setConsultId(extractedObject.getLong("consult_id"));
 
                         AppointmentsListElement appointmentsListElement = new AppointmentsListElement(appointment, null);
 
@@ -184,14 +188,14 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         if (!groups.isEmpty()){
                             String[] mappedGroups = groups.stream().map((group) -> group.getName()).toArray(String[]::new);
 
-                            ArrayAdapter<String> groupsListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, mappedGroups);
+                            ArrayAdapter<String> groupsListAdapter = new ArrayAdapter<>(context, R.layout.default_spinner_layout, mappedGroups);
                             groupsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             groupsListAdapter.notifyDataSetChanged();
 
                             itemsListSpinner.setAdapter(groupsListAdapter);
                         }
                         else{
-                            ArrayAdapter<String> groupsListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Информация не найдена!"});
+                            ArrayAdapter<String> groupsListAdapter = new ArrayAdapter<>(context, R.layout.default_spinner_layout, new String[]{"Информация не найдена!"});
                             groupsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             groupsListAdapter.notifyDataSetChanged();
 
@@ -200,14 +204,14 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case TUTORS:
                         if (!tutors.isEmpty()){
-                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.spinner_layout, tutors);
+                            TutorsListAdapter tutorsListAdapter = new TutorsListAdapter(context, R.layout.default_spinner_layout, tutors);
                             tutorsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             tutorsListAdapter.notifyDataSetChanged();
 
                             itemsListSpinner.setAdapter(tutorsListAdapter);
                         }
                         else{
-                            ArrayAdapter<String> tutorsListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Информация не найдена!"});
+                            ArrayAdapter<String> tutorsListAdapter = new ArrayAdapter<>(context, R.layout.default_spinner_layout, new String[]{"Информация не найдена!"});
                             tutorsListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             tutorsListAdapter.notifyDataSetChanged();
 
@@ -216,14 +220,14 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case DATES:
                         if (!dates.isEmpty()){
-                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.spinner_layout, dates);
+                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.dates_spinner_layout, dates);
                             datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             datetimeListAdapter.notifyDataSetChanged();
 
                             itemsListSpinner.setAdapter(datetimeListAdapter);
                         }
                         else{
-                            ArrayAdapter<String> datetimeListAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
+                            ArrayAdapter<String> datetimeListAdapter = new ArrayAdapter<>(context, R.layout.default_spinner_layout, new String[]{"Загрузка..."});
                             datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             datetimeListAdapter.notifyDataSetChanged();
 
@@ -238,6 +242,8 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                 AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
                 itemsListRecyclerView.setAdapter(appointmentsListAdapter);
             }
+
+            Volley.newRequestQueue(context).getCache().clear();
         }
         catch (JSONException exception) {
             exception.printStackTrace();

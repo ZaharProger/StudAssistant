@@ -81,18 +81,22 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.tutorOkButton){
             if (getRequestManager.checkConnection()){
-                if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
-                    appointment.setTutor(null);
-                else{
-                    appointment.setTutor(tutorsList.getSelectedItem().toString());
-                    TutorsListAdapter adapter = (TutorsListAdapter) tutorsList.getAdapter();
-                    appointment.setTutorId(adapter.getItemByIndex(tutorsList.getSelectedItemPosition()).getId());
-                }
-                if (appointment.getTutor() != null){
-                    appointmentFields[3].setText(appointment.getTutor());
-                    appointment.setDatetime(null);
-                    appointmentFields[4].setText("");
-                    onDestroy();
+                if (tutorsList.getSelectedItem() != null){
+                    if (tutorsList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
+                        appointment.setTutor(null);
+                    else{
+                        appointment.setTutor(tutorsList.getSelectedItem().toString());
+                        TutorsListAdapter adapter = (TutorsListAdapter) tutorsList.getAdapter();
+                        appointment.setTutorId(adapter.getItemByIndex(tutorsList.getSelectedItemPosition()).getId());
+                    }
+                    if (appointment.getTutor() != null){
+                        appointmentFields[3].setText(appointment.getTutor());
+                        appointment.setDatetime(null);
+                        appointmentFields[4].setText("");
+                        onDestroy();
+                    }
+                    else
+                        Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
                 }
                 else
                     Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();

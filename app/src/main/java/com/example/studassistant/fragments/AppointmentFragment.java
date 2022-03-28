@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.CodeGenerator;
 import com.example.studassistant.managers.RequestManager;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
+    public static ConsultDatetime selectedDatetime;
     private TextView[] appointmentFields;
     private RequestManager requestManager;
     private String dataToRestore;
@@ -48,6 +50,8 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.tutorButton).setOnClickListener(this);
         view.findViewById(R.id.dateTimeButton).setOnClickListener(this);
         view.findViewById(R.id.confirmButton).setOnClickListener(this);
+
+        selectedDatetime = new ConsultDatetime();
 
         appointment = new Appointment();
         if (dataToRestore != null){
@@ -98,7 +102,7 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
                 appointment.setId(Math.abs(CodeGenerator.NUM_GENERATOR.nextLong()));
 
                 if (requestManager.checkConnection())
-                    new PostConfirmationFragment(appointment,  getContext()).show(getParentFragmentManager(), "PostConfirmation");
+                    new PostConfirmationFragment(appointment, getContext(), AppointmentFragment.this).show(getParentFragmentManager(), "PostConfirmation");
                 else
                     Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
             }
@@ -108,5 +112,13 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     public void onResume(){
         super.onResume();
         getActivity().setTitle("Оформить запись");
+    }
+
+    public void clearData(){
+        appointment.setTutor(null);
+        appointment.setDatetime(null);
+
+        appointmentFields[3].setText("");
+        appointmentFields[4].setText("");
     }
 }

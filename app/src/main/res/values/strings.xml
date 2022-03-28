@@ -19,7 +19,7 @@
     <string name="tutor_hint">Фамилия И.О. преподавателя</string>
     <string name="datetime_field">Дата и время консультации</string>
     <string name="confirm_button_text">Оформить</string>
-    <string name="personal_button_text">Персональные данные</string>
+    <string name="group_button_text">Учебная группа</string>
     <string name="tutor_button_text">Преподаватель</string>
     <string name="datetime_button_text">Дата и время</string>
     <string name="ok_button_text">OK</string>
@@ -43,4 +43,6 @@
     <string name="group_field">Группа</string>
     <string name="tutor_field">Преподаватель</string>
     <string name="start_text">Нажмите на следующий значок в левом верхнем углу для начала работы с приложением!</string>
+    <string name="no_space_error">Извините, но все места на консультацию заняты</string>
+    <string name="has_space_text">Доступно место на запись!</string>
 </resources>

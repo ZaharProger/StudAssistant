@@ -44,7 +44,7 @@
             android:textColorLink="#62ACE8"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/codeField" />
+            app:layout_constraintTop_toBottomOf="@+id/spaceCheckField" />
 
         <Button
             android:id="@+id/post_no_button"
@@ -60,7 +60,7 @@
             android:textColorLink="#62ACE8"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/codeField" />
+            app:layout_constraintTop_toBottomOf="@+id/spaceCheckField" />
 
         <TextView
             android:id="@+id/textView8"
@@ -90,12 +90,26 @@
             android:textColor="#336C9A"
             android:textColorHighlight="#62ACE8"
             android:textColorLink="#62ACE8"
+            android:textIsSelectable="true"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/spaceCheckField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:textAlignment="textStart"
+            android:textColor="#336C9A"
+            android:textColorHighlight="#62ACE8"
+            android:textColorLink="#62ACE8"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/codeField" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

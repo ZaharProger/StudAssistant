@@ -1,20 +1,39 @@
 package com.example.studassistant.entities;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class ConsultDatetime {
     private long id;
     private long tutorId;
-    String date;
-    String time;
-    String room;
+    private String date;
+    private String time;
+    private String room;
+    private int orderedSpace;
+    private int maxSpace;
 
     public ConsultDatetime(){};
 
-    public ConsultDatetime(long id, long tutorId, String date, String time, String room){
+    public ConsultDatetime(ConsultDatetime consultDatetime){
+        this.id = consultDatetime.id;
+        this.tutorId = consultDatetime.tutorId;
+        this.date = consultDatetime.date;
+        this.time = consultDatetime.time;
+        this.room = consultDatetime.room;
+        this.orderedSpace = consultDatetime.orderedSpace;
+        this.maxSpace = consultDatetime.maxSpace;
+    }
+
+    public ConsultDatetime(long id, long tutorId, String date, String time, String room, int orderedSpace, int maxSpace){
         this.id = id;
         this.tutorId = tutorId;
         this.date = date;
         this.time = time;
         this.room = room;
+        this.orderedSpace = orderedSpace;
+        this.maxSpace = maxSpace;
     }
 
     public void setId(long id) {
@@ -57,8 +76,43 @@ public class ConsultDatetime {
         return room;
     }
 
+    public void setOrderedSpace(int orderedSpace) {
+        this.orderedSpace = orderedSpace;
+    }
+
+    public int getOrderedSpace() {
+        return orderedSpace;
+    }
+
+    public String getSpaceStat(){
+        return String.format("%s/%s", orderedSpace, maxSpace);
+    }
+
+    public void setMaxSpace(int maxSpace) {
+        this.maxSpace = maxSpace;
+    }
+
+    public int getMaxSpace() {
+        return maxSpace;
+    }
+
     @Override
     public String toString() {
-        return String.format("%s %s %s", date, time, room);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE dd.MM.yyyy", new Locale("ru"));
+        String consultDate = date;
+
+        Calendar now = Calendar.getInstance();
+
+        int actualDay = now.get(Calendar.DAY_OF_WEEK);
+        int days = Integer.parseInt(consultDate) - actualDay;
+        if (days <= 0)
+            days += 7;
+
+        now.add(Calendar.DAY_OF_YEAR, days);
+
+        Date date = now.getTime();
+        String formattedDate = dateFormatter.format(date);
+
+        return String.format("%s %s %s", formattedDate, time, room);
     }
 }

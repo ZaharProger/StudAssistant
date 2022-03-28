@@ -29,7 +29,7 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/personal_button_text"
+        android:text="@string/group_button_text"
         android:textAlignment="center"
         android:textColor="#336C9A"
         android:textColorHighlight="#62ACE8"

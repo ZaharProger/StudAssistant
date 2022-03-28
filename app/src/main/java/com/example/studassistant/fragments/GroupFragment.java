@@ -69,15 +69,19 @@ public class GroupFragment extends DialogFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (getRequestManager.checkConnection()){
-            if (groupList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
-                appointment.setGroup(null);
-            else
-                appointment.setGroup(groupList.getSelectedItem().toString());
+            if (groupList.getSelectedItem() != null){
+                if (groupList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
+                    appointment.setGroup(null);
+                else
+                    appointment.setGroup(groupList.getSelectedItem().toString());
 
-            if (!(appointment.getGroup() == null)){
-                appointmentFields[2].setText(appointment.getGroup());
+                if (!(appointment.getGroup() == null)){
+                    appointmentFields[2].setText(appointment.getGroup());
 
-                onDestroy();
+                    onDestroy();
+                }
+                else
+                    Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
             }
             else
                 Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();

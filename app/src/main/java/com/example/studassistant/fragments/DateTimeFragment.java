@@ -17,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.DatetimeListAdapter;
-import com.example.studassistant.adapters.TutorsListAdapter;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
@@ -47,7 +46,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
 
         getRequestManager = new GetRequestManager(context, ArrayType.DATES, datetimeList, null, appointment.getTutorId() + "", ExtraType.TUTOR_ID);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_layout, new String[]{"Загрузка..."});
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.default_spinner_layout, new String[]{"Загрузка..."});
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         adapter.notifyDataSetChanged();
 
@@ -69,6 +68,26 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (getRequestManager.checkConnection()){
+            if (datetimeList.getSelectedItem() != null){
+                if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка...") ||
+                        datetimeList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
+                    appointment.setDatetime(null);
+                else{
+                    appointment.setDatetime(datetimeList.getSelectedItem().toString());
+                    DatetimeListAdapter adapter = (DatetimeListAdapter) datetimeList.getAdapter();
+                    appointment.setConsultId(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()).getId());
+                    AppointmentFragment.selectedDatetime = adapter.getItemByIndex(datetimeList.getSelectedItemPosition());
+                }
+
+                if (appointment.getDatetime() != null){
+                    appointmentFields[4].setText(appointment.getDatetime());
+
+                    onDestroy();
+                }
+                else
+                    Toast.makeText(getContext(), R.string.ok_error_text, Toast.LENGTH_LONG).show();
+            }
+            else
             if (datetimeList.getSelectedItem().toString().equalsIgnoreCase("Загрузка...") ||
                     datetimeList.getSelectedItem().toString().equalsIgnoreCase("Информация не найдена!"))
                 appointment.setDatetime(null);

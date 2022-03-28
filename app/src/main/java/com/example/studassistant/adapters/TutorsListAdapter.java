@@ -39,8 +39,8 @@ public class TutorsListAdapter extends ArrayAdapter<String> {
         if (convertView == null){
             convertView = View.inflate(context, resourceId, null);
 
-            TextView startPositionItem = (TextView) convertView;
-            startPositionItem.setText(viewObjects[position]);
+            TextView item = (TextView) convertView;
+            item.setText(viewObjects[position]);
         }
 
         return convertView;

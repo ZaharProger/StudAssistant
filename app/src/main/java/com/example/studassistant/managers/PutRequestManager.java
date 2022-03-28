@@ -7,8 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
-import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
 
 import org.json.JSONException;
@@ -16,9 +15,10 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
-public class PostRequestManager extends RequestManager implements Response.Listener<JSONObject>, Response.ErrorListener{
-    private Appointment dataToPost;
-    public PostRequestManager(Context context, ArrayType type, Appointment dataToPost){
+public class PutRequestManager extends RequestManager implements Response.Listener<JSONObject>, Response.ErrorListener {
+    private ConsultDatetime dataToPost;
+
+    public PutRequestManager(Context context, ArrayType type, ConsultDatetime dataToPost) {
         super(context, type);
 
         this.dataToPost = dataToPost;
@@ -30,20 +30,18 @@ public class PostRequestManager extends RequestManager implements Response.Liste
 
         try {
             preparedDataToPost.put("id", dataToPost.getId());
-            preparedDataToPost.put("name", dataToPost.getName());
-            preparedDataToPost.put("surname", dataToPost.getSurname());
-            preparedDataToPost.put("group", dataToPost.getGroup());
-            preparedDataToPost.put("tutor", dataToPost.getTutor());
             preparedDataToPost.put("tutor_id", dataToPost.getTutorId());
-            preparedDataToPost.put("datetime", dataToPost.getDatetime());
-            preparedDataToPost.put("consult_id", dataToPost.getConsultId());
-            preparedDataToPost.put("usercode", dataToPost.getUserCode());
+            preparedDataToPost.put("day", dataToPost.getDate());
+            preparedDataToPost.put("time", dataToPost.getTime());
+            preparedDataToPost.put("room", dataToPost.getRoom());
+            preparedDataToPost.put("ordered_space", dataToPost.getOrderedSpace() + 1);
+            preparedDataToPost.put("max_space", dataToPost.getMaxSpace());
         }
         catch (JSONException exception) {
             exception.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL + type.toString().toLowerCase(Locale.ROOT), preparedDataToPost, this, this);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, URL + type.toString().toLowerCase(Locale.ROOT) + "/" + dataToPost.getId(), preparedDataToPost, this, this);
         Volley.newRequestQueue(context).add(request);
     }
 
@@ -55,5 +53,9 @@ public class PostRequestManager extends RequestManager implements Response.Liste
     @Override
     public void onErrorResponse(VolleyError error) {
 
+    }
+
+    public void setDataToPost(ConsultDatetime dataToPost) {
+        this.dataToPost = dataToPost;
     }
 }

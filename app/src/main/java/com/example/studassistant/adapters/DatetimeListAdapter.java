@@ -1,11 +1,13 @@
 package com.example.studassistant.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.studassistant.R;
 import com.example.studassistant.entities.ConsultDatetime;
 
 import java.util.ArrayList;
@@ -39,8 +41,19 @@ public class DatetimeListAdapter extends ArrayAdapter<String> {
         if (convertView == null){
             convertView = View.inflate(context, resourceId, null);
 
-            TextView startPositionItem = (TextView) convertView;
-            startPositionItem.setText(viewObjects[position]);
+            TextView spaceField = convertView.findViewById(R.id.spaceField);
+            spaceField.setText(objects.get(position).getSpaceStat());
+
+            double spaceStat = objects.get(position).getOrderedSpace() / (1.0 * objects.get(position).getMaxSpace());
+            if (spaceStat < 0.5)
+                spaceField.setBackgroundColor(Color.parseColor("#32CD32"));
+            else if (spaceStat < 0.8)
+                spaceField.setBackgroundColor(Color.parseColor("#FF8C00"));
+            else
+                spaceField.setBackgroundColor(Color.parseColor("#FF0000"));
+
+            TextView consultData = convertView.findViewById(R.id.consultData);
+            consultData.setText(viewObjects[position]);
         }
 
         return convertView;
