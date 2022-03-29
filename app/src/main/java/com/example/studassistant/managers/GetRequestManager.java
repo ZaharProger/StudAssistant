@@ -16,6 +16,7 @@ import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
 import com.example.studassistant.adapters.DatetimeListAdapter;
 import com.example.studassistant.adapters.TutorsListAdapter;
+import com.example.studassistant.constants.PinnedDataStorage;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.entities.Group;
@@ -42,6 +43,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     private ExtraType extraType;
     private TextView monitorMessage;
     private boolean toMonitor;
+    private boolean addToPinned;
 
     public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
         super(context, type);
@@ -160,6 +162,8 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                             else
                                 monitorMessage.setText(context.getString(R.string.no_space_error));
                         }
+                        else if (addToPinned)
+                            PinnedDataStorage.pinnedData.add(consultDatetime);
                         else
                             dates.add(consultDatetime);
                         break;
@@ -260,5 +264,9 @@ public class GetRequestManager extends RequestManager implements Response.Listen
 
     public void setDataToRemember(String dataToRemember) {
         this.dataToRemember = dataToRemember;
+    }
+
+    public void allowAddToPinned(boolean addToPinned) {
+        this.addToPinned = addToPinned;
     }
 }

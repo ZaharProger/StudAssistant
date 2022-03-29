@@ -88,7 +88,12 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
                 adapter.removeSwipedItem(indexToRemove);
                 adapter.updateCheckStatus();
 
-                new DeleteConfirmationFragment(MyAppointmentFragment.this, adapter, getContext(), true, indexToRemove, itemToRemove).show(getParentFragmentManager(), "DeleteConfirmation");
+                if (getRequestManager.checkConnection())
+                    new DeleteConfirmationFragment(MyAppointmentFragment.this, adapter, getContext(), true, indexToRemove, itemToRemove).show(getParentFragmentManager(), "DeleteConfirmation");
+                else{
+                    adapter.addItem(indexToRemove, itemToRemove);
+                    Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -136,8 +141,11 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
         if (view.getId() == R.id.removeAppointmentButton){
             AppointmentsListAdapter adapter = (AppointmentsListAdapter) appointmentsList.getAdapter();
 
-            if (!adapter.getAppointmentsToRemove().isEmpty())
-                new DeleteConfirmationFragment(MyAppointmentFragment.this, adapter, getContext(), false, 0, null).show(getParentFragmentManager(), "DeleteConfirmation");
+            if (!adapter.getAppointmentsToRemove().isEmpty() )
+                if (getRequestManager.checkConnection())
+                    new DeleteConfirmationFragment(MyAppointmentFragment.this, adapter, getContext(), false, 0, null).show(getParentFragmentManager(), "DeleteConfirmation");
+                else
+                    Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(getContext(), R.string.remove_failure_text, Toast.LENGTH_LONG).show();
         }

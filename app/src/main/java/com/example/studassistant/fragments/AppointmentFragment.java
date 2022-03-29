@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
-    public static ConsultDatetime selectedDatetime;
     private TextView[] appointmentFields;
     private RequestManager requestManager;
     private String dataToRestore;
@@ -50,8 +49,6 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.tutorButton).setOnClickListener(this);
         view.findViewById(R.id.dateTimeButton).setOnClickListener(this);
         view.findViewById(R.id.confirmButton).setOnClickListener(this);
-
-        selectedDatetime = new ConsultDatetime();
 
         appointment = new Appointment();
         if (dataToRestore != null){

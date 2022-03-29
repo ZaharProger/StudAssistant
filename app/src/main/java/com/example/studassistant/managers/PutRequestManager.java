@@ -17,11 +17,13 @@ import java.util.Locale;
 
 public class PutRequestManager extends RequestManager implements Response.Listener<JSONObject>, Response.ErrorListener {
     private ConsultDatetime dataToPost;
+    private boolean toIncrease;
 
-    public PutRequestManager(Context context, ArrayType type, ConsultDatetime dataToPost) {
+    public PutRequestManager(Context context, ArrayType type, ConsultDatetime dataToPost, boolean toIncrease) {
         super(context, type);
 
         this.dataToPost = dataToPost;
+        this.toIncrease = toIncrease;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class PutRequestManager extends RequestManager implements Response.Listen
             preparedDataToPost.put("day", dataToPost.getDate());
             preparedDataToPost.put("time", dataToPost.getTime());
             preparedDataToPost.put("room", dataToPost.getRoom());
-            preparedDataToPost.put("ordered_space", dataToPost.getOrderedSpace() + 1);
+            preparedDataToPost.put("ordered_space", dataToPost.getOrderedSpace() + ((toIncrease)? 1 : -1));
             preparedDataToPost.put("max_space", dataToPost.getMaxSpace());
         }
         catch (JSONException exception) {

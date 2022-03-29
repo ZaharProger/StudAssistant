@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.DatetimeListAdapter;
+import com.example.studassistant.constants.PinnedDataStorage;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
@@ -76,7 +77,10 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
                     appointment.setDatetime(datetimeList.getSelectedItem().toString());
                     DatetimeListAdapter adapter = (DatetimeListAdapter) datetimeList.getAdapter();
                     appointment.setConsultId(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()).getId());
-                    AppointmentFragment.selectedDatetime = adapter.getItemByIndex(datetimeList.getSelectedItemPosition());
+
+                    if (!PinnedDataStorage.pinnedData.isEmpty())
+                        PinnedDataStorage.pinnedData.clear();
+                    PinnedDataStorage.pinnedData.add(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()));
                 }
 
                 if (appointment.getDatetime() != null){

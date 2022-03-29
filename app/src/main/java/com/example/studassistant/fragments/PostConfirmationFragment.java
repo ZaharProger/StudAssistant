@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
+import com.example.studassistant.constants.PinnedDataStorage;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.enums.ExtraType;
@@ -74,7 +75,7 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
         view.findViewById(R.id.post_no_button).setOnClickListener(this);
 
         postRequestManager = new PostRequestManager(context, ArrayType.APPOINTMENTS, appointment);
-        putRequestManager = new PutRequestManager(context, ArrayType.DATES, AppointmentFragment.selectedDatetime);
+        putRequestManager = new PutRequestManager(context, ArrayType.DATES, PinnedDataStorage.pinnedData.get(0), true);
 
         return view;
     }
@@ -94,6 +95,8 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
                     }
 
                     fragment.clearData();
+                    PinnedDataStorage.pinnedData.clear();
+
                     Toast.makeText(getContext(), R.string.post_success_text, Toast.LENGTH_LONG).show();
                 }
                 else
