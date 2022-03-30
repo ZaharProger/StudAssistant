@@ -42,12 +42,12 @@ public class DataBaseManager extends SQLiteOpenHelper {
         }
     }
 
-    public boolean add(String data){
+    public boolean add(long id, String data){
         boolean result;
 
         try{
             SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-            sqLiteDatabase.execSQL(String.format("INSERT INTO %s(%s) VALUES('%s');", DataBaseValues.TABLE_NAME, DataBaseValues.TUTOR_PERSONAL_COLUMN, data));
+            sqLiteDatabase.execSQL(String.format("INSERT INTO %s(%s, %s) VALUES(%d, '%s');", DataBaseValues.TABLE_NAME, DataBaseValues.ID_COLUMN, DataBaseValues.TUTOR_PERSONAL_COLUMN, id, data));
             result = true;
         }
         catch (SQLException exception){

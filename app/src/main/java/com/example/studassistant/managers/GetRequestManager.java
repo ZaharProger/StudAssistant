@@ -29,10 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class GetRequestManager extends RequestManager implements Response.Listener<JSONArray>, Response.ErrorListener {
@@ -43,7 +40,6 @@ public class GetRequestManager extends RequestManager implements Response.Listen
     private ExtraType extraType;
     private TextView monitorMessage;
     private boolean toMonitor;
-    private boolean addToPinned;
 
     public GetRequestManager(Context context, ArrayType type, Spinner itemsListSpinner, RecyclerView itemsListRecyclerView){
         super(context, type);
@@ -158,12 +154,10 @@ public class GetRequestManager extends RequestManager implements Response.Listen
 
                         if (toMonitor){
                             if (consultDatetime.getOrderedSpace() < consultDatetime.getMaxSpace())
-                                monitorMessage.setText(context.getString(R.string.has_space_text));
+                                monitorMessage.setText("  ");
                             else
-                                monitorMessage.setText(context.getString(R.string.no_space_error));
+                                monitorMessage.setText(" ");
                         }
-                        else if (addToPinned)
-                            PinnedDataStorage.pinnedData.add(consultDatetime);
                         else
                             dates.add(consultDatetime);
                         break;
@@ -246,8 +240,6 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                 AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
                 itemsListRecyclerView.setAdapter(appointmentsListAdapter);
             }
-
-            Volley.newRequestQueue(context).getCache().clear();
         }
         catch (JSONException exception) {
             exception.printStackTrace();
@@ -264,9 +256,5 @@ public class GetRequestManager extends RequestManager implements Response.Listen
 
     public void setDataToRemember(String dataToRemember) {
         this.dataToRemember = dataToRemember;
-    }
-
-    public void allowAddToPinned(boolean addToPinned) {
-        this.addToPinned = addToPinned;
     }
 }

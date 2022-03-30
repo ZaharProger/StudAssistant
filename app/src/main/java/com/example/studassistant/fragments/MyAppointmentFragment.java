@@ -44,7 +44,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
     private DeleteRequestManager deleteRequestManager;
     private EditText codeFilter;
     private ImageView notFoundImage;
-    private ProgressBar progressBar;
+    private ProgressBar myAppointmentProgressBar;
     private Button removeAppointmentButton;
 
     @Nullable
@@ -52,7 +52,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.actitivty_my_appointment, container, false);
 
-        progressBar = view.findViewById(R.id.progressBar);
+        myAppointmentProgressBar = view.findViewById(R.id.myAppointmentProgressBar);
 
         notFoundImage = view.findViewById(R.id.notFoundImage);
         notFoundImage.setVisibility(View.INVISIBLE);
@@ -161,7 +161,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (getRequestManager.checkConnection()){
-            progressBar.setVisibility(View.VISIBLE);
+            myAppointmentProgressBar.setVisibility(View.VISIBLE);
             appointmentsList.setVisibility(View.INVISIBLE);
             notFoundImage.setVisibility(View.INVISIBLE);
 
@@ -201,7 +201,7 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
     }
 
     public void setVisibilities() {
-        progressBar.setVisibility(View.INVISIBLE);
+        myAppointmentProgressBar.setVisibility(View.INVISIBLE);
 
         try{
             if (appointmentsList.getAdapter().getItemCount() == 0){

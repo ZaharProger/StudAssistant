@@ -31,7 +31,7 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
     private RecyclerView likedList;
     private DataBaseManager dataBaseManager;
     private ImageView notFoundImageDuplicated;
-    private ProgressBar progressBarDuplicated;
+    private ProgressBar likedProgressBar;
     private Button removeLikedButton;
 
     @Nullable
@@ -43,7 +43,7 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
         removeLikedButton.setOnClickListener(this);
         removeLikedButton.setVisibility(View.INVISIBLE);
 
-        progressBarDuplicated = view.findViewById(R.id.progressBarDuplicated);
+        likedProgressBar = view.findViewById(R.id.likedProgressBar);
 
         notFoundImageDuplicated = view.findViewById(R.id.notFoundImageDuplicated);
         notFoundImageDuplicated.setVisibility(View.INVISIBLE);
@@ -139,7 +139,7 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
     }
 
     public void setVisibilities() {
-        progressBarDuplicated.setVisibility(View.INVISIBLE);
+        likedProgressBar.setVisibility(View.INVISIBLE);
 
         try{
             if (likedList.getAdapter().getItemCount() == 0){

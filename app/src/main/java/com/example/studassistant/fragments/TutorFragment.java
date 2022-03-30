@@ -116,7 +116,9 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
                         Toast.makeText(context, R.string.exclude_from_liked_text, Toast.LENGTH_LONG).show();
                     }
                     else {
-                        dataBaseManager.add(tutorsList.getSelectedItem().toString());
+                        TutorsListAdapter adapter = (TutorsListAdapter)tutorsList.getAdapter();
+                        Tutor tutor = adapter.getItemByIndex(tutorsList.getSelectedItemPosition());
+                        dataBaseManager.add(tutor.getId(), tutor.toString());
                         addToLikedButton.setImageResource(R.drawable.ic_liked_coloured);
 
                         Toast.makeText(context, R.string.add_to_liked_text, Toast.LENGTH_LONG).show();

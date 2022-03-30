@@ -47,7 +47,7 @@ public class DatetimeListAdapter extends ArrayAdapter<String> {
             double spaceStat = objects.get(position).getOrderedSpace() / (1.0 * objects.get(position).getMaxSpace());
             if (spaceStat < 0.5)
                 spaceField.setBackgroundColor(Color.parseColor("#32CD32"));
-            else if (spaceStat < 0.8)
+            else if (spaceStat < 0.75)
                 spaceField.setBackgroundColor(Color.parseColor("#FF8C00"));
             else
                 spaceField.setBackgroundColor(Color.parseColor("#FF0000"));
@@ -61,5 +61,15 @@ public class DatetimeListAdapter extends ArrayAdapter<String> {
 
     public ConsultDatetime getItemByIndex(int index) {
         return objects.get(index);
+    }
+
+    public ConsultDatetime getItemById(long id){
+        ConsultDatetime foundData = new ConsultDatetime();
+        for (ConsultDatetime item : objects){
+            if (item.getId() == id)
+                foundData = item;
+        }
+
+        return foundData;
     }
 }

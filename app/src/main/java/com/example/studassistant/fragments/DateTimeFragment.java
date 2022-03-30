@@ -78,9 +78,7 @@ public class DateTimeFragment extends DialogFragment implements View.OnClickList
                     DatetimeListAdapter adapter = (DatetimeListAdapter) datetimeList.getAdapter();
                     appointment.setConsultId(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()).getId());
 
-                    if (!PinnedDataStorage.pinnedData.isEmpty())
-                        PinnedDataStorage.pinnedData.clear();
-                    PinnedDataStorage.pinnedData.add(adapter.getItemByIndex(datetimeList.getSelectedItemPosition()));
+                    PinnedDataStorage.pinnedSingleData = adapter.getItemByIndex(datetimeList.getSelectedItemPosition());
                 }
 
                 if (appointment.getDatetime() != null){

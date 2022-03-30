@@ -44,5 +44,4 @@
     <string name="tutor_field">Преподаватель</string>
     <string name="start_text">Нажмите на следующий значок в левом верхнем углу для начала работы с приложением!</string>
     <string name="no_space_error">Извините, но все места на консультацию заняты</string>
-    <string name="has_space_text">Доступно место на запись!</string>
 </resources>

@@ -17,13 +17,11 @@ import java.util.Locale;
 
 public class PutRequestManager extends RequestManager implements Response.Listener<JSONObject>, Response.ErrorListener {
     private ConsultDatetime dataToPost;
-    private boolean toIncrease;
 
-    public PutRequestManager(Context context, ArrayType type, ConsultDatetime dataToPost, boolean toIncrease) {
+    public PutRequestManager(Context context, ArrayType type, ConsultDatetime dataToPost) {
         super(context, type);
 
         this.dataToPost = dataToPost;
-        this.toIncrease = toIncrease;
     }
 
     @Override
@@ -36,7 +34,7 @@ public class PutRequestManager extends RequestManager implements Response.Listen
             preparedDataToPost.put("day", dataToPost.getDate());
             preparedDataToPost.put("time", dataToPost.getTime());
             preparedDataToPost.put("room", dataToPost.getRoom());
-            preparedDataToPost.put("ordered_space", dataToPost.getOrderedSpace() + ((toIncrease)? 1 : -1));
+            preparedDataToPost.put("ordered_space", dataToPost.getOrderedSpace());
             preparedDataToPost.put("max_space", dataToPost.getMaxSpace());
         }
         catch (JSONException exception) {
@@ -44,17 +42,17 @@ public class PutRequestManager extends RequestManager implements Response.Listen
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, URL + type.toString().toLowerCase(Locale.ROOT) + "/" + dataToPost.getId(), preparedDataToPost, this, this);
+        request.setShouldCache(false);
+
         Volley.newRequestQueue(context).add(request);
     }
 
     @Override
     public void onResponse(JSONObject response) {
-
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
-
     }
 
     public void setDataToPost(ConsultDatetime dataToPost) {

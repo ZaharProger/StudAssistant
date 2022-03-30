@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
     private TextView spaceCheckField;
     private boolean hasEmptySpace;
     private AppointmentFragment fragment;
+    private ProgressBar postProgressButton;
 
     public PostConfirmationFragment(Appointment appointment, Context context, AppointmentFragment fragment){
         this.appointment = appointment;
@@ -51,6 +53,9 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_post_confirmation, container, false);
+
+        postProgressButton = view.findViewById(R.id.postProgressBar);
+        postProgressButton.setVisibility(View.INVISIBLE);
 
         codeField = view.findViewById(R.id.codeField);
 
@@ -66,16 +71,11 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
         spaceCheckField = view.findViewById(R.id.spaceCheckField);
         spaceCheckField.addTextChangedListener(this);
 
-        GetRequestManager getRequestManager = new GetRequestManager(context, ArrayType.DATES, null, null,
-                                                                    appointment.getConsultId() + "", ExtraType.ID);
-        getRequestManager.setMonitorValue(spaceCheckField);
-        getRequestManager.createRequest();
-
         view.findViewById(R.id.post_yes_button).setOnClickListener(this);
         view.findViewById(R.id.post_no_button).setOnClickListener(this);
 
         postRequestManager = new PostRequestManager(context, ArrayType.APPOINTMENTS, appointment);
-        putRequestManager = new PutRequestManager(context, ArrayType.DATES, PinnedDataStorage.pinnedData.get(0), true);
+        putRequestManager = new PutRequestManager(context, ArrayType.DATES, PinnedDataStorage.pinnedSingleData);
 
         return view;
     }
@@ -83,30 +83,18 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.post_yes_button){
-            if (postRequestManager.checkConnection()){
-                if (hasEmptySpace){
-                    putRequestManager.createRequest();
-                    postRequestManager.createRequest();
-
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(context.getFilesDir() + "/code.txt", false))){
-                        writer.write(codeField.getText().toString());
-                    }
-                    catch(IOException exception){
-                    }
-
-                    fragment.clearData();
-                    PinnedDataStorage.pinnedData.clear();
-
-                    Toast.makeText(getContext(), R.string.post_success_text, Toast.LENGTH_LONG).show();
-                }
-                else
-                    Toast.makeText(context, R.string.no_space_error, Toast.LENGTH_LONG).show();
+            GetRequestManager getRequestManager = new GetRequestManager(context, ArrayType.DATES, null, null,
+                    appointment.getConsultId() + "", ExtraType.ID);
+            getRequestManager.setMonitorValue(spaceCheckField);
+            if (getRequestManager.checkConnection()){
+                postProgressButton.setVisibility(View.VISIBLE);
+                getRequestManager.createRequest();
             }
             else
-                Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
-
-        onDestroy();
+        else if (view.getId() == R.id.post_no_button)
+            onDestroy();
     }
 
     @Override
@@ -123,7 +111,33 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        hasEmptySpace = spaceCheckField.getText().toString().equalsIgnoreCase(context.getString(R.string.has_space_text));
+        hasEmptySpace = spaceCheckField.getText().toString().equalsIgnoreCase("  ");
+
+        if (postRequestManager.checkConnection()){
+            if (hasEmptySpace){
+                PinnedDataStorage.pinnedSingleData.changeOrderedSpace(1);
+                putRequestManager.setDataToPost(PinnedDataStorage.pinnedSingleData);
+                putRequestManager.createRequest();
+                postRequestManager.createRequest();
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(context.getFilesDir() + "/code.txt", false))){
+                    writer.write(codeField.getText().toString());
+                }
+                catch(IOException exception){
+                }
+
+                fragment.clearDatetime();
+                PinnedDataStorage.pinnedSingleData = null;
+
+                Toast.makeText(getContext(), R.string.post_success_text, Toast.LENGTH_LONG).show();
+            }
+            else
+                Toast.makeText(context, R.string.no_space_error, Toast.LENGTH_LONG).show();
+
+            onDestroy();
+        }
+        else
+            Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
     }
 
     @Override

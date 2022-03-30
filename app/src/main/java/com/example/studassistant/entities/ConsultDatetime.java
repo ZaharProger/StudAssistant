@@ -115,4 +115,8 @@ public class ConsultDatetime {
 
         return String.format("%s %s %s", formattedDate, time, room);
     }
+
+    public void changeOrderedSpace(int value) {
+        orderedSpace += value;
+    }
 }

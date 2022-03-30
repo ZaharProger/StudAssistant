@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.entities.Appointment;
-import com.example.studassistant.entities.ConsultDatetime;
+import com.example.studassistant.entities.LikedListElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.CodeGenerator;
 import com.example.studassistant.managers.RequestManager;
@@ -27,9 +27,9 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
     private Appointment appointment;
     private TextView[] appointmentFields;
     private RequestManager requestManager;
-    private String dataToRestore;
+    private LikedListElement dataToRestore;
 
-    public AppointmentFragment(String dataToRestore){
+    public AppointmentFragment(LikedListElement dataToRestore){
         this.dataToRestore = dataToRestore;
     }
 
@@ -52,8 +52,9 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
 
         appointment = new Appointment();
         if (dataToRestore != null){
-            appointmentFields[3].setText(dataToRestore);
-            appointment.setTutor(dataToRestore);
+            appointmentFields[3].setText(dataToRestore.getPersonal());
+            appointment.setTutor(dataToRestore.getPersonal());
+            appointment.setTutorId(dataToRestore.getId());
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(getContext().getFilesDir() + "/personal.txt"))){
@@ -111,11 +112,8 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
         getActivity().setTitle("Оформить запись");
     }
 
-    public void clearData(){
-        appointment.setTutor(null);
+    public void clearDatetime(){
         appointment.setDatetime(null);
-
-        appointmentFields[3].setText("");
         appointmentFields[4].setText("");
     }
 }

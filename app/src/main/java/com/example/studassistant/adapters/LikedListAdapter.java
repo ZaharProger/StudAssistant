@@ -47,7 +47,7 @@ public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.Like
 
         holder.makeAppointmentButton.setOnClickListener((view) ->
             fragmentManager.beginTransaction().hide(fragmentManager.getFragments().get(0))
-                                            .add(R.id.windowContainer, new AppointmentFragment(item.getPersonal()))
+                                            .add(R.id.windowContainer, new AppointmentFragment(item))
                                             .addToBackStack("stack")
                                             .commit());
         item.setMakeAppointmentButton(holder.makeAppointmentButton);
