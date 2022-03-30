@@ -2,11 +2,14 @@ package com.example.studassistant.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,7 +31,7 @@ import com.example.studassistant.managers.PutRequestManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DeleteConfirmationFragment extends DialogFragment implements View.OnClickListener{
+public class DeleteConfirmationFragment extends DialogFragment implements View.OnClickListener, TextWatcher {
     private AppointmentsListElement itemToRemove;
     private MyAppointmentFragment fragment;
     private AppointmentsListAdapter adapter;
@@ -39,6 +42,7 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
     private int indexToRemove;
     private Spinner dataTransfer;
     private ProgressBar deleteProgressBar;
+    TextView dataUpdateField;
 
     public DeleteConfirmationFragment(MyAppointmentFragment fragment, AppointmentsListAdapter adapter, Context context, boolean bySwipe, int indexToRemove, AppointmentsListElement itemToRemove){
         this.fragment = fragment;
@@ -58,15 +62,11 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
         deleteProgressBar.setVisibility(View.INVISIBLE);
 
         dataTransfer = new Spinner(context);
+        dataUpdateField = view.findViewById(R.id.dataUpdateField);
+        dataUpdateField.addTextChangedListener(this);
 
         view.findViewById(R.id.delete_yes_button).setOnClickListener(this);
         view.findViewById(R.id.delete_no_button).setOnClickListener(this);
-
-        GetRequestManager getRequestManager = new GetRequestManager(context, ArrayType.DATES, dataTransfer, null, null, ExtraType.ID);
-
-        if (bySwipe)
-            getRequestManager.setRequestExtra(itemToRemove.getAppointment().getConsultId() + "");
-        getRequestManager.createRequest();
 
         deleteRequestManager = new DeleteRequestManager(context, ArrayType.APPOINTMENTS, 0);
         putRequestManager = new PutRequestManager(context, ArrayType.DATES, null);
@@ -77,16 +77,62 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.delete_yes_button){
-            if (deleteRequestManager.checkConnection()){
+            GetRequestManager getRequestManager = new GetRequestManager(context, ArrayType.DATES, dataTransfer, null, null, ExtraType.ID);
+            getRequestManager.setMonitorValue(dataUpdateField);
+            if (bySwipe)
+                getRequestManager.setRequestExtra(itemToRemove.getAppointment().getConsultId() + "");
+
+            getRequestManager.createRequest();
+        }
+        else{
+            if (bySwipe)
+                adapter.addItem(indexToRemove, itemToRemove);
+
+            fragment.setVisibilities();
+            onDestroy();
+        }
+    }
+
+    private HashMap<Long, Integer> sortAppointments(ArrayList<Appointment> appointmentsToRemove) {
+        HashMap<Long, Integer> sortedAppointments = new HashMap<>();
+
+        for (Appointment appointment : appointmentsToRemove){
+            if (!sortedAppointments.containsKey(appointment.getConsultId()))
+                sortedAppointments.put(appointment.getConsultId(), 1);
+            else
+                sortedAppointments.put(appointment.getConsultId(), sortedAppointments.get(appointment.getConsultId()) + 1);
+        }
+
+        return sortedAppointments;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        dismiss();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        boolean isDataUpdated = dataUpdateField.getText().toString().equalsIgnoreCase("  ");
+
+        if (deleteRequestManager.checkConnection()){
+            if (isDataUpdated){
                 deleteProgressBar.setVisibility(View.VISIBLE);
 
                 DatetimeListAdapter transferedData = (DatetimeListAdapter) dataTransfer.getAdapter();
                 if (!bySwipe){
                     ArrayList<Appointment> appointmentsToRemove = adapter.getAppointmentsToRemove();
-                    for (int i = 0; i < appointmentsToRemove.size(); ++i){
-                        adapter.removeCheckedItem(appointmentsToRemove.get(i).getId());
+                    for (int j = 0; j < appointmentsToRemove.size(); ++j){
+                        adapter.removeCheckedItem(appointmentsToRemove.get(j).getId());
 
-                        deleteRequestManager.setIdToDelete(appointmentsToRemove.get(i).getId());
+                        deleteRequestManager.setIdToDelete(appointmentsToRemove.get(j).getId());
                         deleteRequestManager.createRequest();
                     }
 
@@ -111,40 +157,19 @@ public class DeleteConfirmationFragment extends DialogFragment implements View.O
 
                 Toast.makeText(getContext(), R.string.remove_success_text, Toast.LENGTH_LONG).show();
             }
-            else{
-                if (bySwipe)
-                    adapter.addItem(indexToRemove, itemToRemove);
 
-                Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
-            }
+            onDestroy();
         }
         else{
             if (bySwipe)
                 adapter.addItem(indexToRemove, itemToRemove);
+
+            Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
         }
-
-        fragment.setVisibilities();
-
-        onDestroy();
-    }
-
-    private HashMap<Long, Integer> sortAppointments(ArrayList<Appointment> appointmentsToRemove) {
-        HashMap<Long, Integer> sortedAppointments = new HashMap<>();
-
-        for (Appointment appointment : appointmentsToRemove){
-            if (!sortedAppointments.containsKey(appointment.getConsultId()))
-                sortedAppointments.put(appointment.getConsultId(), 1);
-            else
-                sortedAppointments.put(appointment.getConsultId(), sortedAppointments.get(appointment.getConsultId()) + 1);
-        }
-
-        return sortedAppointments;
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
+    public void afterTextChanged(Editable editable) {
 
-        dismiss();
     }
 }
