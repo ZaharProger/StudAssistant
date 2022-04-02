@@ -40,7 +40,7 @@ public class GroupFragment extends DialogFragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_personal, container, false);
+        View view = inflater.inflate(R.layout.activity_group, container, false);
 
         groupFilter = view.findViewById(R.id.groupFilter);
         groupFilter.addTextChangedListener(this);
@@ -114,11 +114,11 @@ public class GroupFragment extends DialogFragment implements View.OnClickListene
         }
         else
             Toast.makeText(getContext(), R.string.connection_error_text, Toast.LENGTH_LONG).show();
+
     }
 
     @Override
     public void afterTextChanged(Editable editable) {
-
     }
 
     @Override

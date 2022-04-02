@@ -47,6 +47,7 @@
             android:layout_height="48dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/field_border"
+            android:gravity="start|center_vertical"
             android:hint="@string/tutor_hint"
             android:padding="8dp"
             android:textAlignment="textStart"
