@@ -1,6 +1,7 @@
 package com.example.studassistant.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.DatetimeListAdapter;
+import com.example.studassistant.constants.UserDataValues;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
@@ -26,13 +28,6 @@ import com.example.studassistant.managers.CodeGenerator;
 import com.example.studassistant.managers.GetRequestManager;
 import com.example.studassistant.managers.PostRequestManager;
 import com.example.studassistant.managers.PutRequestManager;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class PostConfirmationFragment extends DialogFragment implements View.OnClickListener, TextWatcher {
     private Appointment appointment;
@@ -63,12 +58,8 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
 
         codeField = view.findViewById(R.id.codeField);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(context.getFilesDir() + "/code.txt"))){
-            codeField.setText(reader.lines().collect(Collectors.joining()));
-        }
-        catch(IOException exception){
-            codeField.setText(CodeGenerator.generateCode(10));
-        }
+        SharedPreferences preferences = context.getSharedPreferences(UserDataValues.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        codeField.setText(preferences.getString(UserDataValues.USER_CODE, CodeGenerator.generateCode(10)));
 
         appointment.setUserCode(codeField.getText().toString());
 
@@ -127,11 +118,9 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
                 putRequestManager.createRequest();
                 postRequestManager.createRequest();
 
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(context.getFilesDir() + "/code.txt", false))){
-                    writer.write(codeField.getText().toString());
-                }
-                catch(IOException exception){
-                }
+                SharedPreferences preferences = context.getSharedPreferences(UserDataValues.PREFERENCES_NAME, Context.MODE_PRIVATE);
+                if (!preferences.contains(UserDataValues.USER_CODE))
+                    preferences.edit().putString(UserDataValues.USER_CODE, codeField.getText().toString()).apply();
 
                 fragment.clearDatetime();
 

@@ -1,6 +1,7 @@
 package com.example.studassistant;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.example.studassistant.constants.UserDataValues;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
@@ -26,8 +21,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        File personalFile = new File(getApplicationContext().getFilesDir() + "/personal.txt");
-        if (personalFile.exists()){
+        SharedPreferences preferences = getSharedPreferences(UserDataValues.PREFERENCES_NAME, MODE_PRIVATE);
+        if (preferences.contains(UserDataValues.USER_NAME) && preferences.contains(UserDataValues.USER_SURNAME)){
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
         else{
@@ -50,15 +45,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!(nameField.getText().toString().equalsIgnoreCase("") ||
         surnameField.getText().toString().equalsIgnoreCase(""))){
 
-            File personalFile = new File(getApplicationContext().getFilesDir() + "/personal.txt");
-            if (!personalFile.exists()){
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(getApplicationContext().getFilesDir() + "/personal.txt"))){
-                    writer.write(nameField.getText() + "\n" + surnameField.getText());
-                }
-                catch(IOException exception){
-
-                }
-            }
+            SharedPreferences preferences = getSharedPreferences(UserDataValues.PREFERENCES_NAME, MODE_PRIVATE);
+            preferences.edit().putString(UserDataValues.USER_NAME, nameField.getText().toString().trim()).apply();
+            preferences.edit().putString(UserDataValues.USER_SURNAME, surnameField.getText().toString().trim()).apply();
 
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }

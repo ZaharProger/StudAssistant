@@ -12,6 +12,7 @@
         android:layout_marginStart="4dp"
         android:background="#005B497E"
         android:gravity="center|center_horizontal|center_vertical"
+        android:padding="2dp"
         android:singleLine="true"
         android:textAlignment="center"
         android:textColor="#FFFFFF"

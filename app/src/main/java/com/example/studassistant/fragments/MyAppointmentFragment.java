@@ -1,5 +1,7 @@
 package com.example.studassistant.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -27,21 +29,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
+import com.example.studassistant.constants.UserDataValues;
 import com.example.studassistant.entities.AppointmentsListElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.enums.ExtraType;
-import com.example.studassistant.managers.DeleteRequestManager;
 import com.example.studassistant.managers.GetRequestManager;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class MyAppointmentFragment extends Fragment implements View.OnClickListener, TextWatcher, View.OnLayoutChangeListener {
     private RecyclerView appointmentsList;
     private GetRequestManager getRequestManager;
-    private DeleteRequestManager deleteRequestManager;
     private EditText codeFilter;
     private ImageView notFoundImage;
     private ProgressBar myAppointmentProgressBar;
@@ -131,8 +127,6 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
         getRequestManager = new GetRequestManager(getContext(), ArrayType.APPOINTMENTS, null, appointmentsList, null, ExtraType.USERCODE);
         codeFilter.setText("");
 
-        deleteRequestManager = new DeleteRequestManager(getContext(), ArrayType.APPOINTMENTS, 0);
-
         return view;
     }
 
@@ -177,16 +171,9 @@ public class MyAppointmentFragment extends Fragment implements View.OnClickListe
     }
 
     private String getUserCode(){
-        String userCode;
+        SharedPreferences preferences = getContext().getSharedPreferences(UserDataValues.PREFERENCES_NAME, Context.MODE_PRIVATE);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(getContext().getFilesDir() + "/code.txt"))){
-            userCode = reader.lines().collect(Collectors.joining());
-        }
-        catch(IOException exception){
-            userCode = "У вас нет идентификатора!";
-        }
-
-        return userCode;
+        return preferences.getString(UserDataValues.USER_CODE, "У вас нет идентификатора!");
     }
 
     private void updateAnimation(){
