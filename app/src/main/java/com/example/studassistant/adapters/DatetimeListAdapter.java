@@ -41,19 +41,8 @@ public class DatetimeListAdapter extends ArrayAdapter<String> {
         if (convertView == null){
             convertView = View.inflate(context, resourceId, null);
 
-            TextView spaceField = convertView.findViewById(R.id.spaceField);
-            spaceField.setText(objects.get(position).getSpaceStat());
-
-            double spaceStat = objects.get(position).getOrderedSpace() / (1.0 * objects.get(position).getMaxSpace());
-            if (spaceStat < 0.5)
-                spaceField.setBackgroundColor(Color.parseColor("#32CD32"));
-            else if (spaceStat < 0.75)
-                spaceField.setBackgroundColor(Color.parseColor("#FF8C00"));
-            else
-                spaceField.setBackgroundColor(Color.parseColor("#FF0000"));
-
-            TextView consultData = convertView.findViewById(R.id.consultData);
-            consultData.setText(viewObjects[position]);
+            TextView item = (TextView) convertView;
+            item.setText(viewObjects[position]);
         }
 
         return convertView;

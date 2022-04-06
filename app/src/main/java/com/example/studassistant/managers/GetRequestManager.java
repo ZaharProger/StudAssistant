@@ -218,7 +218,7 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         break;
                     case DATES:
                         if (!dates.isEmpty()){
-                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.dates_spinner_layout, dates);
+                            DatetimeListAdapter datetimeListAdapter = new DatetimeListAdapter(context, R.layout.default_spinner_layout, dates);
                             datetimeListAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
                             datetimeListAdapter.notifyDataSetChanged();
 
