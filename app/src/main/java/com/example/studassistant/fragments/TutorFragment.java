@@ -165,7 +165,6 @@ public class TutorFragment extends DialogFragment implements View.OnClickListene
 
     @Override
     public void afterTextChanged(Editable editable) {
-
     }
 
     @Override

@@ -16,7 +16,6 @@ import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
 import com.example.studassistant.adapters.DatetimeListAdapter;
 import com.example.studassistant.adapters.TutorsListAdapter;
-import com.example.studassistant.constants.PinnedDataStorage;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.entities.Group;
@@ -117,6 +116,8 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                     break;
             }
 
+            boolean isFound = false;
+
             for (int i = 0; i < response.length(); ++i){
                 JSONObject extractedObject = response.getJSONObject(i);
                 switch (type){
@@ -153,13 +154,11 @@ public class GetRequestManager extends RequestManager implements Response.Listen
                         consultDatetime.setMaxSpace(extractedObject.getInt("max_space"));
 
                         if (toMonitor){
-                            if (consultDatetime.getOrderedSpace() < consultDatetime.getMaxSpace())
-                                monitorMessage.setText("  ");
-                            else
-                                monitorMessage.setText(" ");
+                            if (consultDatetime.getOrderedSpace() < consultDatetime.getMaxSpace() && !isFound)
+                                isFound = true;
                         }
-                        else
-                            dates.add(consultDatetime);
+
+                        dates.add(consultDatetime);
                         break;
                     case APPOINTMENTS:
                         Appointment appointment = new Appointment();
@@ -239,6 +238,13 @@ public class GetRequestManager extends RequestManager implements Response.Listen
             if (itemsListRecyclerView != null){
                 AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
                 itemsListRecyclerView.setAdapter(appointmentsListAdapter);
+            }
+
+            if (toMonitor){
+                if (isFound)
+                    monitorMessage.setText("  ");
+                else
+                    monitorMessage.setText(" ");
             }
         }
         catch (JSONException exception) {

@@ -1,6 +1,7 @@
 package com.example.studassistant.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,21 +18,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.studassistant.R;
-import com.example.studassistant.constants.PinnedDataStorage;
+import com.example.studassistant.adapters.DatetimeListAdapter;
+import com.example.studassistant.constants.UserDataValues;
 import com.example.studassistant.entities.Appointment;
+import com.example.studassistant.entities.ConsultDatetime;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.enums.ExtraType;
 import com.example.studassistant.managers.CodeGenerator;
 import com.example.studassistant.managers.GetRequestManager;
 import com.example.studassistant.managers.PostRequestManager;
 import com.example.studassistant.managers.PutRequestManager;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class PostConfirmationFragment extends DialogFragment implements View.OnClickListener, TextWatcher {
     private Appointment appointment;
@@ -39,9 +36,9 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
     private Context context;
     private TextView codeField;
     private TextView spaceCheckField;
-    private boolean hasEmptySpace;
     private AppointmentFragment fragment;
-    private ProgressBar postProgressButton;
+    private ProgressBar postProgressBar;
+    private Spinner dataTransfer;
 
     public PostConfirmationFragment(Appointment appointment, Context context, AppointmentFragment fragment){
         this.appointment = appointment;
@@ -54,17 +51,15 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_post_confirmation, container, false);
 
-        postProgressButton = view.findViewById(R.id.postProgressBar);
-        postProgressButton.setVisibility(View.INVISIBLE);
+        dataTransfer = new Spinner(context);
+
+        postProgressBar = view.findViewById(R.id.postProgressBar);
+        postProgressBar.setVisibility(View.INVISIBLE);
 
         codeField = view.findViewById(R.id.codeField);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(context.getFilesDir() + "/code.txt"))){
-            codeField.setText(reader.lines().collect(Collectors.joining()));
-        }
-        catch(IOException exception){
-            codeField.setText(CodeGenerator.generateCode(10));
-        }
+        SharedPreferences preferences = context.getSharedPreferences(UserDataValues.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        codeField.setText(preferences.getString(UserDataValues.USER_CODE, CodeGenerator.generateCode(10)));
 
         appointment.setUserCode(codeField.getText().toString());
 
@@ -75,7 +70,7 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
         view.findViewById(R.id.post_no_button).setOnClickListener(this);
 
         postRequestManager = new PostRequestManager(context, ArrayType.APPOINTMENTS, appointment);
-        putRequestManager = new PutRequestManager(context, ArrayType.DATES, PinnedDataStorage.pinnedSingleData);
+        putRequestManager = new PutRequestManager(context, ArrayType.DATES, null);
 
         return view;
     }
@@ -83,11 +78,11 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.post_yes_button){
-            GetRequestManager getRequestManager = new GetRequestManager(context, ArrayType.DATES, null, null,
+            GetRequestManager getRequestManager = new GetRequestManager(context, ArrayType.DATES, dataTransfer, null,
                     appointment.getConsultId() + "", ExtraType.ID);
             getRequestManager.setMonitorValue(spaceCheckField);
             if (getRequestManager.checkConnection()){
-                postProgressButton.setVisibility(View.VISIBLE);
+                postProgressBar.setVisibility(View.VISIBLE);
                 getRequestManager.createRequest();
             }
             else
@@ -111,23 +106,23 @@ public class PostConfirmationFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        hasEmptySpace = spaceCheckField.getText().toString().equalsIgnoreCase("  ");
+        boolean hasEmptySpace = spaceCheckField.getText().toString().equalsIgnoreCase("  ");
 
         if (postRequestManager.checkConnection()){
             if (hasEmptySpace){
-                PinnedDataStorage.pinnedSingleData.changeOrderedSpace(1);
-                putRequestManager.setDataToPost(PinnedDataStorage.pinnedSingleData);
+                DatetimeListAdapter adapter = (DatetimeListAdapter)dataTransfer.getAdapter();
+                ConsultDatetime dataToPost = adapter.getItemByIndex(0);
+                dataToPost.changeOrderedSpace(1);
+
+                putRequestManager.setDataToPost(dataToPost);
                 putRequestManager.createRequest();
                 postRequestManager.createRequest();
 
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(context.getFilesDir() + "/code.txt", false))){
-                    writer.write(codeField.getText().toString());
-                }
-                catch(IOException exception){
-                }
+                SharedPreferences preferences = context.getSharedPreferences(UserDataValues.PREFERENCES_NAME, Context.MODE_PRIVATE);
+                if (!preferences.contains(UserDataValues.USER_CODE))
+                    preferences.edit().putString(UserDataValues.USER_CODE, codeField.getText().toString()).apply();
 
                 fragment.clearDatetime();
-                PinnedDataStorage.pinnedSingleData = null;
 
                 Toast.makeText(getContext(), R.string.post_success_text, Toast.LENGTH_LONG).show();
             }

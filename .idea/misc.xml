@@ -95,14 +95,18 @@
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_datetime.xml" value="0.33" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_delete_confirmation.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_exclude_confirmation.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_group.xml" value="0.28804347826086957" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_liked.xml" value="0.25" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_login.xml" value="0.26145833333333335" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_personal.xml" value="0.33" />
+        <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_post_confirmation.xml" value="0.28804347826086957" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_start.xml" value="0.25" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/activity_tutor.xml" value="0.33" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/appointments_list_item.xml" value="0.33" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/date_window.xml" value="0.22" />
+        <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/dates_spinner_layout.xml" value="0.2817028985507246" />
+        <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/default_spinner_layout.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/liked_list_item.xml" value="0.33" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/options_header.xml" value="0.3941747572815534" />
         <entry key="..\:/Users/advok_000/AndroidStudioProjects/StudAssistant/app/src/main/res/layout/spinner_dropdown_layout.xml" value="0.15625" />
