@@ -53,6 +53,17 @@
             android:layout_marginTop="8dp"
             android:background="#00FFFFFF"
             app:srcCompat="@drawable/ic_appointment_roundless" />
+
+        <ImageButton
+            android:id="@+id/viewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tutorData"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/makeAppointmentButton"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/ic_view" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

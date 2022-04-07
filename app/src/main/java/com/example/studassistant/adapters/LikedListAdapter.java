@@ -1,5 +1,6 @@
 package com.example.studassistant.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studassistant.R;
 import com.example.studassistant.entities.LikedListElement;
 import com.example.studassistant.fragments.AppointmentFragment;
+import com.example.studassistant.fragments.ViewFragment;
 
 import java.util.ArrayList;
 
 public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.LikedListViewHolder> {
     private ArrayList<LikedListElement> recyclerViewItems;
     private FragmentManager fragmentManager;
+    private Context context;
 
-    public LikedListAdapter(FragmentManager fragmentManager, ArrayList<LikedListElement> itemsList){
+    public LikedListAdapter(FragmentManager fragmentManager, Context context, ArrayList<LikedListElement> itemsList){
         recyclerViewItems = itemsList;
         this.fragmentManager = fragmentManager;
+        this.context = context;
     }
 
     @NonNull
@@ -50,6 +54,7 @@ public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.Like
                                             .add(R.id.windowContainer, new AppointmentFragment(item))
                                             .addToBackStack("stack")
                                             .commit());
+        holder.viewButton.setOnClickListener((view) -> new ViewFragment(item.getId()).show(fragmentManager, "View"));
         item.setMakeAppointmentButton(holder.makeAppointmentButton);
     }
 
@@ -98,6 +103,7 @@ public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.Like
         private TextView tutorData;
         private CheckBox checkToExcludeButton;
         private ImageButton makeAppointmentButton;
+        private ImageButton viewButton;
 
         LikedListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,6 +111,7 @@ public class LikedListAdapter extends RecyclerView.Adapter<LikedListAdapter.Like
             this.checkToExcludeButton = itemView.findViewById(R.id.checkToExcludeButton);
             this.tutorData = itemView.findViewById(R.id.tutorData);
             this.makeAppointmentButton = itemView.findViewById(R.id.makeAppointmentButton);
+            this.viewButton = itemView.findViewById(R.id.viewButton);
         }
     }
 }

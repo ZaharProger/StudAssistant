@@ -129,7 +129,7 @@ public class LikedFragment extends Fragment  implements View.OnClickListener, Vi
     }
 
     public void updateList() {
-        LikedListAdapter likedListAdapter = new LikedListAdapter(getParentFragmentManager(), dataBaseManager.getAllData());
+        LikedListAdapter likedListAdapter = new LikedListAdapter(getParentFragmentManager(), getContext(), dataBaseManager.getAllData());
         likedList.setAdapter(likedListAdapter);
     }
 

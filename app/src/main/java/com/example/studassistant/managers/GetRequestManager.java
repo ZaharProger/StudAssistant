@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.studassistant.R;
 import com.example.studassistant.adapters.AppointmentsListAdapter;
 import com.example.studassistant.adapters.DatetimeListAdapter;
+import com.example.studassistant.adapters.TutorsDatesAdapter;
 import com.example.studassistant.adapters.TutorsListAdapter;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.ConsultDatetime;
@@ -236,8 +237,16 @@ public class GetRequestManager extends RequestManager implements Response.Listen
             }
 
             if (itemsListRecyclerView != null){
-                AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
-                itemsListRecyclerView.setAdapter(appointmentsListAdapter);
+                switch (type){
+                    case DATES:
+                        TutorsDatesAdapter tutorsDatesAdapter = new TutorsDatesAdapter(dates);
+                        itemsListRecyclerView.setAdapter(tutorsDatesAdapter);
+                        break;
+                    case APPOINTMENTS:
+                        AppointmentsListAdapter appointmentsListAdapter = new AppointmentsListAdapter(appointments);
+                        itemsListRecyclerView.setAdapter(appointmentsListAdapter);
+                        break;
+                }
             }
 
             if (toMonitor){

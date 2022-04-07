@@ -61,13 +61,14 @@
             android:id="@+id/spaceAmountLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:text="@string/space_field"
             android:textAlignment="textStart"
             android:textColor="#336C9A"
             android:textColorHighlight="#62ACE8"
             android:textColorLink="#62ACE8"
             android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/datetimeList" />
 
@@ -75,16 +76,15 @@
             android:id="@+id/spaceAmountField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textColorHighlight="#62ACE8"
             android:textColorLink="#62ACE8"
-            android:textSize="16sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/spaceAmountLabel"
-            app:layout_constraintTop_toBottomOf="@+id/datetimeList" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spaceAmountLabel" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

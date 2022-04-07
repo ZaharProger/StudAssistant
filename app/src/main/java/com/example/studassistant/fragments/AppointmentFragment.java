@@ -1,5 +1,8 @@
 package com.example.studassistant.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.studassistant.R;
+import com.example.studassistant.constants.UserDataValues;
 import com.example.studassistant.entities.Appointment;
 import com.example.studassistant.entities.LikedListElement;
 import com.example.studassistant.enums.ArrayType;
 import com.example.studassistant.managers.CodeGenerator;
 import com.example.studassistant.managers.RequestManager;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class AppointmentFragment extends Fragment implements View.OnClickListener {
     private Appointment appointment;
@@ -57,21 +56,11 @@ public class AppointmentFragment extends Fragment implements View.OnClickListene
             appointment.setTutorId(dataToRestore.getId());
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(getContext().getFilesDir() + "/personal.txt"))){
-            ArrayList<String> personalData = new ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null)
-                personalData.add(line);
-
-            appointment.setName(personalData.get(0));
-            appointment.setSurname(personalData.get(1));
-
-            appointmentFields[0].setText(appointment.getName());
-            appointmentFields[1].setText(appointment.getSurname());
-        }
-        catch(IOException exception){
-
-        }
+        SharedPreferences preferences = getContext().getSharedPreferences(UserDataValues.PREFERENCES_NAME, MODE_PRIVATE);
+        appointment.setName(preferences.getString(UserDataValues.USER_NAME, ""));
+        appointment.setSurname(preferences.getString(UserDataValues.USER_SURNAME, ""));
+        appointmentFields[0].setText(appointment.getName());
+        appointmentFields[1].setText(appointment.getSurname());
 
         requestManager = new RequestManager(getContext(), ArrayType.APPOINTMENTS);
 
