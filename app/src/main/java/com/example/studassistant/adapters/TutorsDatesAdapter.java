@@ -1,7 +1,6 @@
 package com.example.studassistant.adapters;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,6 @@ public class TutorsDatesAdapter extends RecyclerView.Adapter<TutorsDatesAdapter.
     @Override
     public TutorsDatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tutor_dates_item, parent, false);
-
-        Log.e("AAA", "2");
 
         return new TutorsDatesViewHolder(view);
     }
