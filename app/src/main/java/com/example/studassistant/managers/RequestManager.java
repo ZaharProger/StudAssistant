@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import com.example.studassistant.enums.ArrayType;
 
 public class RequestManager {
-    protected static final String URL = "https://stud-assistant-db.herokuapp.com/";
+    protected static final String URL = "https://stud-assistant-server.herokuapp.com/";
     protected Context context;
     protected ArrayType type;
 
